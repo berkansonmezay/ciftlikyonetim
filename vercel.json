@@ -1,34 +1,33 @@
 {
-  "version": 2,
-  "name": "ozate-ciftlik-erp",
-  "public": true,
   "cleanUrls": true,
-  "trailingSlash": false,
-  "routes": [
+  "rewrites": [
     {
-      "src": "^/assets/(.*)$",
-      "headers": {
-        "cache-control": "public, max-age=31536000, immutable"
-      },
-      "dest": "/assets/$1"
+      "source": "/login",
+      "destination": "/login.html"
     },
     {
-      "src": "^/(.*)\\.(css|js|json|png|jpg|svg|ico)$",
-      "headers": {
-        "cache-control": "public, max-age=0, must-revalidate"
-      },
-      "dest": "/$1.$2"
+      "source": "/((?!.*\\.).*)",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     },
     {
-      "src": "^/login$",
-      "dest": "/login.html"
-    },
-    {
-      "src": "^/(.*)$",
-      "headers": {
-        "cache-control": "no-cache, no-store, must-revalidate"
-      },
-      "dest": "/index.html"
+      "source": "/(.*)\\.(css|js|json)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, must-revalidate"
+        }
+      ]
     }
   ]
 }
