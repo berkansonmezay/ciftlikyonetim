@@ -1,0 +1,3352 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Özate Çiftliği - Çiftlik Yönetim Sistemi</title>
+  <meta name="description" content="Özate Büyükbaş Hayvan Çiftliği Finans, Sürü, Süt ve Stok Yönetim Sistemi">
+  <meta name="theme-color" content="#7B1E26">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="assets/ozate_logo.png">
+  
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  
+  <link rel="stylesheet" href="styles.css?v=3.9">
+  <script>
+    // Tarayıcı önbelleği ve Service Worker anında yenileme kontrolü
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(registrations => {
+        for (let reg of registrations) {
+          reg.update();
+        }
+      });
+    }
+  </script>
+</head>
+<body data-theme="dark">
+  <!-- Ana Konteyner -->
+  <div id="app" class="app-layout">
+    
+    <!-- Kenar Çubuğu (Desktop Sidebar) -->
+    <aside class="app-sidebar" id="appSidebar">
+      <div class="sidebar-brand">
+        <div class="brand-logo-wrapper">
+          <img src="assets/ozate_logo.png" alt="Özate Çiftliği" class="brand-logo" id="brandLogoImg">
+        </div>
+        <div class="brand-meta">
+          <span class="brand-sub">Büyükbaş Hayvancılık & Süt</span>
+        </div>
+      </div>
+
+      <!-- Navigasyon Menüsü -->
+      <nav class="sidebar-nav">
+        <a href="#dashboard" class="nav-link active" data-page="dashboard" id="nav-dashboard">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+          <span>Gösterge Paneli</span>
+        </a>
+        <a href="#transactions" class="nav-link" data-page="transactions" id="nav-transactions">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <span>Gelir & Gider</span>
+        </a>
+        <a href="#accounts" class="nav-link" data-page="accounts" id="nav-accounts">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M7 15h0M2 10h20"/></svg>
+          <span>Kasa & Bankalar</span>
+        </a>
+        <a href="#contacts" class="nav-link" data-page="contacts" id="nav-contacts">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>Cari & Müşteriler</span>
+        </a>
+        <a href="#animals" class="nav-link" data-page="animals" id="nav-animals">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+          <span>Büyükbaş Sürü</span>
+          <span class="badge" id="sidebarAnimalCountBadge">148</span>
+        </a>
+        <a href="#sheep" class="nav-link" data-page="sheep" id="nav-sheep">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="7"/><path d="M5 8c-1.5-1-3 0-3 2 0 1.5 1 3 2.5 3"/><path d="M19 8c1.5-1 3 0 3 2 0 1.5-1 3-2.5 3"/><path d="M9 10h.01M15 10h.01M10 14a2 2 0 0 0 4 0"/><path d="M8 19v2M16 19v2"/></svg>
+          <span>Küçükbaş Sürü</span>
+          <span class="badge" id="sidebarSheepCountBadge" style="background: rgba(30, 77, 43, 0.2); color: var(--ozate-green-accent);">85</span>
+        </a>
+        <a href="#milk" class="nav-link" data-page="milk" id="nav-milk">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 2v4M14 2v4M6 6h12l-1.5 14H7.5L6 6zM8 10h8"/></svg>
+          <span>Süt Üretimi</span>
+        </a>
+        <a href="#inventory" class="nav-link" data-page="inventory" id="nav-inventory">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          <span>Yem & Stok Deposu</span>
+          <span class="badge warning" id="sidebarStockAlertBadge">2</span>
+        </a>
+        <a href="#tasks" class="nav-link" data-page="tasks" id="nav-tasks">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x1="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="m9 16 2 2 4-4"/></svg>
+          <span>Görevler & Takvim</span>
+          <span class="badge" id="badgePendingTasksCount" style="margin-left: auto; font-size: 0.65rem; background: var(--accent-red); color: white; border-radius: 10px; padding: 1px 6px;">3</span>
+        </a>
+        <a href="#reports" class="nav-link" data-page="reports" id="nav-reports">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          <span>Raporlar & Analiz</span>
+        </a>
+        <!-- YÖNETİM BÖLÜMÜ -->
+        <div style="padding: 0.3rem 0.65rem 0.1rem; margin-top: 4px; border-top: 1px solid var(--border-subtle);">
+          <span style="font-size: 0.58rem; font-weight: 800; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em;">Yönetim</span>
+        </div>
+        <a href="#users" class="nav-link" data-page="users" id="nav-users">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>Kullanıcı Yönetimi</span>
+        </a>
+        <a href="#definitions" class="nav-link" data-page="definitions" id="nav-definitions">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          <span>Çiftlik Tanımları</span>
+        </a>
+        <a href="#settings" class="nav-link" data-page="settings" id="nav-settings">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Çiftlik Ayarları</span>
+        </a>
+        <a href="#security" class="nav-link" data-page="security" id="nav-security">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Sistem Güvenliği</span>
+        </a>
+      </nav>
+
+      <!-- Kenar Çubuğu Alt Bilgi & Tema Değiştirici -->
+      <div class="sidebar-footer">
+        <div class="user-chip">
+          <div class="user-avatar">ÖZ</div>
+          <div class="user-info">
+            <span class="user-name">Özate Çiftliği</span>
+            <span class="user-role">İşletme Yöneticisi</span>
+          </div>
+        </div>
+        <div class="sidebar-actions">
+          <button class="icon-btn" id="themeToggleBtn" title="Tema Değiştir (Açık / Koyu)">
+            <svg class="theme-icon-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            <svg class="theme-icon-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Ana Çalışma Alanı -->
+    <main class="app-main">
+      
+      <!-- Üst Çubuk (Top Navigation Header) -->
+      <header class="app-header">
+        <!-- Sol: Arama Kutusu (hamburger kaldırıldı) -->
+        <div class="header-left" style="flex: 1; max-width: 380px;">
+          <div class="search-box" style="width: 100%;">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="globalSearchInput" placeholder="Küpe No, Cari, İşlem Ara..." style="width: 100%;">
+            <button type="button" class="btn btn-sm btn-ghost" id="openScannerBtn" onclick="openQrScannerModal()" title="Barkod / RFID Küpe Tara" style="padding: 2px 6px; font-size: 0.72rem; margin-left: 2px;">📷 Tara</button>
+          </div>
+        </div>
+
+        <!-- Sağ: Rol, Çıkış, Hızlı İşlem -->
+        <div class="header-right">
+
+          <!-- 0. Supabase Bulut Durumu -->
+          <span id="supabaseStatusBadge" class="badge warning" style="font-size:0.68rem; cursor:pointer;" onclick="navigateToPage('settings')" title="Supabase Veritabanı Durumu">🟡 Yerel Mod</span>
+
+          <!-- 1. Kullanıcı Rolü (RBAC) -->
+          <div class="role-selector-wrapper" title="Aktif Kullanıcı Rolü">
+            <select id="userRoleSelect" class="form-select form-select-sm" onchange="setUserRole(this.value)" style="padding: 3px 8px; font-size: 0.72rem; font-weight: 600; border-radius: var(--radius-full); background: var(--bg-surface-hover); color: var(--text-main); border: 1px solid var(--border-subtle); cursor: pointer;">
+              <option value="ADMIN">👑 Yönetici</option>
+              <option value="VET">🩺 Veteriner</option>
+              <option value="WORKER">👨‍🌾 Bakıcı</option>
+            </select>
+          </div>
+
+          <!-- Ekrana Sığdır Butonu (Çıkış butonunun solunda) -->
+          <button type="button" class="btn btn-sm btn-ghost btn-fit-screen" id="btnFitScreen" onclick="toggleFitToScreen()" title="Ekrana Sığdır / Tam Ekran (F11)">
+            <svg id="iconFitScreen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px;"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+            <span id="textFitScreen">Sığdır</span>
+          </button>
+
+          <!-- 2. Çıkış -->
+          <button type="button" class="btn btn-sm btn-ghost" onclick="handleLogout()" title="Oturumu Kapat" style="padding: 4px 10px; font-size: 0.72rem; color: var(--accent-danger); border: 1px solid var(--accent-danger); border-radius: var(--radius-full);">🚪 Çıkış</button>
+
+          <!-- 3. Hızlı İşlem -->
+          <button class="btn btn-primary btn-quick-action" id="openQuickActionBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span>Hızlı İşlem</span>
+          </button>
+
+        </div>
+      </header>
+
+      <!-- Dinamik Sayfa İçeriği -->
+      <div class="app-content-area" id="pageContainer">
+
+        <!-- 1. GÖSTERGE PANELİ (DASHBOARD) -->
+        <section class="page-view active" id="view-dashboard">
+          
+          <!-- Çiftlik Banner Kartı (Kompakt) -->
+          <div class="farm-banner-card">
+            <div class="banner-overlay"></div>
+            <img src="assets/farm_banner.jpg" alt="Özate Modern Çiftlik" class="banner-img">
+            <div class="banner-content">
+              <div class="banner-heading-group">
+                <div class="banner-tag">ÖZATE BÜYÜKBAŞ DAMIZLIK & SÜT ÇİFTLİĞİ</div>
+                <h2 class="banner-heading">Bereketli Günler, Özate Ailesi</h2>
+                <p class="banner-desc">Sabah sağımı tamamlandı. 148 baş hayvan sağlık durumu stabil, 2 kritik yem siparişi bekleniyor.</p>
+              </div>
+              <div class="banner-quick-stats">
+                <div class="stat-pill">
+                  <span class="pill-label">Bugün:</span>
+                  <span class="pill-val" id="bannerMilkToday">1.420 L</span>
+                </div>
+                <div class="stat-pill">
+                  <span class="pill-label">Tank:</span>
+                  <span class="pill-val text-success">3.8 °C</span>
+                </div>
+                <div class="stat-pill">
+                  <span class="pill-label">Sağım:</span>
+                  <span class="pill-val">17:30</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- KPI Kartları Izgarası -->
+          <div class="kpi-grid">
+            <!-- 1. Aylık Net Kâr -->
+            <div class="kpi-card profit-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Aylık Net Sonuç</span>
+                <div class="kpi-icon-box bg-burgundy">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+              </div>
+              <div class="kpi-value text-burgundy" id="kpiNetProfit">₺128.450,00</div>
+              <div class="kpi-footer">
+                <span class="badge positive">+14.2%</span>
+                <span class="kpi-subtext">Geçen aya kıyasla artış</span>
+              </div>
+            </div>
+
+            <!-- 2. Kasa & Banka Toplamı -->
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Kasa & Banka Varlığı</span>
+                <div class="kpi-icon-box bg-green">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M7 15h0M2 10h20"/></svg>
+                </div>
+              </div>
+              <div class="kpi-value text-green" id="kpiCashBalance">₺242.800,00</div>
+              <div class="kpi-footer">
+                <span class="kpi-subtext">Ziraat Bankası + Çiftlik Nakit Kasası</span>
+              </div>
+            </div>
+
+            <!-- 3. Günlük Süt Üretimi -->
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Günlük Süt Üretimi</span>
+                <div class="kpi-icon-box bg-blue">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 2v4M14 2v4M6 6h12l-1.5 14H7.5L6 6zM8 10h8"/></svg>
+                </div>
+              </div>
+              <div class="kpi-value" id="kpiMilkYield">1.420 L</div>
+              <div class="kpi-footer">
+                <span class="kpi-subtext">Sağmal başına <strong>28,4 L / gün</strong></span>
+              </div>
+            </div>
+
+            <!-- 4. Büyükbaş Sürü Varlığı -->
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Büyükbaş Hayvan</span>
+                <div class="kpi-icon-box bg-orange">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+                </div>
+              </div>
+              <div class="kpi-value" id="kpiAnimalCount">148 Baş</div>
+              <div class="kpi-footer">
+                <span class="kpi-subtext">50 Sağmal • 42 Besi • 38 Düve • 18 Buzağı</span>
+              </div>
+            </div>
+
+            <!-- 4.5. Küçükbaş Sürü Varlığı -->
+            <div class="kpi-card" style="cursor: pointer;" onclick="navigateToPage('sheep')">
+              <div class="kpi-header">
+                <span class="kpi-title">Küçükbaş Sürü</span>
+                <div class="kpi-icon-box" style="background: rgba(30, 77, 43, 0.2); color: var(--ozate-green-accent);">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="7"/><path d="M5 8c-1.5-1-3 0-3 2 0 1.5 1 3 2.5 3"/><path d="M19 8c1.5-1 3 0 3 2 0 1.5-1 3-2.5 3"/><path d="M9 10h.01M15 10h.01M10 14a2 2 0 0 0 4 0"/><path d="M8 19v2M16 19v2"/></svg>
+                </div>
+              </div>
+              <div class="kpi-value" id="kpiSheepCount">85 Baş</div>
+              <div class="kpi-footer">
+                <span class="kpi-subtext" id="kpiSheepSubtext">52 Koyun • 6 Koç • 27 Kuzu / Toklu</span>
+              </div>
+            </div>
+
+            <!-- 5. Bekleyen Alacak / Borç Dengesi -->
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Cari Alacak & Borç</span>
+                <div class="kpi-icon-box bg-purple">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+              </div>
+              <div class="kpi-sub-stats">
+                <div class="sub-stat">
+                  <span class="sub-label">Alacak:</span>
+                  <span class="sub-val text-green" id="kpiReceivables">₺86.400,00</span>
+                </div>
+                <div class="sub-stat">
+                  <span class="sub-label">Borç:</span>
+                  <span class="sub-val text-danger" id="kpiPayables">₺32.100,00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grafikler Bölümü -->
+          <div class="charts-row">
+            <!-- Finansal Gelir vs Gider Çubuğu -->
+            <div class="dashboard-panel chart-panel">
+              <div class="panel-header">
+                <div class="panel-title-group">
+                  <h3 class="panel-title">Dönemsel Finans Analizi (Gelir & Gider)</h3>
+                  <span class="panel-subtitle">Son 6 Aylık Gerçekleşen ve Tahakkuk Eden Hareketler</span>
+                </div>
+                <div class="chart-legend">
+                  <span class="legend-item"><span class="legend-color bg-green"></span> Gelir</span>
+                  <span class="legend-item"><span class="legend-color bg-burgundy"></span> Gider</span>
+                </div>
+              </div>
+              <div class="chart-container" id="financeChartContainer">
+                <!-- SVG Dinamik Bar Grafiği JS ile çizilir -->
+              </div>
+            </div>
+
+            <!-- Süt Sağım Trendi Grafiği -->
+            <div class="dashboard-panel chart-panel">
+              <div class="panel-header">
+                <div class="panel-title-group">
+                  <h3 class="panel-title">Haftalık Süt Üretim Trendi (Litre)</h3>
+                  <span class="panel-subtitle">Sabah ve Akşam Sağım Karşılaştırması</span>
+                </div>
+                <div class="chart-legend">
+                  <span class="legend-item"><span class="legend-color bg-blue"></span> Sabah</span>
+                  <span class="legend-item"><span class="legend-color bg-cyan"></span> Akşam</span>
+                </div>
+              </div>
+              <div class="chart-container" id="milkChartContainer">
+                <!-- SVG Dinamik Süt Grafiği JS ile çizilir -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Alt Çift Sütun: Son İşlemler & Yaklaşan Sağlık/Takvim -->
+          <div class="two-column-grid">
+            
+            <!-- Son Finansal İşlemler -->
+            <div class="dashboard-panel">
+              <div class="panel-header">
+                <div class="panel-title-group">
+                  <h3 class="panel-title">Son Finansal Kayıtlar</h3>
+                  <span class="panel-subtitle">En son işlenen gelir ve giderler</span>
+                </div>
+                <button class="btn btn-sm btn-ghost" onclick="navigateToPage('transactions')">Tümünü Gör →</button>
+              </div>
+              <div class="table-responsive">
+                <table class="data-table" id="dashboardRecentTable">
+                  <thead>
+                    <tr>
+                      <th>Tarih</th>
+                      <th>Tür / Kategori</th>
+                      <th>Açıklama / Cari</th>
+                      <th>Tutar</th>
+                      <th>Durum</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dashboardRecentTbody">
+                    <!-- Dinamik JS satırları -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Yaklaşan Sağlık & Görev Takvimi -->
+            <div class="dashboard-panel">
+              <div class="panel-header">
+                <div class="panel-title-group">
+                  <h3 class="panel-title">Yaklaşan Sağlık & Takvim</h3>
+                  <span class="panel-subtitle">Aşılar, tohumlama kontrolleri ve kritik stoklar</span>
+                </div>
+                <div style="display: flex; gap: 6px; align-items: center;">
+                  <span class="badge warning" id="dashAlertCountBadge">3 Görev</span>
+                  <a href="#tasks" class="btn btn-sm btn-ghost" onclick="navigateToPage('tasks')" style="font-size:0.75rem; text-decoration:none;" title="Tüm Görevler ve Takvim Sayfasına Git">Tümünü Gör →</a>
+                  <button class="btn btn-sm btn-secondary" onclick="openNewTaskModal()">Görev Ekle</button>
+                </div>
+              </div>
+              <div class="tasks-list" id="dashboardTasksList">
+                <!-- Dinamik Bildirim Listesi -->
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- 2. GELİR & GİDER SAYFASI -->
+        <section class="page-view" id="view-transactions">
+          <div class="view-header">
+            <div class="view-header-title">
+              <h2>Gelir ve Gider Defteri</h2>
+              <p>Çiftliğin tüm finans hareketleri, tahsilatlar, ödemeler ve cari bağlantıları</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-secondary" id="exportTransactionsCsvBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Excel / CSV İndir</span>
+              </button>
+              <button class="btn btn-primary" onclick="openNewTransactionModal('INCOME')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Gelir Ekle</span>
+              </button>
+              <button class="btn btn-burgundy" onclick="openNewTransactionModal('EXPENSE')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Gider Ekle</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Finansal Filtreler ve Özet Çubuğu -->
+          <div class="filter-bar">
+            <div class="filter-group">
+              <label>Tür:</label>
+              <select id="filterTxType" class="form-select">
+                <option value="ALL">Tümü (Gelir & Gider)</option>
+                <option value="INCOME">Yalnızca Gelirler</option>
+                <option value="EXPENSE">Yalnızca Giderler</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Ödeme Durumu:</label>
+              <select id="filterTxStatus" class="form-select">
+                <option value="ALL">Tümü</option>
+                <option value="PAID">Tahsil Edildi / Ödendi</option>
+                <option value="PARTIAL">Kısmi Ödendi</option>
+                <option value="PENDING">Bekliyor (Vadeli)</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Kategori:</label>
+              <select id="filterTxCategory" class="form-select">
+                <option value="ALL">Tüm Kategoriler</option>
+                <option value="Süt Satışı">Süt Satışı</option>
+                <option value="Besi Hayvanı Satışı">Besi Hayvanı Satışı</option>
+                <option value="Damızlık/Düve Satışı">Damızlık/Düve Satışı</option>
+                <option value="Yem & Kaba Yem">Yem & Kaba Yem</option>
+                <option value="Veteriner & İlaç">Veteriner & İlaç</option>
+                <option value="İşçilik & Maaş">İşçilik & Maaş</option>
+                <option value="Elektrik & Enerji">Elektrik & Enerji</option>
+                <option value="Bakım & Onarım">Bakım & Onarım</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- İşlemler Tablosu -->
+          <div class="dashboard-panel">
+            <div class="table-responsive">
+              <table class="data-table" id="transactionsTable">
+                <thead>
+                  <tr>
+                    <th>Tarih</th>
+                    <th>Tür</th>
+                    <th>Kategori</th>
+                    <th>Açıklama</th>
+                    <th>Cari / Müşteri</th>
+                    <th>Hesap</th>
+                    <th>Tutar</th>
+                    <th>Ödeme Durumu</th>
+                    <th>İşlem</th>
+                  </tr>
+                </thead>
+                <tbody id="transactionsTbody">
+                  <!-- JS ile doldurulur -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- 3. KASA & BANKALAR SAYFASI -->
+        <section class="page-view" id="view-accounts">
+          <div class="view-header">
+            <div class="view-header-title">
+              <h2>Kasa ve Banka Hesapları</h2>
+              <p>Nakit varlıklar, banka hesapları ve hesaplar arası virman transferleri</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-secondary" onclick="openNewAccountModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Yeni Hesap Ekle</span>
+              </button>
+              <button class="btn btn-primary" onclick="openTransferModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+                <span>Hesaplar Arası Transfer (Virman)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Kasa & Banka Kartları -->
+          <div class="accounts-grid" id="accountsListContainer">
+            <!-- JS ile kartlar üretilir -->
+          </div>
+
+          <!-- Virman & Transfer Geçmişi -->
+          <div class="dashboard-panel" style="margin-top: 1.5rem;">
+            <div class="panel-header">
+              <div class="panel-title-group">
+                <h3 class="panel-title">Hesap Transferleri (Virman Kayıtları)</h3>
+                <span class="panel-subtitle">Not: Virman işlemleri toplam çiftlik gelir veya giderini etkilemez; varlık transferidir.</span>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table" id="transfersTable">
+                <thead>
+                  <tr>
+                    <th>Tarih</th>
+                    <th>Kaynak Hesap</th>
+                    <th>Hedef Hesap</th>
+                    <th>Tutar</th>
+                    <th>Açıklama</th>
+                  </tr>
+                </thead>
+                <tbody id="transfersTbody">
+                  <!-- JS ile doldurulur -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- 4. CARİ HESAPLAR SAYFASI -->
+        <section class="page-view" id="view-contacts">
+          <div class="view-header">
+            <div class="view-header-title">
+              <h2>Cari Hesaplar (Müşteri & Tedarikçi)</h2>
+              <p>Mandıralar, yem fabrikaları, veterinerler ve canlı hayvan tüccarları</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-secondary" onclick="openContactStatementModal(null)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                <span>Cari Ekstre Görüntüle</span>
+              </button>
+              <button class="btn btn-ghost" onclick="openImportModal('contacts')" title="Excel / CSV dosyasından toplu cari hesap yükle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Toplu İçe Aktar</span>
+              </button>
+              <button class="btn btn-primary" onclick="openNewContactModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Yeni Cari Ekle</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Cari Hesaplar Finansal Özet Kartları (KPI) -->
+          <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 1rem;">
+            <div class="kpi-card" style="border-left: 4px solid var(--accent-green);">
+              <span class="kpi-label">Toplam Alacaklarımız (Müşteriler)</span>
+              <div class="kpi-value text-green" id="kpiContactReceivables">₺0,00</div>
+              <span class="kpi-sub" id="kpiContactReceivablesSub">Mandıra ve tüccar bakiyeleri</span>
+            </div>
+            <div class="kpi-card" style="border-left: 4px solid var(--accent-red);">
+              <span class="kpi-label">Toplam Borçlarımız (Tedarikçiler)</span>
+              <div class="kpi-value text-danger" id="kpiContactPayables">₺0,00</div>
+              <span class="kpi-sub" id="kpiContactPayablesSub">Yem, veteriner ve malzeme</span>
+            </div>
+            <div class="kpi-card" style="border-left: 4px solid var(--brand-primary);">
+              <span class="kpi-label">Net Cari Bakiye Durumu</span>
+              <div class="kpi-value" id="kpiContactNet">₺0,00</div>
+              <span class="kpi-sub" id="kpiContactNetSub">Genel alacak/borç dengesi</span>
+            </div>
+            <div class="kpi-card" style="border-left: 4px solid var(--border-subtle);">
+              <span class="kpi-label">Toplam Cari Hesap</span>
+              <div class="kpi-value" id="kpiContactTotalCount">0</div>
+              <span class="kpi-sub" id="kpiContactTotalCountSub">Kayıtlı firma ve tüccar</span>
+            </div>
+          </div>
+
+          <!-- Filtreler, Arama & Görünüm Seçici Çubuğu -->
+          <div class="filter-bar" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px;">
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; flex: 1;">
+              <div class="filter-group" style="min-width: 220px; flex: 1;">
+                <input type="text" id="filterContactSearch" class="form-control" placeholder="🔍 Firma adı veya telefon ile ara..." oninput="renderContactsPage()">
+              </div>
+              <div class="filter-group">
+                <label>Cari Türü:</label>
+                <select id="filterContactType" class="form-select" onchange="renderContactsPage()">
+                  <option value="ALL">Tümü (Müşteri & Tedarikçi)</option>
+                  <option value="CUSTOMER">Müşteriler (Alıcılar)</option>
+                  <option value="SUPPLIER">Tedarikçiler (Satıcılar)</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label>Bakiye Durumu:</label>
+                <select id="filterContactBalance" class="form-select" onchange="renderContactsPage()">
+                  <option value="ALL">Tümü</option>
+                  <option value="RECEIVABLE">Alacağımız Var</option>
+                  <option value="PAYABLE">Borcumuz Var</option>
+                  <option value="ZERO">Bakiye Sıfır</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Görünüm Seçici (Liste / Kart) -->
+            <div style="display: flex; gap: 4px; background: var(--bg-surface-hover); padding: 3px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+              <button type="button" class="btn btn-sm btn-secondary" id="btnContactViewTable" onclick="setContactViewMode('table')" title="Liste Görünümü" style="padding: 4px 10px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                <span>Liste</span>
+              </button>
+              <button type="button" class="btn btn-sm btn-ghost" id="btnContactViewCards" onclick="setContactViewMode('cards')" title="Kart Görünümü" style="padding: 4px 10px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                <span>Kartlar</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 1. LİSTE GÖRÜNÜMÜ (VARSAYILAN) -->
+          <div class="table-responsive" id="contactsTableView" style="margin-top: 0.75rem;">
+            <table class="data-table" id="contactsTable">
+              <thead>
+                <tr>
+                  <th style="min-width: 230px;">Cari / Firma Adı</th>
+                  <th style="min-width: 140px;">Cari Türü</th>
+                  <th style="min-width: 130px;">İletişim & Telefon</th>
+                  <th style="min-width: 130px;">Hesap Durumu</th>
+                  <th style="min-width: 140px; text-align: right;">Güncel Bakiye</th>
+                  <th style="min-width: 180px; text-align: right;">Hızlı İşlemler</th>
+                </tr>
+              </thead>
+              <tbody id="contactsTableTbody">
+                <!-- JS ile doldurulur -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 2. KART GÖRÜNÜMÜ (ALTERNATİF) -->
+          <div class="contacts-grid" id="contactsCardsView" style="display: none; margin-top: 0.75rem;">
+            <!-- JS ile doldurulur -->
+          </div>
+        </section>
+
+
+        <!-- 5. BÜYÜKBAŞ SÜRÜ SAYFASI -->
+        <section class="page-view" id="view-animals">
+          <div class="view-header">
+            <div class="view-header-title">
+              <h2>Büyükbaş Hayvan & Sürü Yönetimi</h2>
+              <p>Küpe numaraları, padok dağılımı, laktasyon, besi ağırlıkları ve soyağacı</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-ghost" onclick="openBulkPaddockTransferModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+                <span>Toplu Padok Transferi</span>
+              </button>
+              <button class="btn btn-secondary" onclick="openRationModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                <span>Rasyon / Tüketim Kaydet</span>
+              </button>
+              <button class="btn btn-secondary" id="exportAnimalsCsvBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Sürü Listesini İndir</span>
+              </button>
+              <button class="btn btn-secondary" onclick="openInseminationModal()" title="Suni Tohumlama & Gebelik Kaydı">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                <span>Tohumlama Kaydet</span>
+              </button>
+              <button class="btn btn-ghost" onclick="openImportModal('animals')" title="Excel / CSV dosyasından toplu hayvan yükle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Toplu İçe Aktar</span>
+              </button>
+              <button class="btn btn-primary" onclick="openNewAnimalModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Yeni Hayvan Kaydı</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Sürü Filtreleri -->
+          <div class="filter-bar">
+            <div class="filter-group">
+              <label>Padok / Grup:</label>
+              <select id="filterAnimalPaddock" class="form-select">
+                <option value="ALL">Tüm Padoklar</option>
+                <option value="Sağmal 1">Sağmal 1 Padoğu</option>
+                <option value="Sağmal 2">Sağmal 2 Padoğu</option>
+                <option value="Besi Bölme A">Besi Bölme A (Ağır Besi)</option>
+                <option value="Besi Bölme B">Besi Bölme B (Başlangıç)</option>
+                <option value="Kuru Dönem">Kuru Dönem & Doğumhane</option>
+                <option value="Buzağı Kulübeleri">Buzağı Kulübeleri</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Kategori:</label>
+              <select id="filterAnimalCategory" class="form-select">
+                <option value="ALL">Tümü</option>
+                <option value="Süt İneği">Süt İneği</option>
+                <option value="Besi Danası">Besi Danası</option>
+                <option value="Gebe Düve">Gebe Düve</option>
+                <option value="Buzağı">Buzağı</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Irk:</label>
+              <select id="filterAnimalBreed" class="form-select">
+                <option value="ALL">Tüm Irklar</option>
+                <option value="Holstein">Holstein</option>
+                <option value="Simental">Simental</option>
+                <option value="Montofon">Montofon (Brown Swiss)</option>
+                <option value="Angus">Angus</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Hayvan Listesi Tablosu -->
+          <div class="dashboard-panel">
+            <div class="table-responsive">
+              <table class="data-table" id="animalsTable">
+                <thead>
+                  <tr>
+                    <th>Küpe No</th>
+                    <th>İsim / Kod</th>
+                    <th>Irk</th>
+                    <th>Kategori</th>
+                    <th>Cinsiyet</th>
+                    <th>Padok</th>
+                    <th>Canlı Ağırlık</th>
+                    <th>Verim Durumu</th>
+                    <th>Sağlık</th>
+                    <th>Detay</th>
+                  </tr>
+                </thead>
+                <tbody id="animalsTbody">
+                  <!-- JS ile doldurulur -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- 5.5. KÜÇÜKBAŞ SÜRÜ SAYFASI -->
+        <section class="page-view" id="view-sheep">
+          <div class="view-header">
+            <div class="view-header-title">
+              <h2>🐑 Küçükbaş Hayvan &amp; Sürü Yönetimi</h2>
+              <p>Koyun, koç, kuzu takibi, ağıl ve mera bölmeleri, koç katımı ve kırkım yönetimi</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-ghost" onclick="openBulkBarnTransferModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+                <span>Toplu Ağıl Transferi</span>
+              </button>
+              <button class="btn btn-secondary" onclick="openMatingSeasonModal()" title="Koç Katımı & Toplu Aşım Planı">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                <span>🐑 Koç Katımı / Aşım</span>
+              </button>
+              <button class="btn btn-secondary" onclick="openShearingModal()" title="Kırkım & Yün Verimi">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+                <span>✂️ Kırkım Kaydı</span>
+              </button>
+              <button class="btn btn-secondary" id="exportSheepCsvBtn" onclick="exportSheepCsv()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Küçükbaş Listesi İndir</span>
+              </button>
+              <button class="btn btn-primary" onclick="openNewSheepModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Yeni Küçükbaş Kaydı</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Küçükbaş İstatistik Özet Kartları -->
+          <div class="kpi-grid" style="margin-bottom: 1rem;">
+            <div class="kpi-card" style="padding: 0.75rem 1rem;">
+              <div class="kpi-header">
+                <span class="kpi-title">Toplam Küçükbaş</span>
+                <span style="font-size: 1.1rem;">🐑</span>
+              </div>
+              <div class="kpi-value" id="kpiSheepTotal" style="font-size: 1.4rem;">85 Baş</div>
+              <div class="kpi-footer"><span class="kpi-subtext" id="kpiSheepTotalSub">Aktif sürü varlığı</span></div>
+            </div>
+            <div class="kpi-card" style="padding: 0.75rem 1rem;">
+              <div class="kpi-header">
+                <span class="kpi-title">Damızlık Anaç</span>
+                <span style="font-size: 1.1rem;">♀</span>
+              </div>
+              <div class="kpi-value" id="kpiSheepEwes" style="font-size: 1.4rem; color: var(--accent-success);">52 Baş</div>
+              <div class="kpi-footer"><span class="kpi-subtext">34 Gebe • 18 Boş/Laktasyon</span></div>
+            </div>
+            <div class="kpi-card" style="padding: 0.75rem 1rem;">
+              <div class="kpi-header">
+                <span class="kpi-title">Damızlık Koç</span>
+                <span style="font-size: 1.1rem;">♂</span>
+              </div>
+              <div class="kpi-value" id="kpiSheepRams" style="font-size: 1.4rem; color: var(--accent-blue);">6 Baş</div>
+              <div class="kpi-footer"><span class="kpi-subtext">1:10 Koç katım oranı</span></div>
+            </div>
+            <div class="kpi-card" style="padding: 0.75rem 1rem;">
+              <div class="kpi-header">
+                <span class="kpi-title">Kuzu &amp; Toklu</span>
+                <span style="font-size: 1.1rem;">🌾</span>
+              </div>
+              <div class="kpi-value" id="kpiSheepLambs" style="font-size: 1.4rem; color: var(--accent-gold);">27 Baş</div>
+              <div class="kpi-footer"><span class="kpi-subtext">Ort. canlı ağırlık: 28.4 kg</span></div>
+            </div>
+          </div>
+
+          <!-- Küçükbaş Sürü Filtreleri -->
+          <div class="filter-bar">
+            <div class="filter-group">
+              <label>Ağıl / Bölme:</label>
+              <select id="filterSheepBarn" class="form-select" onchange="renderSheepTable()">
+                <option value="ALL">Tüm Ağıllar</option>
+                <!-- JS ile dinamik doldurulur -->
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Kategori:</label>
+              <select id="filterSheepCategory" class="form-select" onchange="renderSheepTable()">
+                <option value="ALL">Tümü</option>
+                <option value="Damızlık Koyun">Damızlık Koyun</option>
+                <option value="Damızlık Koç">Damızlık Koç</option>
+                <option value="Sütten Kesilmiş Kuzu">Sütten Kesilmiş Kuzu</option>
+                <option value="Emziren Kuzu">Emziren Kuzu</option>
+                <option value="Toklu / Şişek">Toklu / Şişek</option>
+                <option value="Besi Kuzusu">Besi Kuzusu</option>
+                <option value="Keçi / Teke">Keçi / Teke</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Irk:</label>
+              <select id="filterSheepBreed" class="form-select" onchange="renderSheepTable()">
+                <option value="ALL">Tüm Irklar</option>
+                <option value="Merinos">Merinos (Karacabey)</option>
+                <option value="Kıvırcık">Kıvırcık</option>
+                <option value="İvesi">İvesi (Sütçü)</option>
+                <option value="Akkaraman">Akkaraman</option>
+                <option value="Saanen">Saanen Keçisi</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Üreme / Gebelik:</label>
+              <select id="filterSheepRepro" class="form-select" onchange="renderSheepTable()">
+                <option value="ALL">Tüm Durumlar</option>
+                <option value="Gebe">Gebe</option>
+                <option value="Aşımda">Aşımda (Koç Katımı)</option>
+                <option value="Boş">Boş / Laktasyon</option>
+                <option value="Kuzuladı">Yeni Kuzuladı</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Küçükbaş Hayvan Listesi Tablosu -->
+          <div class="dashboard-panel">
+            <div class="table-responsive">
+              <table class="data-table" id="sheepTable">
+                <thead>
+                  <tr>
+                    <th>Küpe No</th>
+                    <th>İsim / Künye</th>
+                    <th>Tür &amp; Irk</th>
+                    <th>Kategori</th>
+                    <th>Cinsiyet</th>
+                    <th>Ağıl / Bölme</th>
+                    <th>Canlı Ağırlık</th>
+                    <th>Doğum Tipi</th>
+                    <th>Üreme &amp; Sağlık</th>
+                    <th>Detay</th>
+                  </tr>
+                </thead>
+                <tbody id="sheepTbody">
+                  <!-- JS ile doldurulur -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- 6. SÜT ÜRETİMİ SAYFASI -->
+        <section class="page-view" id="view-milk">
+          <div class="view-header">
+            <div class="view-header-title">
+              <h2>Günlük Süt Üretimi ve Tank Yönetimi</h2>
+              <p>Sağım seansları, tank dolulukları, süt yağı ve mandıra sevkiyatları</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-secondary" onclick="openMilkShipmentModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                <span>🚚 Mandıraya Süt Teslimatı (Satış)</span>
+              </button>
+              <button class="btn btn-primary" onclick="openNewMilkModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Sağım Verisi Gir</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Süt Tankları Göstergesi -->
+          <div class="tank-grid" id="tankGridContainer">
+            <div class="tank-card">
+              <div class="tank-header">
+                <span class="tank-name">Tank 1 (Ana Soğutma Tankı)</span>
+                <span class="badge positive">Çalışıyor</span>
+              </div>
+              <div class="tank-gauge-wrapper">
+                <div class="tank-progress-bar">
+                  <div class="tank-progress-fill" style="width: 72%;"></div>
+                </div>
+                <div class="tank-meta">
+                  <span class="tank-val">1.800 L / 2.500 L Kapasite</span>
+                  <span class="tank-percent">%72 Dolu</span>
+                </div>
+              </div>
+              <div class="tank-details">
+                <span>Sıcaklık: <strong>3.7 °C</strong></span>
+                <span>Yağ Oranı: <strong>%3.85</strong></span>
+              </div>
+            </div>
+
+            <div class="tank-card">
+              <div class="tank-header">
+                <span class="tank-name">Tank 2 (Yedek / Kaliteli Parti)</span>
+                <span class="badge neutral">Temiz / Hazır</span>
+              </div>
+              <div class="tank-gauge-wrapper">
+                <div class="tank-progress-bar">
+                  <div class="tank-progress-fill" style="width: 25%;"></div>
+                </div>
+                <div class="tank-meta">
+                  <span class="tank-val">500 L / 2.000 L Kapasite</span>
+                  <span class="tank-percent">%25 Dolu</span>
+                </div>
+              </div>
+              <div class="tank-details">
+                <span>Sıcaklık: <strong>4.0 °C</strong></span>
+                <span>Yağ Oranı: <strong>%3.92</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sağım Defteri Tablosu -->
+          <div class="dashboard-panel" style="margin-top: 1.5rem;">
+            <div class="panel-header">
+              <div class="panel-title-group">
+                <h3 class="panel-title">Sağım Defteri Kayıtları</h3>
+                <span class="panel-subtitle">Günlük sabah ve akşam sağım detayları</span>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table" id="milkTable">
+                <thead>
+                  <tr>
+                    <th>Tarih</th>
+                    <th>Sağım Seansı</th>
+                    <th>Sağılan Miktar</th>
+                    <th>Yağ Oranı</th>
+                    <th>Depolanan Tank</th>
+                    <th>Not / Notlar</th>
+                  </tr>
+                </thead>
+                <tbody id="milkTbody">
+                  <!-- JS ile doldurulur -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- 7. YEM VE STOK DEPOSU -->
+        <section class="page-view" id="view-inventory">
+          <div class="view-header">
+            <div class="view-header-title">
+              <h2>Yem ve Stok Deposu</h2>
+              <p>Konsantre yemler, kaba yem (yonca, silaj), ilaçlar ve kritik stok uyarıları</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-burgundy" onclick="openConsumeStockModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                <span>Günlük Tüketim Düş</span>
+              </button>
+              <button class="btn btn-primary" onclick="openNewStockModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Yeni Ürün / Stok Girişi</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Stok Kalemleri Tablosu -->
+          <div class="dashboard-panel">
+            <div class="table-responsive">
+              <table class="data-table" id="inventoryTable">
+                <thead>
+                  <tr>
+                    <th>Ürün Adı</th>
+                    <th>Kategori</th>
+                    <th>Mevcut Miktar</th>
+                    <th>Birim</th>
+                    <th>Kritik Eşik</th>
+                    <th>Birim Maliyet</th>
+                    <th>Toplam Değer</th>
+                    <th>Durum</th>
+                    <th>İşlem</th>
+                  </tr>
+                </thead>
+                <tbody id="inventoryTbody">
+                  <!-- JS ile doldurulur -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             7b. GÖREVLER, İŞ TAKVİMİ & HATIRLATMALAR SAYFASI (PRD 5.9)
+             =================================================================== -->
+        <section class="page-view" id="view-tasks">
+          <div class="view-header">
+            <div class="view-header-title">
+              <h2>📅 Görevler, İş Takvimi &amp; Hatırlatmalar</h2>
+              <p>Aşı takvimi, tohumlama kontrolleri, doğum alarmları, periyodik bakımlar ve vadesi gelen işlemler</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-secondary" onclick="generateAutoTaskReminders()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                <span>Sistem Alarmlarını Tara</span>
+              </button>
+              <button class="btn btn-primary" onclick="openNewTaskModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Yeni Görev / Hatırlatma Ekle</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Görevler KPI Sayaç Barı -->
+          <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); margin-bottom: 1rem;">
+            <div class="kpi-card" style="border-left: 4px solid var(--accent-red);">
+              <span class="kpi-label">🔴 Acil / Geciken Görevler</span>
+              <div class="kpi-value text-danger" id="kpiTasksOverdue">0</div>
+              <span class="kpi-sub">Vadesi geçmiş acil operasyonlar</span>
+            </div>
+            <div class="kpi-card" style="border-left: 4px solid #f59e0b;">
+              <span class="kpi-label">🟡 Bugün Yapılacaklar</span>
+              <div class="kpi-value text-warning" id="kpiTasksToday">0</div>
+              <span class="kpi-sub">Bugün tamamlanması beklenen işler</span>
+            </div>
+            <div class="kpi-card" style="border-left: 4px solid var(--brand-primary);">
+              <span class="kpi-label">🔵 Yaklaşan (Bu Hafta)</span>
+              <div class="kpi-value" id="kpiTasksUpcoming">0</div>
+              <span class="kpi-sub">Önümüzdeki 7 günün takvimi</span>
+            </div>
+            <div class="kpi-card" style="border-left: 4px solid var(--accent-green);">
+              <span class="kpi-label">🟢 Tamamlanan Görevler</span>
+              <div class="kpi-value text-green" id="kpiTasksCompleted">0</div>
+              <span class="kpi-sub">Başarıyla yerine getirilen işler</span>
+            </div>
+          </div>
+
+          <!-- Filtreler ve Görünüm Seçici Barı -->
+          <div class="filter-bar" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px;">
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; flex: 1;">
+              <div class="filter-group" style="min-width: 220px; flex: 1;">
+                <input type="text" id="filterTaskSearch" class="form-control" placeholder="🔍 Görev, küpe no veya personel ara..." oninput="renderTasksPage()">
+              </div>
+              <div class="filter-group">
+                <label>Durum:</label>
+                <select id="filterTaskStatus" class="form-select" onchange="renderTasksPage()">
+                  <option value="PENDING">Bekleyenler (Aktif)</option>
+                  <option value="OVERDUE">Yalnızca Gecikenler</option>
+                  <option value="COMPLETED">Tamamlananlar</option>
+                  <option value="ALL">Tüm Görevler</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label>Kategori:</label>
+                <select id="filterTaskCategory" class="form-select" onchange="renderTasksPage()">
+                  <option value="ALL">Tüm Kategoriler</option>
+                  <option value="HEALTH">💉 Aşı &amp; Sağlık</option>
+                  <option value="BREEDING">🧬 Tohumlama &amp; Gebelik</option>
+                  <option value="BIRTH">🍼 Doğum &amp; Buzağı</option>
+                  <option value="MAINTENANCE">⚙️ Bakım &amp; Servis</option>
+                  <option value="FINANCE">💰 Finans &amp; Vade</option>
+                  <option value="INVENTORY">📦 Yem &amp; Stok</option>
+                  <option value="GENERAL">📋 Genel Çiftlik İşi</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label>Sorumlu:</label>
+                <select id="filterTaskAssignee" class="form-select" onchange="renderTasksPage()">
+                  <option value="ALL">Tüm Personel</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Görünüm Seçici (Liste / Takvim) -->
+            <div style="display: flex; gap: 4px; background: var(--bg-surface-hover); padding: 3px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+              <button type="button" class="btn btn-sm btn-secondary" id="btnTaskViewList" onclick="setTaskViewMode('list')" title="Liste Görünümü" style="padding: 4px 10px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                <span>Liste</span>
+              </button>
+              <button type="button" class="btn btn-sm btn-ghost" id="btnTaskViewCalendar" onclick="setTaskViewMode('calendar')" title="Takvim Görünümü" style="padding: 4px 10px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <span>Takvim Panosu</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 1. GÖREVLER LİSTESİ (VARSAYILAN TABLO GÖRÜNÜMÜ) -->
+          <div class="table-responsive" id="tasksTableView" style="margin-top: 0.75rem;">
+            <table class="data-table" id="tasksTable">
+              <thead>
+                <tr>
+                  <th style="width: 44px; text-align: center;">Durum</th>
+                  <th style="min-width: 250px;">Görev &amp; Operasyon Detayı</th>
+                  <th style="min-width: 140px;">Kategori</th>
+                  <th style="min-width: 150px;">Son Tarih / Zaman</th>
+                  <th style="min-width: 140px;">Sorumlu Personel</th>
+                  <th style="min-width: 100px;">Öncelik</th>
+                  <th style="min-width: 180px; text-align: right;">Aksiyonlar</th>
+                </tr>
+              </thead>
+              <tbody id="tasksTableTbody">
+                <!-- JS ile doldurulur -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 2. TAKVİM PANOSU GÖRÜNÜMÜ (HAFTALIK / GÜNLÜK AKIŞ) -->
+          <div id="tasksCalendarView" style="display: none; margin-top: 0.75rem;">
+            <div id="tasksCalendarGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+              <!-- JS ile gün gün gruplanmış görevler doldurulur -->
+            </div>
+          </div>
+        </section>
+
+        <!-- 8. RAPORLAR VE ANALİZ -->
+        <section class="page-view" id="view-reports">
+          <div class="view-header">
+            <div class="view-header-title">
+              <h2>Çiftlik Raporları ve Yönetim Analitiği</h2>
+              <p>Dönemsel kâr-zarar, nakit akışı tablosu ve hayvan başı yem verimliliği</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-secondary" onclick="openCostAnalysisModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                <span>Maliyet Analizi</span>
+              </button>
+              <button class="btn btn-primary" onclick="window.print()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                <span>Raporu Yazdır / PDF</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Rapor Kartları -->
+          <div class="report-summary-boxes">
+            <div class="report-box">
+              <span class="box-label">Dönem Toplam Gelirleri</span>
+              <span class="box-val text-green" id="repTotalIncome">₺348.500,00</span>
+            </div>
+            <div class="report-box">
+              <span class="box-label">Dönem Toplam Giderleri</span>
+              <span class="box-val text-burgundy" id="repTotalExpense">₺220.050,00</span>
+            </div>
+            <div class="report-box">
+              <span class="box-label">Dönem Net Kâr / Sonuç</span>
+              <span class="box-val text-brand" id="repNetResult">₺128.450,00</span>
+            </div>
+            <div class="report-box">
+              <span class="box-label">Tahmini Hayvan Başı Net Kâr</span>
+              <span class="box-val" id="repPerAnimalProfit">₺867,90 / Baş</span>
+            </div>
+          </div>
+
+          <!-- Gider Dağılım Kırılımı -->
+          <div class="dashboard-panel" style="margin-top: 1.5rem;">
+            <div class="panel-header">
+              <div class="panel-title-group">
+                <h3 class="panel-title">Gider Kalemleri Ağırlık Analizi</h3>
+                <span class="panel-subtitle">Çiftliğin ana maliyet unsurlarının yüzdesel dağılımı</span>
+              </div>
+            </div>
+            <div class="cost-breakdown-list" id="reportCostBreakdown">
+              <!-- JS ile dağılım barları üretilir -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             8a. PERSONEL & KULLANICI YÖNETİMİ SAYFASI
+             =================================================================== -->
+        <section class="page-view" id="view-users">
+          <div class="view-header">
+            <div class="view-header-title">
+              <h2>👥 Kullanıcı Yönetimi</h2>
+              <p class="view-header-sub">Sisteme giriş yapabilen yetkililer, veterinerler, bakıcılar ve erişim şifreleri</p>
+            </div>
+            <div class="view-header-actions">
+              <button type="button" class="btn btn-primary btn-sm" onclick="openNewUserModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Yeni Personel Ekle
+              </button>
+            </div>
+          </div>
+
+          <!-- KPI İstatistik Barı -->
+          <div class="kpi-summary-row" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1.25rem;">
+            <div class="kpi-mini-card dashboard-panel" style="text-align: center; padding: 0.75rem;">
+              <div style="font-size: 1.5rem; font-weight: 800; color: var(--brand-primary);" id="kpiUsersTotal">—</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">Toplam Personel</div>
+            </div>
+            <div class="kpi-mini-card dashboard-panel" style="text-align: center; padding: 0.75rem;">
+              <div style="font-size: 1.5rem; font-weight: 800; color: var(--accent-green);" id="kpiUsersActive">—</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">Aktif Kullanıcı</div>
+            </div>
+            <div class="kpi-mini-card dashboard-panel" style="text-align: center; padding: 0.75rem;">
+              <div style="font-size: 1.5rem; font-weight: 800; color: var(--ozate-burgundy);" id="kpiUsersAdmin">—</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">Yönetici</div>
+            </div>
+            <div class="kpi-mini-card dashboard-panel" style="text-align: center; padding: 0.75rem;">
+              <div style="font-size: 1.5rem; font-weight: 800; color: #d97706;" id="kpiUsersVet">—</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">Veteriner / Uzman</div>
+            </div>
+          </div>
+
+          <!-- Filtre Barı -->
+          <div class="filter-bar" style="margin-bottom: 1rem;">
+            <select id="filterUserRole" class="form-select" style="max-width: 180px;" onchange="renderUserListGrid()">
+              <option value="">Tüm Roller</option>
+              <option value="ADMIN">👑 Yönetici</option>
+              <option value="VET">🩺 Veteriner</option>
+              <option value="WORKER">👨‍🌾 Bakıcı / Sağımcı</option>
+              <option value="ACCOUNTANT">💼 Ön Muhasebe</option>
+            </select>
+            <select id="filterUserStatus" class="form-select" style="max-width: 150px;" onchange="renderUserListGrid()">
+              <option value="">Tüm Durum</option>
+              <option value="ACTIVE">● Aktif</option>
+              <option value="PASSIVE">○ Pasif</option>
+            </select>
+            <span id="userCountSummaryBadge" style="font-size:0.8rem; font-weight:600; color:var(--text-muted); margin-left: auto;">Kayıtlı Personel: —</span>
+          </div>
+
+          <!-- Personel Listesi Tablosu -->
+          <div class="dashboard-panel" style="padding: 0;">
+            <div class="table-responsive">
+              <table class="data-table" id="usersTable">
+                <thead>
+                  <tr>
+                    <th style="min-width: 200px;">Ad Soyad</th>
+                    <th style="min-width: 140px;">Ünvan / Görev</th>
+                    <th style="min-width: 110px;">Rol</th>
+                    <th style="min-width: 190px;">E-Posta</th>
+                    <th style="min-width: 130px;">Telefon</th>
+                    <th style="min-width: 80px;">Giriş PIN</th>
+                    <th style="min-width: 90px;">Durum</th>
+                    <th style="min-width: 110px; text-align: right;">İşlemler</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTbody">
+                  <!-- JS ile doldurulur -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Bilgi notu -->
+          <div class="alert-box info-box" style="margin-top:1rem; font-size:0.75rem;">
+            🔒 Tanımladığınız tüm personeller, giriş ekranında (PIN veya e-posta ile) sisteme kendi rolleri ve yetkileriyle doğrudan giriş yapabilir.
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             8. TANIMLAR & PARAMETRELER (DEĞİŞKENLER) SAYFASI
+             =================================================================== -->
+        <section class="page-view" id="view-definitions">
+          <div class="view-header">
+            <div class="view-header-title">
+              <h2>🏷️ Çiftlik Tanımları</h2>
+              <p class="view-header-sub">Gelir/gider kategorileri, cari/müşteri grupları, padoklar, ırklar ve stok türlerini dinamik yönetin</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-secondary btn-sm" onclick="resetDefaultParameters()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                Varsayılanlara Sıfırla
+              </button>
+              <button class="btn btn-primary btn-sm" onclick="focusDefAddInput()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Yeni Değişken Ekle
+              </button>
+            </div>
+          </div>
+
+          <!-- Sekme Başlıkları -->
+          <div class="definitions-nav-tabs">
+            <button class="def-tab-btn active" data-tab="income" onclick="setDefinitionTab('income')">
+              <span>💰 Gelir Kategorileri</span>
+              <span class="def-tab-badge" id="defBadge-income">0</span>
+            </button>
+            <button class="def-tab-btn" data-tab="expense" onclick="setDefinitionTab('expense')">
+              <span>💸 Gider Kategorileri</span>
+              <span class="def-tab-badge" id="defBadge-expense">0</span>
+            </button>
+            <button class="def-tab-btn" data-tab="contacts" onclick="setDefinitionTab('contacts')">
+              <span>👥 Müşteri & Cari Grupları</span>
+              <span class="def-tab-badge" id="defBadge-contacts">0</span>
+            </button>
+            <button class="def-tab-btn" data-tab="paddocks" onclick="setDefinitionTab('paddocks')">
+              <span>🏡 Padoklar & Bölmeler</span>
+              <span class="def-tab-badge" id="defBadge-paddocks">0</span>
+            </button>
+            <button class="def-tab-btn" data-tab="breeds" onclick="setDefinitionTab('breeds')">
+              <span>🐄 Hayvan Irkları</span>
+              <span class="def-tab-badge" id="defBadge-breeds">0</span>
+            </button>
+            <button class="def-tab-btn" data-tab="animalCats" onclick="setDefinitionTab('animalCats')">
+              <span>🏷️ Sürü Hayvan Türleri</span>
+              <span class="def-tab-badge" id="defBadge-animalCats">0</span>
+            </button>
+            <button class="def-tab-btn" data-tab="stockCats" onclick="setDefinitionTab('stockCats')">
+              <span>🌾 Stok & Yem Türleri</span>
+              <span class="def-tab-badge" id="defBadge-stockCats">0</span>
+            </button>
+            <button class="def-tab-btn" data-tab="accountTypes" onclick="setDefinitionTab('accountTypes')">
+              <span>💳 Kasa & Banka Hesapları</span>
+              <span class="def-tab-badge" id="defBadge-accountTypes">0</span>
+            </button>
+            <button class="def-tab-btn" data-tab="sheepBarns" onclick="setDefinitionTab('sheepBarns')">
+              <span>🐑 Küçükbaş Ağılları</span>
+              <span class="def-tab-badge" id="defBadge-sheepBarns">0</span>
+            </button>
+            <button class="def-tab-btn" data-tab="sheepBreeds" onclick="setDefinitionTab('sheepBreeds')">
+              <span>🏷️ Küçükbaş Irkları</span>
+              <span class="def-tab-badge" id="defBadge-sheepBreeds">0</span>
+            </button>
+          </div>
+
+          <!-- Ana Çalışma Izgarası -->
+          <div class="definitions-main-grid">
+            <!-- Sol: Ekleme & Mevcut Tanımlar Listesi -->
+            <div class="definitions-panel dashboard-panel">
+              <div class="panel-header" style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.75rem;">
+                <div class="panel-title-group">
+                  <h3 class="panel-title" id="defActiveTitle">Gelir Kategorileri</h3>
+                  <span class="panel-subtitle" id="defActiveSubtitle">Gelir kayıtları oluşturulurken seçilen kategori listesi</span>
+                </div>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <input type="text" id="defSearchInput" class="form-control form-control-sm" placeholder="Bu grupta ara..." oninput="filterDefinitionList(this.value)" style="width: 170px;">
+                </div>
+              </div>
+
+              <!-- Yeni Ekleme Çubuğu -->
+              <form id="defAddForm" onsubmit="handleDefinitionAdd(event)" class="def-add-bar">
+                <div style="flex: 1; position: relative;">
+                  <input type="text" id="defNewInput" class="form-control" placeholder="Yeni tanım adını yazınız..." required autocomplete="off">
+                </div>
+                <button type="submit" class="btn btn-primary" id="defAddBtn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  Listeye Ekle
+                </button>
+              </form>
+
+              <!-- Liste Konteyneri -->
+              <div class="def-items-container" id="defItemsContainer">
+                <!-- JS ile dinamik üretilir -->
+              </div>
+            </div>
+
+            <!-- Sağ: Hızlı Eylemler & Kılavuz -->
+            <div class="definitions-side-panel">
+              <div class="dashboard-panel">
+                <div class="panel-header">
+                  <h4 class="panel-title" style="font-size: 0.95rem;">⚡ Hızlı Çiftlik Kısayolları</h4>
+                </div>
+                <div class="def-quick-actions">
+                  <button class="btn btn-outline w-100" style="justify-content: flex-start; margin-bottom: 8px;" onclick="openNewContactModal('CUSTOMER')">
+                    <span>Yeni Müşteri Ekle (Cari)</span>
+                  </button>
+                  <button class="btn btn-outline w-100" style="justify-content: flex-start; margin-bottom: 8px;" onclick="openNewContactModal('SUPPLIER')">
+                    <span>Yeni Tedarikçi Ekle (Cari)</span>
+                  </button>
+                  <button class="btn btn-outline w-100" style="justify-content: flex-start; margin-bottom: 8px;" onclick="openNewAccountModal()">
+                    <span>Yeni Kasa / Banka Hesabı</span>
+                  </button>
+                  <button class="btn btn-outline w-100" style="justify-content: flex-start;" onclick="openNewAnimalModal()">
+                    <span>Yeni Büyükbaş Hayvan Kaydı</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="dashboard-panel" style="margin-top: 1rem;">
+                <div class="panel-header">
+                  <h4 class="panel-title" style="font-size: 0.95rem;">ℹ️ Tanım & Parametre Kılavuzu</h4>
+                </div>
+                <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.55;">
+                  <p style="margin-bottom: 8px;"><strong>Senkronize Çalışma:</strong> Burada eklediğiniz veya güncellediğiniz tüm değişkenler; Gelir/Gider ekleme, Sürü yönetimi, Yem deposu ve Cari kart formlarında <strong>anında</strong> seçilebilir hale gelir.</p>
+                  <p style="margin-bottom: 8px;"><strong>Kalıcı Veri:</strong> Eklediğiniz tüm değişkenler tarayıcınızın yerel hafızasında saklanır, sayfa yenilense de kaybolmaz.</p>
+                  <p style="margin: 0;"><strong>Düzenleme & Silme:</strong> Her tanımın yanındaki <span style="color:var(--brand-primary); font-weight:700;">Düzenle</span> ile adını güncelleyebilir veya <span style="color:var(--accent-red); font-weight:700;">Sil</span> butonuyla kaldırabilirsiniz.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             9. ÇİFTLİK AYARLARI SAYFASI
+             =================================================================== -->
+        <section class="page-view" id="view-settings">
+          <div class="view-header">
+            <div class="view-header-title">
+              <h2>⚙️ Çiftlik Ayarları</h2>
+              <p class="view-header-sub">İşletme kimlik bilgileri, operasyonel para birimi ve iletişim ayarları</p>
+            </div>
+            <div class="view-header-actions">
+              <button type="submit" form="farmSettingsForm" class="btn btn-primary btn-sm">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                Bilgileri Kaydet
+              </button>
+            </div>
+          </div>
+
+          <!-- Ayarlar Form Paneli -->
+          <div style="max-width: 860px; margin: 0 auto;">
+            <div class="dashboard-panel">
+              <div class="panel-header" style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.75rem;">
+                <div class="panel-title-group">
+                  <h3 class="panel-title">🏢 İşletme &amp; Çiftlik Bilgileri</h3>
+                  <span class="panel-subtitle">Resmi raporlar, makbuzlar, ekstreler ve sistem fatura başlıklarında görünen bilgiler</span>
+                </div>
+              </div>
+
+              <form id="farmSettingsForm" onsubmit="handleSaveSettings(event)" style="padding-top: 0.75rem;">
+                <div class="form-group" style="margin-bottom: 0.85rem;">
+                  <label for="setFarmName">İşletme / Çiftlik Adı *</label>
+                  <input type="text" id="setFarmName" class="form-control" value="Özate Büyükbaş Hayvancılık &amp; Süt Çiftliği" required>
+                </div>
+
+                <div class="form-row" style="margin-bottom: 0.85rem;">
+                  <div class="form-group">
+                    <label for="setOwnerName">İşletme Sahibi / Yetkili *</label>
+                    <input type="text" id="setOwnerName" class="form-control" value="Özate Ailesi" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="setLocation">Konum / İl</label>
+                    <input type="text" id="setLocation" class="form-control" value="Bursa, Türkiye">
+                  </div>
+                </div>
+
+                <div class="form-row" style="margin-bottom: 0.85rem;">
+                  <div class="form-group">
+                    <label for="setCurrency">Para Birimi</label>
+                    <select id="setCurrency" class="form-select">
+                      <option value="TRY">Türk Lirası (₺)</option>
+                      <option value="USD">Amerikan Doları ($)</option>
+                      <option value="EUR">Euro (€)</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="setTaxId">İşletme Vergi / TC No</label>
+                    <input type="text" id="setTaxId" class="form-control" placeholder="Örn: 1234567890">
+                  </div>
+                </div>
+
+                <div class="form-row" style="margin-bottom: 1rem;">
+                  <div class="form-group">
+                    <label for="setPhone">İletişim Telefonu</label>
+                    <input type="tel" id="setPhone" class="form-control" placeholder="0532 000 00 00">
+                  </div>
+                  <div class="form-group">
+                    <label for="setEmail">İşletme E-Postası</label>
+                    <input type="email" id="setEmail" class="form-control" placeholder="info@ozateciftlik.com">
+                  </div>
+                </div>
+
+                <div style="display:flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-subtle); padding-top: 1rem;">
+                  <span style="font-size: 0.75rem; color: var(--text-muted);">Tüm değişiklikler anında yerel veritabanına ve üst başlıklara yansıtılır.</span>
+                  <button type="submit" class="btn btn-primary btn-sm">
+                    💾 Değişiklikleri Kaydet
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Supabase Bulut Veritabanı Entegrasyon Paneli -->
+            <div class="dashboard-panel" style="margin-top: 1.25rem;">
+              <div class="panel-header" style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.75rem;">
+                <div class="panel-title-group">
+                  <h3 class="panel-title">☁️ Supabase PostgreSQL Bulut Entegrasyonu</h3>
+                  <span class="panel-subtitle">Verilerinizi ücretsiz PostgreSQL bulut veritabanında saklayın, her cihazdan erişin ve gerçek zamanlı senkronize edin</span>
+                </div>
+                <div>
+                  <span id="supabaseSettingsStatus" class="badge warning">🟡 Çevrimdışı (Yerel Hafıza)</span>
+                </div>
+              </div>
+
+              <form id="supabaseConfigForm" onsubmit="handleSaveSupabaseConfig(event)" style="padding-top: 0.85rem;">
+                <div class="form-row" style="margin-bottom: 0.85rem;">
+                  <div class="form-group" style="flex: 2;">
+                    <label for="inputSupabaseUrl">Supabase Proje URL (Project URL) *</label>
+                    <input type="url" id="inputSupabaseUrl" class="form-control" placeholder="https://xxxxxxxxxxxx.supabase.co" autocomplete="off">
+                  </div>
+                  <div class="form-group" style="flex: 1;">
+                    <label for="inputSupabaseEnabled">Bulut Senkronizasyonu</label>
+                    <select id="inputSupabaseEnabled" class="form-select">
+                      <option value="true">🟢 Aktif (Buluta Bağlan)</option>
+                      <option value="false">⚪ Devre Dışı (Yalnızca Yerel)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                  <label for="inputSupabaseKey">Supabase Anon Key (Public API Key) *</label>
+                  <input type="password" id="inputSupabaseKey" class="form-control" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." autocomplete="off">
+                  <span style="font-size: 0.7rem; color: var(--text-dim); display: block; margin-top: 4px;">
+                    💡 Supabase Dashboard → <strong>Project Settings → API</strong> sekmesinden <code>Project URL</code> ve <code>anon public key</code> değerlerini kopyalayabilirsiniz.
+                  </span>
+                </div>
+
+                <div style="display:flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-subtle); padding-top: 1rem; flex-wrap: wrap; gap: 8px;">
+                  <div style="display: flex; gap: 8px;">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="handleTestSupabaseConnection()">
+                      🔌 Bağlantıyı Test Et
+                    </button>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="handleFetchFromSupabase()">
+                      ⬇️ Buluttan Verileri Yenile
+                    </button>
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-sm">
+                    💾 Bulut Ayarlarını Kaydet
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             10. SİSTEM GÜVENLİĞİ & YEDEKLEME SAYFASI
+             =================================================================== -->
+        <section class="page-view" id="view-security">
+          <div class="view-header">
+            <div class="view-header-title">
+              <h2>🛡️ Sistem Güvenliği</h2>
+              <p class="view-header-sub">Veri tabanı yedekleme, JSON aktarımı, denetim izi (Audit Log) ve sistem veri güvenliği</p>
+            </div>
+            <div class="view-header-actions">
+              <button type="button" class="btn btn-secondary btn-sm" onclick="exportDataBackupJson()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Yedeği İndir (JSON)
+              </button>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr; gap: 1.25rem;">
+            
+            <!-- Veri Güvenliği, Yedekleme & Geri Yükleme Paneli -->
+            <div class="dashboard-panel">
+              <div class="panel-header" style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.75rem;">
+                <div class="panel-title-group">
+                  <h3 class="panel-title">📦 Veri Güvenliği &amp; Yedekleme</h3>
+                  <span class="panel-subtitle">Sistem veri tabanını bilgisayarınıza kaydedin, geri yükleyin veya sıfırlayın</span>
+                </div>
+              </div>
+
+              <!-- Sistem Veri Sayaçları -->
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin: 0.85rem 0 1.25rem;">
+                <div style="background: var(--bg-surface-hover); padding: 0.75rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                  <span style="font-size: 0.7rem; color: var(--text-muted); display: block;">Kayıtlı Hayvan Sayısı</span>
+                  <strong style="font-size: 1.15rem; color: var(--brand-primary);" id="settingsStatAnimals">148 Baş</strong>
+                </div>
+                <div style="background: var(--bg-surface-hover); padding: 0.75rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                  <span style="font-size: 0.7rem; color: var(--text-muted); display: block;">Finans Defteri Hareketi</span>
+                  <strong style="font-size: 1.15rem; color: var(--accent-green);" id="settingsStatTx">0 Kayıt</strong>
+                </div>
+                <div style="background: var(--bg-surface-hover); padding: 0.75rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                  <span style="font-size: 0.7rem; color: var(--text-muted); display: block;">Süt Üretim Kayıtları</span>
+                  <strong style="font-size: 1.15rem; color: var(--text-main);" id="settingsStatMilk">0 Kayıt</strong>
+                </div>
+                <div style="background: var(--bg-surface-hover); padding: 0.75rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                  <span style="font-size: 0.7rem; color: var(--text-muted); display: block;">Kayıtlı Cari Hesap</span>
+                  <strong style="font-size: 1.15rem; color: var(--text-main);" id="settingsStatContacts">4 Cari</strong>
+                </div>
+              </div>
+
+              <!-- Yedekleme ve Sıfırlama Butonları -->
+              <div class="backup-zone" style="margin-bottom: 0.5rem;">
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.75rem; line-height: 1.5;">
+                  Tüm hayvan soyağacı, tartım verileri, sağlık aşı takvimi, kasa defteri ve yem stoklarınızı güvenli JSON dosyası olarak anında bilgisayarınıza indirebilirsiniz.
+                </p>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="exportDataBackupJson()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <span>Yedeği İndir (JSON)</span>
+                  </button>
+                  
+                  <label class="btn btn-ghost btn-sm" style="border: 1px dashed var(--border-subtle); cursor: pointer;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    <span>Yedekten Yükle</span>
+                    <input type="file" id="backupFileInput" accept=".json" style="display: none;" onchange="importDataBackupJson(event)">
+                  </label>
+
+                  <button type="button" class="btn btn-burgundy btn-sm" onclick="resetToDefaultData()">
+                    <span>Fabrika Ayarlarına Sıfırla</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Alt Panel: Sistem Denetim & Güvenlik Günlüğü (Audit Log) -->
+            <div class="dashboard-panel">
+              <div class="panel-header" style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.75rem;">
+                <div class="panel-title-group">
+                  <h3 class="panel-title">📜 Sistem Denetim &amp; İşlem Günlüğü (Audit Log)</h3>
+                  <span class="panel-subtitle">Çiftlikte gerçekleştirilen silme, güncelleme, tohumlama, finans ve yetki hareketleri denetim izi</span>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                  <button type="button" class="btn btn-sm btn-ghost" onclick="clearAuditLogs()" style="color: var(--text-muted); font-size: 0.75rem;">
+                    Günlüğü Temizle
+                  </button>
+                </div>
+              </div>
+
+              <div class="table-responsive" style="max-height: 280px; overflow-y: auto; margin-top: 0.75rem;">
+                <table class="data-table" style="font-size: 0.8rem;" id="settingsAuditLogTable">
+                  <thead>
+                    <tr>
+                      <th style="min-width: 140px;">Zaman Damgası</th>
+                      <th style="min-width: 130px;">İşlem Türü</th>
+                      <th style="min-width: 140px;">Kullanıcı</th>
+                      <th style="min-width: 280px;">Açıklama &amp; Değişiklik Detayı</th>
+                    </tr>
+                  </thead>
+                  <tbody id="settingsAuditLogTbody">
+                    <!-- JS ile doldurulur -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- Mobil Alt Menü Barı (Bottom Navigation) -->
+    <nav class="mobile-bottom-nav">
+      <button class="mobile-nav-item active" data-page="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+        <span>Özet</span>
+      </button>
+      <button class="mobile-nav-item" data-page="transactions">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <span>Finans</span>
+      </button>
+      
+      <!-- HIZLI EKLE BUTONU (ÖNE ÇIKAN ORTA DÜĞME) -->
+      <button class="mobile-nav-item mobile-fab-item" id="mobileQuickFab" aria-label="Hızlı Ekle">
+        <div class="fab-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <span>İşlem</span>
+      </button>
+
+      <button class="mobile-nav-item" data-page="animals">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+        <span>Sürü</span>
+      </button>
+      <button class="mobile-nav-item" data-page="inventory">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        <span>Stok</span>
+      </button>
+    </nav>
+
+  </div>
+
+
+  <!-- MODALLAR (NATIVE DIALOGS) -->
+
+  <!-- 1. HIZLI İŞLEM MERKEZİ MODALI -->
+  <dialog id="modalQuickAction" class="app-dialog">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>⚡ Hızlı İşlem Merkezi</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalQuickAction')">&times;</button>
+      </div>
+      <div class="quick-action-options">
+        <button class="quick-opt-btn opt-income" onclick="closeModal('modalQuickAction'); openNewTransactionModal('INCOME');">
+          <div class="opt-icon">💰</div>
+          <div class="opt-text">
+            <strong>Gelir Kaydı Ekle</strong>
+            <span>Süt satışı, hayvan satışı veya diğer tahsilatlar</span>
+          </div>
+        </button>
+
+        <button class="quick-opt-btn opt-expense" onclick="closeModal('modalQuickAction'); openNewTransactionModal('EXPENSE');">
+          <div class="opt-icon">🧾</div>
+          <div class="opt-text">
+            <strong>Gider Kaydı Ekle</strong>
+            <span>Yem alımı, ilaç, veteriner veya mazot harcaması</span>
+          </div>
+        </button>
+
+        <button class="quick-opt-btn opt-milk" onclick="closeModal('modalQuickAction'); openNewMilkModal();">
+          <div class="opt-icon">🥛</div>
+          <div class="opt-text">
+            <strong>Süt Sağımı Girişi</strong>
+            <span>Sabah veya akşam sağım litresi ve tank kaydı</span>
+          </div>
+        </button>
+
+        <button class="quick-opt-btn opt-animal" onclick="closeModal('modalQuickAction'); openNewAnimalModal();">
+          <div class="opt-icon">🐄</div>
+          <div class="opt-text">
+            <strong>Yeni Hayvan Kaydı</strong>
+            <span>Yeni buzağı doğumu veya hayvan alımı</span>
+          </div>
+        </button>
+
+        <button class="quick-opt-btn opt-transfer" onclick="closeModal('modalQuickAction'); openTransferModal();">
+          <div class="opt-icon">🔄</div>
+          <div class="opt-text">
+            <strong>Virman / Kasa Transferi</strong>
+            <span>Kasa ile banka arasında nakit aktarımı</span>
+          </div>
+        </button>
+
+        <button class="quick-opt-btn opt-shipment" onclick="closeModal('modalQuickAction'); openMilkShipmentModal();">
+          <div class="opt-icon">🚚</div>
+          <div class="opt-text">
+            <strong>Mandıraya Süt Teslimatı</strong>
+            <span>Tanktaki sütü Sütaş'a teslim edip fatura kes</span>
+          </div>
+        </button>
+
+        <button class="quick-opt-btn opt-stock" onclick="closeModal('modalQuickAction'); openNewStockModal();">
+          <div class="opt-icon">📦</div>
+          <div class="opt-text">
+            <strong>Depoya Stok Girişi</strong>
+            <span>Yeni yem, ilaç girişi ve gider kaydı</span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+
+  <!-- 2. GELİR / GİDER EKLEME MODALI -->
+  <dialog id="modalTransaction" class="app-dialog">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3 id="txModalTitle">Yeni Finans İşlemi</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalTransaction')">&times;</button>
+      </div>
+      <form id="txForm" onsubmit="handleTransactionSubmit(event)">
+        <input type="hidden" id="txType" value="INCOME">
+        <input type="hidden" id="txEditingId" value="">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="txDate">İşlem Tarihi *</label>
+            <input type="date" id="txDate" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <label for="txCategory" style="margin-bottom: 0;">Kategori *</label>
+              <button type="button" class="btn-link-xs" onclick="quickAddCategoryFromTx()">Yeni Kategori Ekle</button>
+            </div>
+            <select id="txCategory" class="form-select" required>
+              <!-- JS ile türe göre doldurulur -->
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="txAmount">İşlem Tutarı (₺) *</label>
+            <input type="number" id="txAmount" class="form-control" step="0.01" min="0" placeholder="0,00" required>
+          </div>
+          <div class="form-group">
+            <label for="txAccount">Ödeme / Tahsilat Hesabı</label>
+            <select id="txAccount" class="form-select">
+              <option value="acc-1">🏦 Ziraat Bankası Ticari</option>
+              <option value="acc-2">💵 Çiftlik Nakit Kasası</option>
+              <option value="acc-3">💳 Tarım Kredi / Mazot Kartı</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <label for="txContact" style="margin-bottom: 0;">İlgili Cari (Müşteri / Tedarikçi)</label>
+              <button type="button" class="btn-link-xs" onclick="quickAddContactFromTx()">Yeni Cari/Müşteri Ekle</button>
+            </div>
+            <select id="txContact" class="form-select">
+              <!-- JS ile doldurulur -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="txStatus">Ödeme Durumu</label>
+            <select id="txStatus" class="form-select">
+              <option value="PAID">Tahsil Edildi / Ödendi</option>
+              <option value="PENDING">Bekliyor (Vadeli)</option>
+              <option value="PARTIAL">Kısmi Ödendi</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="txDescription">Açıklama / Not</label>
+          <input type="text" id="txDescription" class="form-control" placeholder="Örn. 1.500 Litre süt teslimatı...">
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modalTransaction')">Vazgeç</button>
+          <button type="submit" class="btn btn-primary" id="txSubmitBtn">Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+
+  <!-- 3. HESAPLAR ARASI TRANSFER (VİRMAN) MODALI -->
+  <dialog id="modalTransfer" class="app-dialog">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>Hesaplar Arası Transfer (Virman)</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalTransfer')">&times;</button>
+      </div>
+      <form id="transferForm" onsubmit="handleTransferSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="trFrom">Kaynak Hesap (Para Çıkan) *</label>
+            <select id="trFrom" class="form-select" required>
+              <option value="acc-1">🏦 Ziraat Bankası Ticari</option>
+              <option value="acc-2">💵 Çiftlik Nakit Kasası</option>
+              <option value="acc-3">💳 Tarım Kredi / Mazot Kartı</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="trTo">Hedef Hesap (Para Giren) *</label>
+            <select id="trTo" class="form-select" required>
+              <option value="acc-2">💵 Çiftlik Nakit Kasası</option>
+              <option value="acc-1">🏦 Ziraat Bankası Ticari</option>
+              <option value="acc-3">💳 Tarım Kredi / Mazot Kartı</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="trAmount">Transfer Tutarı (₺) *</label>
+            <input type="number" id="trAmount" class="form-control" step="0.01" min="1" placeholder="0,00" required>
+          </div>
+          <div class="form-group">
+            <label for="trDate">Tarih *</label>
+            <input type="date" id="trDate" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="trNote">Açıklama</label>
+          <input type="text" id="trNote" class="form-control" placeholder="Örn. Kasaya nakit avans çekimi...">
+        </div>
+
+        <div class="alert-box info-box">
+          ℹ️ <strong>Muhasebe Notu:</strong> Virman işlemi çiftliğin kâr veya zararını değiştirmez, sadece varlıkların hesaplar arasındaki yer değişimini ifade eder.
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modalTransfer')">Vazgeç</button>
+          <button type="submit" class="btn btn-primary">Transferi Onayla</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+
+  <!-- 4. YENİ BÜYÜKBAŞ HAYVAN MODALI -->
+  <dialog id="modalAnimal" class="app-dialog">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>Yeni Büyükbaş Hayvan Kaydı</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalAnimal')">&times;</button>
+      </div>
+      <form id="animalForm" onsubmit="handleAnimalSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="anEarTag">Küpe Numarası *</label>
+            <input type="text" id="anEarTag" class="form-control" placeholder="Örn. TR1600019842" required>
+          </div>
+          <div class="form-group">
+            <label for="anName">İsim veya Lakap</label>
+            <input type="text" id="anName" class="form-control" placeholder="Örn. Sarıkız, Paşa...">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <label for="anBreed" style="margin-bottom: 0;">Irk *</label>
+              <button type="button" class="btn-link-xs" onclick="quickAddBreedFromAnimal()">Yeni Irk Ekle</button>
+            </div>
+            <select id="anBreed" class="form-select" required>
+              <!-- JS ile dinamik doldurulur -->
+            </select>
+          </div>
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <label for="anCategory" style="margin-bottom: 0;">Kategori *</label>
+              <button type="button" class="btn-link-xs" onclick="quickAddAnimalCategoryFromAnimal()">Yeni Tür Ekle</button>
+            </div>
+            <select id="anCategory" class="form-select" required>
+              <!-- JS ile dinamik doldurulur -->
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <label for="anPaddock" style="margin-bottom: 0;">Padok / Bölme *</label>
+              <button type="button" class="btn-link-xs" onclick="quickAddPaddockFromAnimal()">Yeni Padok Ekle</button>
+            </div>
+            <select id="anPaddock" class="form-select" required>
+              <!-- JS ile dinamik doldurulur -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="anWeight">Canlı Ağırlık (kg)</label>
+            <input type="number" id="anWeight" class="form-control" placeholder="Örn. 620">
+          </div>
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modalAnimal')">Vazgeç</button>
+          <button type="submit" class="btn btn-primary">Hayvanı Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+
+  <!-- 5. SAĞIM GİRİŞ MODALI -->
+  <dialog id="modalMilk" class="app-dialog">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>Günlük Süt Sağımı Girişi</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalMilk')">&times;</button>
+      </div>
+      <form id="milkForm" onsubmit="handleMilkSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="mkDate">Sağım Tarihi *</label>
+            <input type="date" id="mkDate" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="mkSession">Seans *</label>
+            <select id="mkSession" class="form-select" required>
+              <option value="Sabah">Sabah Sağımı (05:30)</option>
+              <option value="Akşam">Akşam Sağımı (17:30)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="mkLiters">Sağılan Miktar (Litre) *</label>
+            <input type="number" id="mkLiters" class="form-control" min="1" step="0.5" placeholder="Örn. 740" required>
+          </div>
+          <div class="form-group">
+            <label for="mkTank">Depolanan Tank *</label>
+            <select id="mkTank" class="form-select" required>
+              <option value="Tank 1">Tank 1 (Ana Soğutma)</option>
+              <option value="Tank 2">Tank 2 (Yedek)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="mkFat">Ölçülen Yağ Oranı (%)</label>
+            <input type="number" id="mkFat" class="form-control" step="0.01" min="1" max="10" placeholder="Örn. 3.85">
+          </div>
+          <div class="form-group">
+            <label for="mkNotes">Ek Not</label>
+            <input type="text" id="mkNotes" class="form-control" placeholder="Buzağılara 40 L ayrıldı...">
+          </div>
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modalMilk')">Vazgeç</button>
+          <button type="submit" class="btn btn-primary">Sağımı Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+
+  <!-- 6. YENİ CARİ EKLEME MODALI -->
+  <dialog id="modalContact" class="app-dialog">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>Yeni Cari Hesap Kartı</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalContact')">&times;</button>
+      </div>
+      <form id="contactForm" onsubmit="handleContactSubmit(event)">
+        <div class="form-group">
+          <label for="ctName">Firma / Kişi Adı *</label>
+          <input type="text" id="ctName" class="form-control" placeholder="Örn. Bursa Mandıra Ltd..." required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="ctType">Cari Türü *</label>
+            <select id="ctType" class="form-select" required>
+              <option value="CUSTOMER">Müşteri (Süt / Hayvan Alan)</option>
+              <option value="SUPPLIER">Tedarikçi (Yem, İlaç, Hizmet)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="ctPhone">Telefon</label>
+            <input type="tel" id="ctPhone" class="form-control" placeholder="0532 ...">
+          </div>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modalContact')">Vazgeç</button>
+          <button type="submit" class="btn btn-primary">Cariyi Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+
+  <!-- 7. GÜNLÜK YEM TÜKETİM DÜŞÜMÜ MODALI -->
+  <dialog id="modalConsumeStock" class="app-dialog">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>Depodan Günlük Yem Tüketimi Düş</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalConsumeStock')">&times;</button>
+      </div>
+      <form id="consumeForm" onsubmit="handleConsumeSubmit(event)">
+        <div class="form-group">
+          <label for="csItem">Tüketilen Stok Ürünü *</label>
+          <select id="csItem" class="form-select" required>
+            <!-- JS ile doldurulur -->
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="csQuantity">Tüketilen Miktar *</label>
+            <input type="number" id="csQuantity" class="form-control" min="1" step="0.5" required>
+          </div>
+          <div class="form-group">
+            <label for="csPaddock">Hangi Padok Tüketti? *</label>
+            <select id="csPaddock" class="form-select" required>
+              <option value="Tüm Çiftlik">Tüm Çiftlik Rasyonu</option>
+              <option value="Sağmal 1">Sağmal 1</option>
+              <option value="Besi Bölme A">Besi Bölme A</option>
+            </select>
+          </div>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modalConsumeStock')">Vazgeç</button>
+          <button type="submit" class="btn btn-burgundy">Depodan Düş</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- 8. HAYVAN DETAY DOSYASI (DOSSIER) MODALI -->
+  <dialog id="modalAnimalDetail" class="app-dialog" style="max-width: 580px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3 id="dossierModalTitle">Hayvan Künyesi</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalAnimalDetail')">&times;</button>
+      </div>
+      
+      <div class="dossier-hero">
+        <div>
+          <span class="dossier-title-tag" id="dossierTag">TR1600019284</span>
+          <div style="font-weight: 700; font-size: 0.95rem;" id="dossierName">Sarıkız</div>
+        </div>
+        <div style="text-align: right;">
+          <span class="badge positive" id="dossierStatus">Aktif Sağmal</span>
+          <div style="font-size: 0.72rem; color: var(--text-dim);" id="dossierPaddock">Sağmal 1 Padoğu</div>
+        </div>
+      </div>
+
+      <!-- Sekmeler -->
+      <div class="dialog-tabs">
+        <button type="button" class="dialog-tab-btn active" data-tab="tab-overview" onclick="switchDossierTab('tab-overview')">Genel & Soyağacı</button>
+        <button type="button" class="dialog-tab-btn" data-tab="tab-weights" onclick="switchDossierTab('tab-weights')">Tartım Geçmişi</button>
+        <button type="button" class="dialog-tab-btn" data-tab="tab-health" onclick="switchDossierTab('tab-health')">Sağlık & Aşı</button>
+        <button type="button" class="dialog-tab-btn" data-tab="tab-exit" onclick="switchDossierTab('tab-exit')">Çıkış / Satış</button>
+      </div>
+
+      <!-- Sekme 1: Genel & Soyağacı -->
+      <div class="dialog-tab-content active" id="tab-overview">
+        <div class="dossier-stats-grid">
+          <div class="dossier-stat-card">
+            <span class="dossier-stat-label">Irk</span>
+            <span class="dossier-stat-val" id="dossierBreed">Simental</span>
+          </div>
+          <div class="dossier-stat-card">
+            <span class="dossier-stat-label">Kategori / Cinsiyet</span>
+            <span class="dossier-stat-val" id="dossierCategory">Süt İneği / Dişi</span>
+          </div>
+          <div class="dossier-stat-card">
+            <span class="dossier-stat-label">Canlı Ağırlık</span>
+            <span class="dossier-stat-val" id="dossierWeight">640 kg</span>
+          </div>
+          <div class="dossier-stat-card">
+            <span class="dossier-stat-label">Süt Verimi</span>
+            <span class="dossier-stat-val text-green" id="dossierYield">32.5 L/gün</span>
+          </div>
+          <div class="dossier-stat-card">
+            <span class="dossier-stat-label">Anne Küpe No</span>
+            <span class="dossier-stat-val" id="dossierDam">TR1600008412</span>
+          </div>
+          <div class="dossier-stat-card">
+            <span class="dossier-stat-label">Baba Boğa</span>
+            <span class="dossier-stat-val" id="dossierSire">Wille (Simental)</span>
+          </div>
+        </div>
+        <div class="alert-box info-box" id="dossierReproductionBox">
+          ℹ️ <strong>Üreme & Tohumlama Durumu:</strong> Son suni tohumlama tarihi 14.05.2026. Gebelik kontrolü pozitif. Tahmini doğum tarihi: 18.02.2027.
+        </div>
+      </div>
+
+      <!-- Sekme 2: Tartım Geçmişi -->
+      <div class="dialog-tab-content" id="tab-weights">
+        <div class="table-responsive">
+          <table class="data-table" style="font-size: 0.74rem;">
+            <thead>
+              <tr><th>Tarih</th><th>Ölçülen Ağırlık</th><th>Günlük Artış (ADG)</th><th>Padok</th></tr>
+            </thead>
+            <tbody id="dossierWeightTbody">
+              <!-- JS ile doldurulur -->
+            </tbody>
+          </table>
+        </div>
+        <form id="addWeightForm" onsubmit="handleAddWeightSubmit(event)" style="margin-top: 0.75rem; display: flex; gap: 6px;">
+          <input type="number" id="newWeightVal" class="form-control" placeholder="Yeni tartım (kg)" required style="flex: 1;">
+          <button type="submit" class="btn btn-secondary btn-sm">Tartım Ekle</button>
+        </form>
+      </div>
+
+      <!-- Sekme 3: Sağlık & Aşı -->
+      <div class="dialog-tab-content" id="tab-health">
+        <div class="table-responsive">
+          <table class="data-table" style="font-size: 0.74rem;">
+            <thead>
+              <tr><th>Tarih</th><th>Uygulama / Aşı</th><th>Hekim / Personel</th><th>Sonuç</th><th>İşlem</th></tr>
+            </thead>
+            <tbody id="dossierHealthTbody">
+              <!-- JS ile doldurulur -->
+            </tbody>
+          </table>
+        </div>
+        <form id="addHealthForm" onsubmit="handleAddHealthSubmit(event)" style="margin-top: 0.75rem; display: flex; gap: 6px; flex-wrap: wrap;">
+          <input type="text" id="newHealthProcedure" class="form-control" placeholder="Aşı / tedavi / muayene..." required style="flex: 2; min-width: 140px;">
+          <input type="text" id="newHealthStaff" class="form-control" placeholder="Uygulayan kişi" value="Vet. Dr. Nilüfer" style="flex: 1.5; min-width: 120px;">
+          <button type="submit" class="btn btn-secondary btn-sm">Sağlık Kaydı Ekle</button>
+        </form>
+      </div>
+
+      <!-- Sekme 4: Çıkış / Satış -->
+      <div class="dialog-tab-content" id="tab-exit">
+        <div class="alert-box" style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: #EF4444;">
+          ⚠️ <strong>İşletmeden Çıkış:</strong> Hayvan satıldığında veya kesime sevk edildiğinde kaydı kapatılır ve otomatik finans gelir kaydı oluşturulabilir.
+        </div>
+        <form id="animalExitForm" onsubmit="handleAnimalExitSubmit(event)" style="margin-top: 0.75rem;">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Çıkış Türü *</label>
+              <select id="exitReason" class="form-select" required>
+                <option value="SOLD">Canlı Hayvan Satışı (Pazar / Müşteri)</option>
+                <option value="SLAUGHTERED">Kesimhane / Karkas Satışı</option>
+                <option value="DECEASED">Zayiat / Ölüm</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Satış Bedeli (₺)</label>
+              <input type="number" id="exitPrice" class="form-control" placeholder="Örn. 75.000">
+            </div>
+          </div>
+          <button type="submit" class="btn btn-burgundy btn-sm" style="width: 100%;">Çıkış İşlemini Onayla</button>
+        </form>
+      </div>
+
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('modalAnimalDetail')">Kapat</button>
+      </div>
+    </div>
+  </dialog>
+
+
+  <!-- 9. KISMİ ÖDEME & TAHSİLAT KAPATMA MODALI -->
+  <dialog id="modalSettlePayment" class="app-dialog">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3 id="settleModalTitle">Tahsilat / Ödeme Yap</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalSettlePayment')">&times;</button>
+      </div>
+      <form id="settleForm" onsubmit="handleSettleSubmit(event)">
+        <input type="hidden" id="settleTxId">
+        <input type="hidden" id="settleContactId">
+
+        <div class="settle-summary-box">
+          <div>
+            <div class="settle-col-label">Toplam Tutar</div>
+            <div class="settle-col-val" id="settleTotalAmount">₺0,00</div>
+          </div>
+          <div>
+            <div class="settle-col-label">Daha Önce Ödenen</div>
+            <div class="settle-col-val text-green" id="settlePaidAmount">₺0,00</div>
+          </div>
+          <div>
+            <div class="settle-col-label">Kalan Bakiye</div>
+            <div class="settle-col-val text-danger" id="settleRemainingAmount">₺0,00</div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="settlePayAmount">Bu İşlemde Ödenecek Tutar (₺) *</label>
+            <input type="number" id="settlePayAmount" class="form-control" step="0.01" min="1" required>
+          </div>
+          <div class="form-group">
+            <label for="settleDate">Ödeme Tarihi *</label>
+            <input type="date" id="settleDate" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="settleAccount">Ödeme / Tahsilat Hesabı *</label>
+            <select id="settleAccount" class="form-select" required>
+              <option value="acc-1">🏦 Ziraat Bankası Ticari</option>
+              <option value="acc-2">💵 Çiftlik Nakit Kasası</option>
+              <option value="acc-3">💳 Tarım Kredi / Mazot Kartı</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="settleNote">Açıklama</label>
+            <input type="text" id="settleNote" class="form-control" placeholder="Örn. 2. taksit tahsilatı...">
+          </div>
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modalSettlePayment')">Vazgeç</button>
+          <button type="submit" class="btn btn-primary" id="settleSubmitBtn">Ödemeyi Onayla</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+
+  <!-- 10. DEPOYA STOK GİRİŞİ / SATIN ALMA MODALI -->
+  <dialog id="modalStockEntry" class="app-dialog">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>Depoya Yeni Stok Girişi</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalStockEntry')">&times;</button>
+      </div>
+      <form id="stockEntryForm" onsubmit="handleStockEntrySubmit(event)">
+        <div class="form-group">
+          <label for="stkItemSelect">Stok Ürünü Seç *</label>
+          <select id="stkItemSelect" class="form-select" required onchange="handleStockItemChange(this.value)">
+            <!-- JS ile doldurulur -->
+          </select>
+        </div>
+
+        <!-- Yeni Ürün Tanımlama Alanları (Yalnızca + Yeni Ürün seçildiğinde açılır) -->
+        <div id="stkNewItemFields" style="display: none; background: var(--bg-surface-hover); padding: 0.75rem; border-radius: var(--radius-sm); margin-bottom: 0.75rem; border: 1px dashed var(--border-subtle);">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="stkNewName">Yeni Ürün / Yem Adı *</label>
+              <input type="text" id="stkNewName" class="form-control" placeholder="Örn. Ayçiçeği Küspesi">
+            </div>
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <label for="stkNewCategory" style="margin-bottom: 0;">Kategori *</label>
+                <button type="button" class="btn-link-xs" onclick="quickAddStockCategoryFromStock()">Yeni Kategori Ekle</button>
+              </div>
+              <select id="stkNewCategory" class="form-select">
+                <!-- JS ile doldurulur -->
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="stkNewUnit">Ölçü Birimi *</label>
+              <select id="stkNewUnit" class="form-select">
+                <option value="Çuval (50kg)">Çuval (50kg)</option>
+                <option value="Ton">Ton</option>
+                <option value="Balya">Balya</option>
+                <option value="Kutu">Kutu</option>
+                <option value="Doz">Doz</option>
+                <option value="Litre">Litre</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="stkNewMinAlert">Kritik Stok Uyarısı</label>
+              <input type="number" id="stkNewMinAlert" class="form-control" value="20">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="stkQuantity">Giren Miktar *</label>
+            <input type="number" id="stkQuantity" class="form-control" min="1" step="0.5" required oninput="calculateStockCost()">
+          </div>
+          <div class="form-group">
+            <label for="stkUnitCost">Birim Maliyet (₺) *</label>
+            <input type="number" id="stkUnitCost" class="form-control" min="0" step="0.1" required oninput="calculateStockCost()">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Hesaplanan Toplam Tutar</label>
+            <input type="text" id="stkTotalCost" class="form-control" readonly value="₺0,00" style="font-weight: 700; color: var(--accent-danger);">
+          </div>
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <label for="stkSupplier" style="margin-bottom: 0;">Tedarikçi Cari</label>
+              <button type="button" class="btn-link-xs" onclick="quickAddContactFromStock()">Yeni Tedarikçi Ekle</button>
+            </div>
+            <select id="stkSupplier" class="form-select">
+              <!-- JS ile doldurulur -->
+            </select>
+          </div>
+        </div>
+
+        <div style="margin: 0.5rem 0;">
+          <label style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; cursor: pointer;">
+            <input type="checkbox" id="stkCreateExpense" checked>
+            <strong>Otomatik Finans Gider Kaydı Oluştur</strong> (Çift kaydı önler)
+          </label>
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modalStockEntry')">Vazgeç</button>
+          <button type="submit" class="btn btn-primary">Depoya Giriş Yap</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+
+  <!-- 11. MANDIRAYA SÜT TESLİMATI (SATIŞ) MODALI -->
+  <dialog id="modalMilkShipment" class="app-dialog">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>Mandıraya Süt Teslimatı (Satış)</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalMilkShipment')">&times;</button>
+      </div>
+      <form id="milkShipmentForm" onsubmit="handleMilkShipmentSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="shpTank">Kaynak Tank *</label>
+            <select id="shpTank" class="form-select" required onchange="handleShipmentTankChange(this.value)">
+              <option value="Tank 1">Tank 1 (Mevcut: 1.800 L)</option>
+              <option value="Tank 2">Tank 2 (Mevcut: 500 L)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="shpLiters">Teslim Edilen Litre *</label>
+            <input type="number" id="shpLiters" class="form-control" value="1800" min="1" max="5000" required oninput="calculateShipmentTotal()">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <label for="shpCustomer" style="margin-bottom: 0;">Alıcı Mandıra / Cari *</label>
+              <button type="button" class="btn-link-xs" onclick="quickAddContactFromMilk()">Yeni Mandıra Ekle</button>
+            </div>
+            <select id="shpCustomer" class="form-select" required>
+              <!-- JS ile doldurulur -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="shpUnitPrice">Litre Birim Fiyat (₺/L) *</label>
+            <input type="number" id="shpUnitPrice" class="form-control" value="18.50" step="0.1" required oninput="calculateShipmentTotal()">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Toplam Satış Tutarı</label>
+            <input type="text" id="shpTotalAmount" class="form-control" readonly value="₺33.300,00" style="font-weight: 700; color: var(--accent-success);">
+          </div>
+          <div class="form-group">
+            <label for="shpStatus">Tahsilat Şekli *</label>
+            <select id="shpStatus" class="form-select" required>
+              <option value="PENDING">Vadeli (Mandıra Carisine Alacak Ekle)</option>
+              <option value="PAID">Peşin (Banka Hesabına Tahsil Et)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="alert-box info-box">
+          🥛 Bu işlem onaylandığında seçilen tanktaki süt miktarı düşürülür ve otomatik olarak <strong>Süt Satışı Gelir Kaydı</strong> oluşturulur.
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modalMilkShipment')">Vazgeç</button>
+          <button type="submit" class="btn btn-primary">Sevkiyatı ve Satışı Onayla</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+
+  <!-- 12b. PARAMETRELER & DEĞİŞKENLER YÖNETİMİ MODALI -->
+  <dialog id="modalParameters" class="app-dialog" style="max-width: 580px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <div>
+          <h3 style="margin-bottom: 2px;">Parametre & Çiftlik Tanımlamaları</h3>
+          <p style="font-size: 0.72rem; color: var(--text-muted); margin: 0;">Kategoriler, padoklar, hayvan ırkları ve stok türlerini dinamik yönetin</p>
+        </div>
+        <button class="dialog-close-btn" onclick="closeModal('modalParameters')">&times;</button>
+      </div>
+
+      <!-- Sekmeler -->
+      <div class="dialog-tab-bar" style="margin-bottom: 0.75rem; display: flex; gap: 4px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 4px;">
+        <button type="button" class="dialog-tab-btn active" id="paramTab-income" onclick="switchParamTab('income')">Gelir Kat.</button>
+        <button type="button" class="dialog-tab-btn" id="paramTab-expense" onclick="switchParamTab('expense')">Gider Kat.</button>
+        <button type="button" class="dialog-tab-btn" id="paramTab-paddocks" onclick="switchParamTab('paddocks')">Padoklar</button>
+        <button type="button" class="dialog-tab-btn" id="paramTab-breeds" onclick="switchParamTab('breeds')">Irklar</button>
+        <button type="button" class="dialog-tab-btn" id="paramTab-stockCats" onclick="switchParamTab('stockCats')">Stok Türleri</button>
+      </div>
+
+      <!-- Aktif Parametre Bölgesi -->
+      <div id="paramActiveTabContainer">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <label id="paramTabTitle" style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); margin: 0;">Mevcut Kayıtlar:</label>
+          <span id="paramCountBadge" style="font-size: 0.7rem; color: var(--text-muted);">6 tanım</span>
+        </div>
+        <div class="param-chip-group" id="paramChipsContainer">
+          <!-- JS ile doldurulur -->
+        </div>
+
+        <form id="paramAddForm" onsubmit="handleParamAdd(event)">
+          <div class="param-add-bar">
+            <input type="text" id="paramNewInput" class="form-control form-control-sm" placeholder="Yeni tanım yazınız..." required>
+            <button type="submit" class="btn btn-primary btn-sm">Listeye Ekle</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="alert-box info-box" style="margin-top: 1rem; font-size: 0.72rem;">
+        ℹ️ Burada ekleyeceğiniz veya sileceğiniz tüm tanımlamalar anında sistemdeki tüm formlara ve raporlara yansır ve kalıcı olarak saklanır.
+      </div>
+
+      <div class="dialog-actions" style="margin-top: 1rem; display: flex; justify-content: space-between;">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="resetDefaultParameters()">Varsayılanlara Dön</button>
+        <button type="button" class="btn btn-ghost" onclick="closeModal('modalParameters')">Tamam / Kapat</button>
+      </div>
+    </div>
+  </dialog>
+
+
+  <!-- 12d. PERSONEL EKLEME / DÜZENLEME FORMU MODALI -->
+  <dialog id="modalUserForm" class="app-dialog" style="max-width: 480px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3 id="usrFormTitle">Yeni Personel / Kullanıcı Ekle</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalUserForm')">&times;</button>
+      </div>
+      <form id="userEditForm" onsubmit="handleUserSubmit(event)">
+        <input type="hidden" id="usrEditingId" value="">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="usrName">Ad Soyad *</label>
+            <input type="text" id="usrName" class="form-control" placeholder="Örn. Dr. Nilüfer Çetin" required>
+          </div>
+          <div class="form-group">
+            <label for="usrTitle">Görevi / Unvanı</label>
+            <input type="text" id="usrTitle" class="form-control" placeholder="Örn. Sorumlu Veteriner">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="usrEmail">E-Posta / Kullanıcı Adı *</label>
+            <input type="text" id="usrEmail" class="form-control" placeholder="Örn. nilufer@ozate.com" required>
+          </div>
+          <div class="form-group">
+            <label for="usrPhone">Telefon Numarası</label>
+            <input type="tel" id="usrPhone" class="form-control" placeholder="0533 ...">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="usrRole">Sistem Rolü / Yetki *</label>
+            <select id="usrRole" class="form-select" required>
+              <option value="ADMIN">👑 Çiftlik Yöneticisi (Tam Yetki)</option>
+              <option value="VET">🩺 Veteriner Hekim (Sürü & Sağlık)</option>
+              <option value="WORKER">👨‍🌾 Bakıcı / Sağımcı (Sürü & Stok)</option>
+              <option value="ACCOUNTANT">💼 Ön Muhasebe (Finans & Rapor)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="usrPin">4 Haneli Giriş PIN Kodu *</label>
+            <input type="text" id="usrPin" class="form-control" maxlength="4" placeholder="1923" required pattern="[0-9]{4}">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="usrStatus">Hesap Durumu</label>
+          <select id="usrStatus" class="form-select">
+            <option value="ACTIVE">Aktif (Sisteme Giriş Yapabilir)</option>
+            <option value="INACTIVE">Pasif (Askıya Alındı)</option>
+          </select>
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modalUserForm')">Vazgeç</button>
+          <button type="submit" class="btn btn-primary" id="usrSubmitBtn">Personeli Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+
+  <!-- (modalNewTask artık PRD 5.9 uyumlu kapsamlı modalTask ile değiştirildi) -->
+
+  <!-- 14. BARKOD / RFID KÜPE TARAYICI MODALI -->
+  <dialog id="modalQrScanner" class="app-dialog" style="max-width: 480px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>📷 Barkod & RFID Küpe Tarayıcı</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalQrScanner')">&times;</button>
+      </div>
+
+      <div class="scanner-viewfinder">
+        <div class="scanner-laser"></div>
+        <div class="scanner-crosshair"></div>
+        <div class="scanner-hint">Kamerayı hayvanın kulak küpesine / RFID barkoduna tutun</div>
+      </div>
+
+      <div style="margin: 0.85rem 0;">
+        <label for="scannerManualInput" style="font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700;">veya Küpe Numarası Girin / Seçin:</label>
+        <div style="display: flex; gap: 6px; margin-top: 4px;">
+          <input type="text" id="scannerManualInput" class="form-control" placeholder="Örn: TR1600019284" style="font-family: monospace; font-weight: 700;">
+          <button class="btn btn-primary btn-sm" onclick="handleScanSuccess(document.getElementById('scannerManualInput').value)">Künyeyi Aç</button>
+        </div>
+      </div>
+
+      <div style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.5rem;">Hızlı Demo Küpeleri (Tek Tıkla Tara):</div>
+      <div class="scanner-chips" id="scannerQuickChips">
+        <!-- JS ile sürüdeki hayvan küpeleri doldurulur -->
+      </div>
+
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('modalQrScanner')">Kapat</button>
+      </div>
+    </div>
+  </dialog>
+
+
+  <!-- 15. WHATSAPP & SMS BİLDİRİM / PAYLAŞIM MODALI -->
+  <dialog id="modalNotificationShare" class="app-dialog" style="max-width: 500px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>📲 Görev & Aşı Bildirimi Gönder</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalNotificationShare')">&times;</button>
+      </div>
+
+      <div class="form-group">
+        <label for="shareRecipientSelect">Bildirim Alıcısı *</label>
+        <select id="shareRecipientSelect" class="form-select" onchange="handleRecipientChange(this.value)">
+          <option value="05331112233|Vet. Dr. Nilüfer Kliniği">Vet. Dr. Nilüfer Kliniği (0533 111 22 33)</option>
+          <option value="05329876543|Başbakıcı Ahmet">Başbakıcı Ahmet (0532 987 65 43)</option>
+          <option value="05301234567|İşletme Sahibi (Özate)">İşletme Sahibi (Özate Ailesi)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="shareMessageText">Hazırlanan Mesaj Metni</label>
+        <textarea id="shareMessageText" class="form-control" rows="5" style="font-size: 0.8rem; line-height: 1.45;"></textarea>
+      </div>
+
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 1rem;">
+        <button type="button" class="btn btn-sm" onclick="sendViaWhatsApp()" style="background-color: #25D366; color: #FFFFFF; flex: 1; min-width: 130px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-weight: 600;">
+          <span>🟢 WhatsApp ile Gönder</span>
+        </button>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="sendViaSms()" style="flex: 1; min-width: 120px;">
+          <span>💬 SMS ile İlet</span>
+        </button>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="copyShareText()">
+          <span>📋 Metni Kopyala</span>
+        </button>
+      </div>
+
+      <div class="dialog-actions" style="margin-top: 1rem;">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('modalNotificationShare')">Kapat</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- 16. YENİ HESAP EKLEME MODALI -->
+  <dialog id="modalNewAccount" class="app-dialog" style="max-width: 480px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>🏦 Yeni Kasa / Banka Hesabı Ekle</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalNewAccount')">&times;</button>
+      </div>
+      <form id="formNewAccount" onsubmit="handleNewAccountSubmit(event)">
+        <div class="form-group">
+          <label for="accName">Hesap Adı *</label>
+          <input type="text" id="accName" class="form-control" placeholder="Örn: Halkbank Vadesiz TL Hesabı" required>
+        </div>
+        <div class="form-group">
+          <label for="accType">Hesap Türü *</label>
+          <select id="accType" class="form-select">
+            <option value="BANK">🏦 Banka Hesabı</option>
+            <option value="CASH">💵 Nakit Kasa</option>
+            <option value="POS">💳 Kart / POS / Kredi</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="accIban">IBAN / Hesap No</label>
+          <input type="text" id="accIban" class="form-control" placeholder="TR00 0000 0000 0000 0000 0000 00">
+        </div>
+        <div class="form-group">
+          <label for="accBalance">Açılış Bakiyesi (₺)</label>
+          <input type="number" id="accBalance" class="form-control" value="0" min="0" step="0.01">
+        </div>
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modalNewAccount')">İptal</button>
+          <button type="submit" class="btn btn-primary">Hesabı Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- 17. CARİ HESAP EKSTRESİ MODALI -->
+  <dialog id="modalContactStatement" class="app-dialog" style="max-width: 780px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3 id="statementModalTitle">📄 Cari Hesap Ekstresi</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalContactStatement')">&times;</button>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 1rem;">
+        <label for="statementContactSelect">Cari Hesap Seç</label>
+        <select id="statementContactSelect" class="form-select" onchange="renderContactStatement(this.value)">
+          <!-- JS ile doldurulur -->
+        </select>
+      </div>
+
+      <!-- Özet Kartları -->
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1rem;" id="statementSummaryCards">
+        <!-- JS ile doldurulur -->
+      </div>
+
+      <!-- Ekstre Tablosu -->
+      <div class="table-responsive" style="max-height: 340px; overflow-y: auto;">
+        <table class="data-table" id="statementTable">
+          <thead>
+            <tr>
+              <th>Tarih</th>
+              <th>Açıklama</th>
+              <th>Kategori</th>
+              <th>Borç (Gider)</th>
+              <th>Alacak (Gelir)</th>
+              <th>Bakiye</th>
+              <th>Durum</th>
+            </tr>
+          </thead>
+          <tbody id="statementTbody">
+            <!-- JS ile doldurulur -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="dialog-actions" style="margin-top: 1rem;">
+        <button type="button" class="btn btn-secondary" onclick="exportStatementCsv()">📥 CSV İndir</button>
+        <button type="button" class="btn btn-ghost" onclick="closeModal('modalContactStatement')">Kapat</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- 18. TOPLU PADOK TRANSFER MODALI -->
+  <dialog id="modalBulkPaddockTransfer" class="app-dialog" style="max-width: 640px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>🔄 Toplu Padok Transferi</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalBulkPaddockTransfer')">&times;</button>
+      </div>
+      <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:1rem;">Kayıtlı hayvanları seçin ve hedef padoğa toplu olarak taşıyın.</p>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem; margin-bottom:1rem;">
+        <div class="form-group" style="margin:0;">
+          <label>Kaynak Padok (Filtrele)</label>
+          <select id="bulkFromPaddock" class="form-select" onchange="renderBulkAnimalList()">
+            <option value="ALL">Tüm Padoklar</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label for="bulkToPaddock">Hedef Padok *</label>
+          <select id="bulkToPaddock" class="form-select">
+            <!-- JS ile doldurulur -->
+          </select>
+        </div>
+      </div>
+
+      <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:8px; padding:0.75rem; max-height:260px; overflow-y:auto;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+          <span style="font-size:0.75rem; font-weight:600; color:var(--text-dim);">HAYVAN LİSTESİ</span>
+          <label style="font-size:0.75rem; color:var(--text-dim); cursor:pointer;">
+            <input type="checkbox" id="bulkSelectAll" onchange="toggleBulkSelectAll(this.checked)"> Tümünü Seç
+          </label>
+        </div>
+        <div id="bulkAnimalListContainer">
+          <!-- JS ile doldurulur -->
+        </div>
+      </div>
+      <div style="margin-top:0.5rem; font-size:0.72rem; color:var(--text-muted);" id="bulkSelectionCount">0 hayvan seçili</div>
+
+      <div class="dialog-actions" style="margin-top:1rem;">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('modalBulkPaddockTransfer')">İptal</button>
+        <button type="button" class="btn btn-primary" onclick="executeBulkPaddockTransfer()">Seçili Hayvanları Taşı</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- 19. RASYON / PADOK TÜKETİM TAKIP MODALI -->
+  <dialog id="modalRation" class="app-dialog" style="max-width: 560px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>🌾 Padok Rasyon &amp; Yem Tüketimi Kaydet</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalRation')">&times;</button>
+      </div>
+      <form id="formRation" onsubmit="handleRationSubmit(event)">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+          <div class="form-group">
+            <label for="rationDate">Tarih *</label>
+            <input type="date" id="rationDate" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="rationPaddock">Padok *</label>
+            <select id="rationPaddock" class="form-select">
+              <!-- JS ile doldurulur -->
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="rationItem">Stok Kalemi (Yem/İlaç)</label>
+          <select id="rationItem" class="form-select" onchange="handleRationItemChange(this.value)">
+            <!-- JS ile doldurulur -->
+          </select>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+          <div class="form-group">
+            <label for="rationQuantity">Miktar (Birim) *</label>
+            <input type="number" id="rationQuantity" class="form-control" value="5" min="0.1" step="0.1" required oninput="updateRationCalc()">
+          </div>
+          <div class="form-group">
+            <label for="rationUnit">Birim</label>
+            <input type="text" id="rationUnit" class="form-control" readonly placeholder="Birim">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="rationNotes">Notlar</label>
+          <input type="text" id="rationNotes" class="form-control" placeholder="Ek not veya özel durum...">
+        </div>
+        <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:8px; padding:0.75rem; margin:0.75rem 0; font-size:0.78rem;">
+          <span style="color:var(--text-dim);">Stok Düşüm: </span>
+          <strong id="rationStockImpact" style="color:var(--accent-danger);">-</strong>
+          &nbsp;|&nbsp;
+          <span style="color:var(--text-dim);">Maliyet: </span>
+          <strong id="rationCostCalc" style="color:var(--accent-success);">-</strong>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modalRation')">İptal</button>
+          <button type="submit" class="btn btn-primary">Tüketimi Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- 20. MALİYET ANALİZİ VE BÜTÇE PLANLAMA MODALI -->
+  <dialog id="modalCostAnalysis" class="app-dialog" style="max-width: 800px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>📊 Maliyet Analizi &amp; Bütçe Planlama</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalCostAnalysis')">&times;</button>
+      </div>
+
+      <!-- Özet KPI'lar -->
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:0.75rem; margin-bottom:1.25rem;" id="costAnalysisKpis">
+        <!-- JS ile doldurulur -->
+      </div>
+
+      <!-- Kategori Bazlı Gider Analizi -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
+        <div>
+          <h4 style="font-size:0.8rem; color:var(--text-dim); text-transform:uppercase; margin-bottom:0.75rem;">Gider Kategorisi Dağılımı</h4>
+          <div id="costCategoryBreakdown" style="display:flex; flex-direction:column; gap:0.5rem;">
+            <!-- JS ile doldurulur -->
+          </div>
+        </div>
+        <div>
+          <h4 style="font-size:0.8rem; color:var(--text-dim); text-transform:uppercase; margin-bottom:0.75rem;">Gelir Kategorisi Dağılımı</h4>
+          <div id="incomeCategoryBreakdown" style="display:flex; flex-direction:column; gap:0.5rem;">
+            <!-- JS ile doldurulur -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Karlılık Tablosu -->
+      <div style="margin-top:1.25rem;">
+        <h4 style="font-size:0.8rem; color:var(--text-dim); text-transform:uppercase; margin-bottom:0.75rem;">Hayvan Başı Verimlilik &amp; Karlılık Endeksi</h4>
+        <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:8px; padding:1rem; font-size:0.82rem;" id="costProfitabilityTable">
+          <!-- JS ile doldurulur -->
+        </div>
+      </div>
+
+      <!-- Bütçe Planlama (Öneri) -->
+      <div style="margin-top:1.25rem; background:rgba(30,77,43,0.12); border:1px solid rgba(30,77,43,0.3); border-radius:8px; padding:1rem;" id="costBudgetSuggestion">
+        <!-- JS ile doldurulur -->
+      </div>
+
+      <div class="dialog-actions" style="margin-top:1rem;">
+        <button type="button" class="btn btn-secondary" onclick="exportCostAnalysisCsv()">📥 Raporu İndir (CSV)</button>
+        <button type="button" class="btn btn-ghost" onclick="closeModal('modalCostAnalysis')">Kapat</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- 13. YENİ GÖREV / HATIRLATMA MODALI (PRD 5.9) -->
+  <dialog id="modalTask" class="app-dialog" style="max-width: 580px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3 id="modalTaskTitle">Yeni Görev / Hatırlatma Ekle</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalTask')">&times;</button>
+      </div>
+
+      <form id="taskForm" onsubmit="handleTaskSubmit(event)">
+        <div class="form-group" style="margin-bottom: 0.85rem;">
+          <label for="taskTitle">Görev / Operasyon Başlığı *</label>
+          <input type="text" id="taskTitle" class="form-control" placeholder="Örn: Sağmal 1 Şap Aşısı 2. Doz..." required>
+        </div>
+
+        <div class="form-row" style="margin-bottom: 0.85rem;">
+          <div class="form-group">
+            <label for="taskCategory">Kategori *</label>
+            <select id="taskCategory" class="form-select" required>
+              <option value="HEALTH">💉 Aşı &amp; Sağlık</option>
+              <option value="BREEDING">🧬 Tohumlama &amp; Gebelik</option>
+              <option value="BIRTH">🍼 Doğumhane &amp; Buzağı</option>
+              <option value="MAINTENANCE">⚙️ Bakım &amp; Servis</option>
+              <option value="FINANCE">💰 Finans &amp; Vade</option>
+              <option value="INVENTORY">📦 Yem &amp; Stok</option>
+              <option value="GENERAL">📋 Genel Çiftlik İşi</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="taskPriority">Öncelik Derecesi *</label>
+            <select id="taskPriority" class="form-select" required>
+              <option value="HIGH">🔴 Yüksek / Acil</option>
+              <option value="MEDIUM" selected>🟡 Orta</option>
+              <option value="LOW">🔵 Normal</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row" style="margin-bottom: 0.85rem;">
+          <div class="form-group">
+            <label for="taskDueDate">Son Tarih *</label>
+            <input type="date" id="taskDueDate" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="taskAssignee">Sorumlu Personel *</label>
+            <select id="taskAssignee" class="form-select" required>
+              <!-- JS ile personeller doldurulur -->
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0.85rem;">
+          <label for="taskRelatedAnimal">İlgili Hayvan / Padok (Opsiyonel)</label>
+          <select id="taskRelatedAnimal" class="form-select">
+            <option value="">— Genel Çiftlik Görevi (Hayvan Seçilmedi) —</option>
+            <!-- JS ile doldurulur -->
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label for="taskNotes">Açıklama &amp; Talimatlar</label>
+          <textarea id="taskNotes" class="form-control" rows="2" placeholder="Görev ile ilgili özel talimatlar, doz miktarı veya detaylar..."></textarea>
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modalTask')">Vazgeç</button>
+          <button type="submit" class="btn btn-primary" id="btnSaveTask">Görevi Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- 15. TOHUMLAMA & GEBELİK OPERASYON MODALI (PRD 5.6 & 5.7) -->
+  <dialog id="modalInsemination" class="app-dialog" style="max-width: 550px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>🧬 Suni Tohumlama &amp; Gebelik Kaydı</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalInsemination')">&times;</button>
+      </div>
+
+      <form id="inseminationForm" onsubmit="handleInseminationSubmit(event)">
+        <div class="form-group" style="margin-bottom: 0.85rem;">
+          <label for="insemAnimal">Tohumlanacak İnek / Düve *</label>
+          <select id="insemAnimal" class="form-select" required onchange="calculateCalvingEstimate()">
+            <!-- JS ile dişi hayvanlar doldurulur -->
+          </select>
+        </div>
+
+        <div class="form-row" style="margin-bottom: 0.85rem;">
+          <div class="form-group">
+            <label for="insemDate">Tohumlama Tarihi *</label>
+            <input type="date" id="insemDate" class="form-control" required onchange="calculateCalvingEstimate()">
+          </div>
+          <div class="form-group">
+            <label for="insemMethod">Tohumlama Yöntemi *</label>
+            <select id="insemMethod" class="form-select" required>
+              <option value="Suni Tohumlama (Dondurulmuş Sperm)">Suni Tohumlama</option>
+              <option value="Seksat Sperm (Dişi Buzağı Garantili)">Seksat Sperm (Dişi)</option>
+              <option value="Doğal Aşım (Damızlık Boğa)">Doğal Aşım</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row" style="margin-bottom: 0.85rem;">
+          <div class="form-group">
+            <label for="insemSire">Boğa Irkı &amp; Sperm Kodu *</label>
+            <input type="text" id="insemSire" class="form-control" placeholder="Örn: Wille (Avusturya Simental - AT812)" required>
+          </div>
+          <div class="form-group">
+            <label for="insemVet">Uygulayan Veteriner / Teknisyen *</label>
+            <select id="insemVet" class="form-select" required>
+              <option value="Dr. Nilüfer Çetin">Dr. Nilüfer Çetin (Veteriner Hekim)</option>
+              <option value="Mehmet Bakıcı">Mehmet Bakıcı (Suni Tohumlama Teknisyeni)</option>
+              <option value="Dış Veteriner Hizmeti">Dış Veteriner Hizmeti</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Otomatik Biyolojik Takvim Hesaplayıcı Önizlemesi -->
+        <div style="background: var(--bg-surface-hover); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.85rem; margin-bottom: 1rem;">
+          <div style="font-size: 0.75rem; font-weight: 700; color: var(--brand-primary); margin-bottom: 4px;">📅 Otomatik Gebelik &amp; Doğum Projeksiyonu:</div>
+          <div style="font-size: 0.72rem; color: var(--text-dim); line-height: 1.6;">
+            • <strong>21. Gün (Kızgınlık Tekrarı):</strong> <span id="calcReturnHeatDate">—</span><br>
+            • <strong>60. Gün (Ultrason Gebelik Muayenesi):</strong> <span id="calcUltrasoundDate">—</span><br>
+            • <strong>220. Gün (Kuruya Alma - Sütü Kesme):</strong> <span id="calcDryOffDate">—</span><br>
+            • <strong>280. Gün (Tahmini Doğum &amp; Buzağılama):</strong> <strong style="color:var(--accent-green);" id="calcCalvingDate">—</strong>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label for="insemNotes">Notlar / Payet Seri No</label>
+          <input type="text" id="insemNotes" class="form-control" placeholder="Payet lot no, doz bilgisi veya özel not...">
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modalInsemination')">Vazgeç</button>
+          <button type="submit" class="btn btn-primary">Tohumlamayı ve Takvimi Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- 16. EXCEL / CSV TOPLU İÇE AKTARMA MODALI (PRD 5.12 & TEST 10) -->
+  <dialog id="modalImport" class="app-dialog" style="max-width: 620px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3 id="modalImportTitle">📥 Excel / CSV'den Toplu Veri Yükleme</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalImport')">&times;</button>
+      </div>
+
+      <div style="margin-bottom: 1rem;">
+        <div style="display: flex; gap: 8px; margin-bottom: 1rem;">
+          <button type="button" class="btn btn-sm btn-secondary" id="btnImportTabAnimals" onclick="switchImportType('animals')">🐄 Hayvan Sürüsü Yükle</button>
+          <button type="button" class="btn btn-sm btn-ghost" id="btnImportTabContacts" onclick="switchImportType('contacts')">👥 Cari Hesaplar Yükle</button>
+        </div>
+
+        <div style="padding: 0.75rem; background: var(--bg-surface-hover); border-radius: var(--radius-md); border: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <div>
+            <strong style="font-size: 0.8rem; display: block;">Örnek CSV Şablonu</strong>
+            <span style="font-size: 0.72rem; color: var(--text-muted);" id="importTemplateDesc">Hayvan küpe no, padok, ırk ve kilo sütunlarını içerir</span>
+          </div>
+          <button type="button" class="btn btn-sm btn-ghost" onclick="downloadImportSampleCsv()" style="border: 1px solid var(--border-subtle);">
+            📥 Şablonu İndir (.csv)
+          </button>
+        </div>
+
+        <!-- Dosya Seçim Alanı -->
+        <div style="border: 2px dashed var(--border-subtle); border-radius: var(--radius-md); padding: 1.5rem; text-align: center; background: var(--bg-surface); cursor: pointer;" onclick="document.getElementById('csvFileInput').click()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 32px; height: 32px; color: var(--brand-primary); margin-bottom: 8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <div style="font-weight: 700; font-size: 0.9rem;">CSV Dosyasını Buraya Tıklayıp Seçin</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">.csv formatındaki dosyalar desteklenir (UTF-8)</div>
+          <input type="file" id="csvFileInput" accept=".csv" style="display: none;" onchange="handleCsvFileSelected(event)">
+        </div>
+
+        <!-- Yükleme Önizleme Alanı -->
+        <div id="importPreviewArea" style="display: none; margin-top: 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <strong style="font-size: 0.82rem;" id="importPreviewCount">0 Satır Okundu</strong>
+            <span style="font-size: 0.75rem; color: var(--accent-green);" id="importPreviewValid">Tüm kayıtlar geçerli</span>
+          </div>
+          <div class="table-responsive" style="max-height: 180px; overflow-y: auto;">
+            <table class="data-table" style="font-size: 0.75rem;" id="importPreviewTable">
+              <thead id="importPreviewThead"></thead>
+              <tbody id="importPreviewTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('modalImport')">Vazgeç</button>
+        <button type="button" class="btn btn-primary" id="btnConfirmImport" disabled onclick="confirmExecuteImport()">
+          Verileri Çiftliğe Aktar
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- 20. YENİ KÜÇÜKBAŞ HAYVAN KAYIT MODALI -->
+  <dialog id="modalSheep" class="app-dialog" style="max-width: 580px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3 id="modalSheepTitle">Yeni Küçükbaş Hayvan Kaydı</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalSheep')">&times;</button>
+      </div>
+      <form id="sheepForm" onsubmit="handleSheepSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="shEarTag">Küpe Numarası *</label>
+            <input type="text" id="shEarTag" class="form-control" placeholder="Örn. TR16-K001" required>
+          </div>
+          <div class="form-group">
+            <label for="shName">İsim / Kod</label>
+            <input type="text" id="shName" class="form-control" placeholder="Örn. Kınalı, Çan 1...">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="shBreed">Irk *</label>
+            <select id="shBreed" class="form-select" required>
+              <option value="Merinos">Merinos (Karacabey)</option>
+              <option value="Kıvırcık">Kıvırcık</option>
+              <option value="İvesi">İvesi (Sütçü)</option>
+              <option value="Akkaraman">Akkaraman</option>
+              <option value="Saanen">Saanen Keçisi</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="shCategory">Kategori *</label>
+            <select id="shCategory" class="form-select" required onchange="handleSheepCategoryChange(this.value)">
+              <option value="Damızlık Koyun">Damızlık Koyun (Dişi)</option>
+              <option value="Damızlık Koç">Damızlık Koç (Erkek)</option>
+              <option value="Sütten Kesilmiş Kuzu">Sütten Kesilmiş Kuzu</option>
+              <option value="Emziren Kuzu">Emziren Kuzu</option>
+              <option value="Toklu / Şişek">Toklu / Şişek</option>
+              <option value="Besi Kuzusu">Besi Kuzusu</option>
+              <option value="Keçi / Teke">Keçi / Teke</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="shBarn">Ağıl / Bölme *</label>
+            <select id="shBarn" class="form-select" required>
+              <!-- JS ile doldurulur -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="shGender">Cinsiyet *</label>
+            <select id="shGender" class="form-select" required>
+              <option value="Dişi">Dişi</option>
+              <option value="Erkek">Erkek</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="shWeight">Canlı Ağırlık (kg) *</label>
+            <input type="number" id="shWeight" class="form-control" placeholder="Örn. 65" step="0.5" required>
+          </div>
+          <div class="form-group">
+            <label for="shBirthType">Doğum Tipi</label>
+            <select id="shBirthType" class="form-select">
+              <option value="Tekiz">Tekiz</option>
+              <option value="İkiz" selected>İkiz</option>
+              <option value="Üçüz">Üçüz</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="shDam">Ana Küpe No</label>
+            <input type="text" id="shDam" class="form-control" placeholder="Örn. TR16-K012">
+          </div>
+          <div class="form-group">
+            <label for="shSire">Baba (Koç) Küpe No</label>
+            <input type="text" id="shSire" class="form-control" placeholder="Örn. TR16-R001 (Koç Lider)">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label for="shHealth">Sağlık &amp; Aşı Durumu</label>
+          <input type="text" id="shHealth" class="form-control" placeholder="Örn. Çiçek ve Enterotoksemi aşıları yapıldı">
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modalSheep')">Vazgeç</button>
+          <button type="submit" class="btn btn-primary">Küçükbaşı Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- 21. KÜÇÜKBAŞ DETAY DOSYASI (DOSSIER) MODALI -->
+  <dialog id="modalSheepDetail" class="app-dialog" style="max-width: 600px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3 id="sheepDossierModalTitle">🐑 Küçükbaş Künyesi</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalSheepDetail')">&times;</button>
+      </div>
+
+      <div class="dossier-hero" style="background: linear-gradient(135deg, rgba(30,77,43,0.15), rgba(123,30,38,0.1)); border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div>
+            <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">KÜPE NUMARASI</div>
+            <div style="font-size: 1.3rem; font-weight: 800; font-family: monospace; color: var(--ozate-green-accent);" id="sheepDossierTag">TR16-K001</div>
+            <div style="font-size: 1rem; font-weight: 700; margin-top: 2px;" id="sheepDossierName">Kınalı</div>
+          </div>
+          <div style="text-align: right;">
+            <span class="badge" id="sheepDossierStatus" style="background: var(--ozate-green); color: white; padding: 4px 10px; border-radius: 12px;">Aktif Sürüde</span>
+            <div style="font-size: 0.8rem; font-weight: 600; margin-top: 6px; color: var(--text-dim);" id="sheepDossierBarn">Ağıl 1 (Anaçlar)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detay Grid -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
+        <div class="stat-card" style="padding: 0.6rem 0.8rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 6px;">
+          <div style="font-size: 0.7rem; color: var(--text-muted);">TÜR &amp; IRK</div>
+          <div style="font-weight: 700; font-size: 0.85rem;" id="sheepDossierBreed">Koyun (Merinos)</div>
+        </div>
+        <div class="stat-card" style="padding: 0.6rem 0.8rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 6px;">
+          <div style="font-size: 0.7rem; color: var(--text-muted);">KATEGORİ &amp; CİNSİYET</div>
+          <div style="font-weight: 700; font-size: 0.85rem;" id="sheepDossierCategory">Damızlık Koyun / ♀ Dişi</div>
+        </div>
+        <div class="stat-card" style="padding: 0.6rem 0.8rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 6px;">
+          <div style="font-size: 0.7rem; color: var(--text-muted);">CANLI AĞIRLIK</div>
+          <div style="font-weight: 700; font-size: 0.85rem; color: var(--accent-success);" id="sheepDossierWeight">68 kg</div>
+        </div>
+        <div class="stat-card" style="padding: 0.6rem 0.8rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 6px;">
+          <div style="font-size: 0.7rem; color: var(--text-muted);">DOĞUM TİPİ</div>
+          <div style="font-weight: 700; font-size: 0.85rem;" id="sheepDossierBirthType">İkiz Doğumlu</div>
+        </div>
+      </div>
+
+      <!-- Üreme / Koç Katımı / Gebelik Bilgi Kartı -->
+      <div id="sheepDossierReproBox" style="background: var(--bg-surface); border-left: 4px solid var(--ozate-green-accent); padding: 0.75rem; border-radius: 4px; font-size: 0.8rem; line-height: 1.5; margin-bottom: 1rem;">
+        <!-- JS ile dinamik doldurulur -->
+      </div>
+
+      <!-- Sağlık & Aşı Geçmişi -->
+      <div style="margin-bottom: 1rem;">
+        <h4 style="font-size: 0.8rem; color: var(--text-dim); margin-bottom: 0.4rem; text-transform: uppercase;">💉 SAĞLIK, AŞI &amp; PARAZİT TAKİBİ</h4>
+        <div class="table-responsive" style="max-height: 140px; overflow-y: auto;">
+          <table class="data-table" style="font-size: 0.75rem;">
+            <thead>
+              <tr>
+                <th>Tarih</th>
+                <th>İşlem / Aşı</th>
+                <th>Uygulayan</th>
+                <th>Durum</th>
+              </tr>
+            </thead>
+            <tbody id="sheepDossierHealthTbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-burgundy" onclick="recordSheepLambingPrompt()" id="btnSheepLambingAction">🐣 Doğum Kaydet (Kuzuladı)</button>
+        <button type="button" class="btn btn-ghost" onclick="deleteSheepPrompt()" style="color: var(--accent-danger);">Sürüden Çıkar</button>
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modalSheepDetail')">Kapat</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- 22. KOÇ KATIMI (AŞIM DÖNEMİ) MODALI -->
+  <dialog id="modalMatingSeason" class="app-dialog" style="max-width: 540px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>🐑 Koç Katımı (Aşım Dönemi) Planla &amp; Kaydet</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalMatingSeason')">&times;</button>
+      </div>
+      <form id="formMatingSeason" onsubmit="handleMatingSeasonSubmit(event)">
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">
+          Seçilen ağıldaki anaç koyunlara koç katımı başlatarak tahmini doğum (kuzulama) takvimini otomatik oluşturun (Koyun gebelik süresi: ~148 gün).
+        </p>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="matingDate">Koç Katım Başlangıç Tarihi *</label>
+            <input type="date" id="matingDate" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="matingBarn">Hedef Ağıl / Grup *</label>
+            <select id="matingBarn" class="form-select" required>
+              <!-- JS ile doldurulur -->
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0.85rem;">
+          <label for="matingRam">Katılan Damızlık Koç *</label>
+          <select id="matingRam" class="form-select" required>
+            <!-- JS ile damızlık koçlar doldurulur -->
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label for="matingNotes">Notlar &amp; Rasyon Takviyesi</label>
+          <textarea id="matingNotes" class="form-control" rows="2" placeholder="Flushing (ek yemleme) uygulandı, vitamin takviyesi yapıldı..."></textarea>
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modalMatingSeason')">Vazgeç</button>
+          <button type="submit" class="btn btn-primary">Koç Katımını Başlat &amp; Takvime Ekle</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- 23. KIRKIM & YÜN VERİMİ KAYIT MODALI -->
+  <dialog id="modalShearing" class="app-dialog" style="max-width: 520px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>✂️ Kırkım &amp; Yün Hasadı Kaydı</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalShearing')">&times;</button>
+      </div>
+      <form id="formShearing" onsubmit="handleShearingSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="shearingDate">Kırkım Tarihi *</label>
+            <input type="date" id="shearingDate" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="shearingBarn">Kırkılan Ağıl / Sürü *</label>
+            <select id="shearingBarn" class="form-select" required>
+              <!-- JS ile doldurulur -->
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="shearingCount">Kırkılan Baş Sayısı *</label>
+            <input type="number" id="shearingCount" class="form-control" placeholder="Örn. 45" required>
+          </div>
+          <div class="form-group">
+            <label for="shearingWeight">Elde Edilen Yün (kg) *</label>
+            <input type="number" id="shearingWeight" class="form-control" placeholder="Örn. 135" step="0.5" required>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label for="shearingNotes">Notlar &amp; Yapağı Kalitesi</label>
+          <input type="text" id="shearingNotes" class="form-control" placeholder="1. sınıf Merinos yapağısı, banyosu yapıldı">
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modalShearing')">Vazgeç</button>
+          <button type="submit" class="btn btn-burgundy">Kırkım Kaydını Onayla</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- 24. TOPLU AĞIL TRANSFERİ MODALI -->
+  <dialog id="modalBulkBarnTransfer" class="app-dialog" style="max-width: 620px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>🔄 Toplu Ağıl / Bölme Transferi</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalBulkBarnTransfer')">&times;</button>
+      </div>
+      <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:1rem;">Küçükbaş hayvanları seçin ve hedef ağıla toplu olarak nakledin.</p>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem; margin-bottom:1rem;">
+        <div class="form-group" style="margin:0;">
+          <label>Kaynak Ağıl (Filtre)</label>
+          <select id="bulkFromBarn" class="form-select" onchange="renderBulkSheepList()">
+            <option value="ALL">Tüm Ağıllar</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label for="bulkToBarn">Hedef Ağıl *</label>
+          <select id="bulkToBarn" class="form-select">
+            <!-- JS ile doldurulur -->
+          </select>
+        </div>
+      </div>
+
+      <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:8px; padding:0.75rem; max-height:240px; overflow-y:auto;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+          <span style="font-size:0.75rem; font-weight:600; color:var(--text-dim);">KÜÇÜKBAŞ LİSTESİ</span>
+          <label style="font-size:0.75rem; color:var(--text-dim); cursor:pointer;">
+            <input type="checkbox" id="bulkSelectAllSheep" onchange="toggleBulkSelectAllSheep(this.checked)"> Tümünü Seç
+          </label>
+        </div>
+        <div id="bulkSheepListContainer">
+          <!-- JS ile doldurulur -->
+        </div>
+      </div>
+      <div style="margin-top:0.5rem; font-size:0.72rem; color:var(--text-muted);" id="bulkSheepSelectionCount">0 küçükbaş seçili</div>
+
+      <div class="dialog-actions" style="margin-top:1rem;">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('modalBulkBarnTransfer')">İptal</button>
+        <button type="button" class="btn btn-primary" onclick="executeBulkBarnTransfer()">Seçilenleri Hedef Ağıla Taşı</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Supabase JS CDN & Veri Katmanı -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
+
+  <!-- Uygulama Mantığı Scripti -->
+  <script src="app.js?v=3.9"></script>
+</body>
+</html>

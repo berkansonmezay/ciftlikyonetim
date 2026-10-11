@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giriş Yap | Özate Büyükbaş Hayvancılık & Süt Çiftliği ERP</title>
+  <meta name="description" content="Özate Çiftliği Yönetim Sistemi güvenli kullanıcı girişi. Sürü takibi, süt üretimi ve finans defteri.">
+  <link rel="icon" type="image/png" href="assets/ozate_logo.png">
+  
+  <!-- Modern Google Fontları -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ==========================================================================
+       LOGIN PAGE ÖZEL GLASSMORPHISM & SPLIT-HERO STİLLERİ
+       ========================================================================== */
+    body.login-page-body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--bg-app);
+      font-family: var(--font-body);
+      color: var(--text-main);
+      position: relative;
+      overflow-x: hidden;
+      transition: background-color var(--transition-normal);
+    }
+
+    .login-backdrop-container {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .login-backdrop-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: brightness(0.42) saturate(1.2);
+      transform: scale(1.03);
+      animation: ambientZoom 20s infinite alternate ease-in-out;
+      transition: filter var(--transition-normal);
+    }
+
+    body[data-theme="light"] .login-backdrop-img {
+      filter: brightness(0.85) saturate(1.1);
+    }
+
+    @keyframes ambientZoom {
+      0% { transform: scale(1.0); }
+      100% { transform: scale(1.06); }
+    }
+
+    .login-backdrop-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 75% 50%, rgba(123, 30, 38, 0.28) 0%, transparent 60%),
+                  radial-gradient(circle at 25% 80%, rgba(30, 77, 43, 0.32) 0%, transparent 65%),
+                  linear-gradient(135deg, rgba(7, 9, 13, 0.88) 0%, rgba(11, 13, 17, 0.72) 100%);
+      transition: background var(--transition-normal);
+    }
+
+    body[data-theme="light"] .login-backdrop-overlay {
+      background: radial-gradient(circle at 75% 50%, rgba(123, 30, 38, 0.12) 0%, transparent 60%),
+                  radial-gradient(circle at 25% 80%, rgba(30, 77, 43, 0.15) 0%, transparent 65%),
+                  linear-gradient(135deg, rgba(240, 242, 246, 0.85) 0%, rgba(255, 255, 255, 0.72) 100%);
+    }
+
+    /* Ana Düzen Izgarası */
+    .login-wrapper {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 960px;
+      margin: 1.5rem;
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      background: var(--bg-surface);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+      animation: fadeInLogin 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: background var(--transition-normal), border-color var(--transition-normal);
+    }
+
+    body[data-theme="dark"] .login-wrapper {
+      background: rgba(17, 21, 28, 0.88);
+    }
+
+    body[data-theme="light"] .login-wrapper {
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+    }
+
+    @keyframes fadeInLogin {
+      from { opacity: 0; transform: translateY(16px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1.0); }
+    }
+
+    /* Sol Taraf: Çiftlik Kurumsal Kart Alanı */
+    .login-hero-side {
+      padding: 3.5rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-right: 1px solid var(--border-subtle);
+      background: linear-gradient(160deg, var(--ozate-burgundy-soft) 0%, var(--ozate-green-soft) 100%);
+      text-align: center;
+    }
+
+    .hero-brand-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      max-width: 320px;
+    }
+
+    .hero-brand-logo {
+      width: 72px;
+      height: 72px;
+      border-radius: 16px;
+      background: #FFFFFF;
+      padding: 6px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      object-fit: contain;
+    }
+
+    .hero-brand-title {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: var(--text-main);
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .hero-brand-sub {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .hero-brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--accent-success);
+      background: rgba(22, 163, 74, 0.12);
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+      margin-top: 6px;
+      border: 1px solid rgba(22, 163, 74, 0.25);
+    }
+
+    .hero-dot-online {
+      width: 7px;
+      height: 7px;
+      background: #10B981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10B981;
+    }
+
+    /* Tema Seçici Butonları */
+    .login-theme-selector {
+      display: inline-flex;
+      align-items: center;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-full);
+      padding: 2px;
+      gap: 2px;
+    }
+
+    .login-theme-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 9px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .login-theme-btn:hover {
+      color: var(--text-main);
+    }
+
+    .login-theme-btn.active {
+      background: var(--ozate-burgundy);
+      color: #FFFFFF;
+      box-shadow: 0 2px 6px rgba(123, 30, 38, 0.4);
+    }
+
+    /* Sağ Taraf: Giriş Formu ve Demo Profilleri */
+    .login-form-side {
+      padding: 2.75rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: var(--bg-surface);
+    }
+
+    .login-header-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .login-title {
+      font-family: var(--font-heading);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.25rem;
+    }
+
+    .login-subtitle {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* Giriş Sekmeleri (E-posta vs PIN) */
+    .login-tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 3px;
+      margin-bottom: 1.25rem;
+    }
+
+    .login-tab-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .login-tab-btn.active {
+      background: var(--ozate-burgundy);
+      color: #FFFFFF;
+      box-shadow: 0 2px 6px rgba(123, 30, 38, 0.4);
+    }
+
+    .login-tab-pane {
+      display: none;
+    }
+
+    .login-tab-pane.active {
+      display: block;
+      animation: fadeIn 0.15s ease;
+    }
+
+    /* Form Elemanları */
+    .form-group-login {
+      margin-bottom: 1rem;
+    }
+
+    .form-group-login label {
+      display: block;
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .input-with-icon {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-with-icon svg.field-icon {
+      position: absolute;
+      left: 10px;
+      width: 16px;
+      height: 16px;
+      color: var(--text-dim);
+      pointer-events: none;
+    }
+
+    .input-with-icon input {
+      width: 100%;
+      padding: 0.65rem 2.2rem 0.65rem 2.25rem;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      color: var(--text-main);
+      font-size: 0.85rem;
+      font-family: inherit;
+      transition: all var(--transition-fast);
+    }
+
+    .input-with-icon input:focus {
+      outline: none;
+      border-color: var(--ozate-burgundy);
+      box-shadow: 0 0 0 2px var(--ozate-burgundy-soft);
+      background: var(--bg-surface-hover);
+    }
+
+    .toggle-pwd-btn {
+      position: absolute;
+      right: 8px;
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      font-size: 0.85rem;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+    }
+
+    .toggle-pwd-btn:hover {
+      color: var(--text-main);
+    }
+
+    .login-extras {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0.65rem 0 1.25rem;
+      font-size: 0.74rem;
+    }
+
+    .remember-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .forgot-link {
+      color: var(--accent-blue);
+      text-decoration: none;
+    }
+
+    .forgot-link:hover {
+      text-decoration: underline;
+    }
+
+    .btn-login-submit {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all var(--transition-fast);
+      box-shadow: 0 4px 15px rgba(123, 30, 38, 0.35);
+    }
+
+    .btn-login-submit:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(123, 30, 38, 0.5);
+    }
+
+    /* 4 Haneli PIN Girişi */
+    .pin-display-group {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+
+    .pin-digit-box {
+      width: 52px;
+      height: 52px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-main);
+      font-family: monospace;
+      outline: none;
+      transition: border-color var(--transition-fast);
+    }
+
+    .pin-digit-box:focus {
+      border-color: var(--ozate-burgundy);
+      box-shadow: 0 0 0 2px var(--ozate-burgundy-soft);
+    }
+
+    .pin-numpad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      max-width: 240px;
+      margin: 0 auto 1rem;
+    }
+
+    .pin-num-btn {
+      padding: 10px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .pin-num-btn:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--ozate-burgundy);
+    }
+
+    /* Demo Hızlı Giriş Kartları */
+    .demo-profiles-container {
+      margin-top: 1.25rem;
+      padding-top: 1.15rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .demo-header-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--text-dim);
+      margin-bottom: 0.65rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .demo-cards-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .demo-profile-card {
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .demo-profile-card:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--ozate-burgundy);
+      transform: translateY(-2px);
+    }
+
+    .demo-card-icon {
+      font-size: 1.15rem;
+    }
+
+    .demo-card-name {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    .demo-card-role {
+      font-size: 0.62rem;
+      color: var(--text-muted);
+    }
+
+    /* Giriş Başarılı / Yükleniyor Göstergesi */
+    .login-loader {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0.6rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--ozate-gold);
+      background: rgba(212, 175, 55, 0.1);
+      border-radius: var(--radius-sm);
+      margin-bottom: 0.75rem;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(212, 175, 55, 0.3);
+      border-top-color: var(--ozate-gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive Uyumluluk */
+    @media (max-width: 860px) {
+      .login-wrapper {
+        grid-template-columns: 1fr;
+        max-width: 460px;
+        margin: 1rem;
+      }
+      .login-hero-side {
+        display: none;
+      }
+      .login-form-side {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body class="login-page-body" data-theme="dark">
+
+  <!-- Sinematik Arka Plan Görseli & Gradyan Katmanı -->
+  <div class="login-backdrop-container">
+    <img src="assets/login_bg.jpg" alt="Özate Çiftliği Doğal Manzara" class="login-backdrop-img">
+    <div class="login-backdrop-overlay"></div>
+  </div>
+
+  <!-- Giriş Kutusu (Glassmorphic Split Container) -->
+  <main class="login-wrapper">
+
+    <!-- SOL: Çiftlik Kurumsal Tanıtım & KPI Özeti -->
+    <section class="login-hero-side">
+      <div class="hero-brand-card">
+        <img src="assets/ozate_logo.png" alt="Özate Logo" class="hero-brand-logo">
+        <h1 class="hero-brand-title">ÖZATE ÇİFTLİĞİ</h1>
+        <div class="hero-brand-sub">Kurumsal Hayvancılık &amp; Sürü Yönetim Sistemi</div>
+        <div class="hero-brand-badge">
+          <span class="hero-dot-online"></span>
+          <span>Sistem Çevrimiçi &bull; Bursa İşletmesi</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SAĞ: Güvenli Giriş Paneli & Demo Profilleri -->
+    <section class="login-form-side">
+      <div>
+        <div class="login-header-group">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+            <div>
+              <h2 class="login-title">Kullanıcı Girişi</h2>
+              <p class="login-subtitle">Lütfen çiftlik yönetim yetki seviyenizle oturum açın.</p>
+            </div>
+            <!-- Koyu / Açık Tema Seçici -->
+            <div class="login-theme-selector" title="Tema Seçin (Koyu / Açık)">
+              <button type="button" class="login-theme-btn" id="loginThemeBtnDark" onclick="setLoginTheme('dark')" title="Koyu Tema">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                <span>Koyu</span>
+              </button>
+              <button type="button" class="login-theme-btn" id="loginThemeBtnLight" onclick="setLoginTheme('light')" title="Açık Tema">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px;"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                <span>Açık</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Giriş Şekli Sekmeleri -->
+        <div class="login-tabs">
+          <button type="button" class="login-tab-btn active" id="tabBtnEmail" onclick="switchLoginTab('email')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px;"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="8" x2="21" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/></svg>
+            <span>E-Posta & Şifre</span>
+          </button>
+          <button type="button" class="login-tab-btn" id="tabBtnPin" onclick="switchLoginTab('pin')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px;"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            <span>Hızlı PIN Girişi</span>
+          </button>
+        </div>
+
+        <!-- Yükleniyor / Yönlendiriliyor Bildirimi -->
+        <div class="login-loader" id="loginLoader">
+          <div class="spinner"></div>
+          <span id="loginLoaderText">Kimlik doğrulanıyor, çiftlik verileri yükleniyor...</span>
+        </div>
+
+        <!-- 1. SEKME: E-Posta & Şifre Girişi -->
+        <div class="login-tab-pane active" id="paneEmail">
+          <form id="emailLoginForm" onsubmit="handleEmailLogin(event)">
+            <div class="form-group-login">
+              <label for="loginEmail">E-Posta Adresi</label>
+              <div class="input-with-icon">
+                <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <input type="email" id="loginEmail" placeholder="ornek@ozate.com" value="yonetici@ozate.com" required autocomplete="username">
+              </div>
+            </div>
+
+            <div class="form-group-login">
+              <label for="loginPassword">Sistem Şifresi</label>
+              <div class="input-with-icon">
+                <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <input type="password" id="loginPassword" placeholder="••••••••" value="ozate2026" required autocomplete="current-password">
+                <button type="button" class="toggle-pwd-btn" onclick="togglePasswordVisibility()" title="Şifreyi Göster/Gizle">👁️</button>
+              </div>
+            </div>
+
+            <div class="login-extras">
+              <label class="remember-label">
+                <input type="checkbox" id="rememberMe" checked>
+                <span>Beni Hatırla</span>
+              </label>
+              <a href="javascript:void(0)" class="forgot-link" onclick="handleForgotPassword()">Şifremi Unuttum?</a>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-login-submit" id="loginSubmitBtn">
+              <span>Sisteme Giriş Yap</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </form>
+        </div>
+
+        <!-- 2. SEKME: 4 Haneli Sahada Hızlı PIN Girişi -->
+        <div class="login-tab-pane" id="panePin">
+          <form id="pinLoginForm" onsubmit="handlePinLogin(event)">
+            <p style="font-size: 0.74rem; color: var(--text-muted); text-align: center; margin-bottom: 0.85rem;">
+              Çiftlik sahasında ve mobil cihazlarda pratik erişim için 4 haneli PIN kodunuzu girin (Varsayılan PIN: <strong>1234</strong>):
+            </p>
+
+            <div class="pin-display-group">
+              <input type="password" maxlength="1" class="pin-digit-box" id="pinDigit1" readonly>
+              <input type="password" maxlength="1" class="pin-digit-box" id="pinDigit2" readonly>
+              <input type="password" maxlength="1" class="pin-digit-box" id="pinDigit3" readonly>
+              <input type="password" maxlength="1" class="pin-digit-box" id="pinDigit4" readonly>
+            </div>
+
+            <div class="pin-numpad">
+              <button type="button" class="pin-num-btn" onclick="appendPin('1')">1</button>
+              <button type="button" class="pin-num-btn" onclick="appendPin('2')">2</button>
+              <button type="button" class="pin-num-btn" onclick="appendPin('3')">3</button>
+              <button type="button" class="pin-num-btn" onclick="appendPin('4')">4</button>
+              <button type="button" class="pin-num-btn" onclick="appendPin('5')">5</button>
+              <button type="button" class="pin-num-btn" onclick="appendPin('6')">6</button>
+              <button type="button" class="pin-num-btn" onclick="appendPin('7')">7</button>
+              <button type="button" class="pin-num-btn" onclick="appendPin('8')">8</button>
+              <button type="button" class="pin-num-btn" onclick="appendPin('9')">9</button>
+              <button type="button" class="pin-num-btn" onclick="clearPin()" style="font-size: 0.8rem; color: var(--accent-danger);">Sil</button>
+              <button type="button" class="pin-num-btn" onclick="appendPin('0')">0</button>
+              <button type="submit" class="pin-num-btn" style="font-size: 0.8rem; background: var(--ozate-burgundy); color: #fff;">Giriş</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Demo Hızlı Giriş Kartları (1 Tıkla Rol Girişi) -->
+      <div class="demo-profiles-container">
+        <div class="demo-header-label">
+          <span>Hızlı Demo Girişi (Tek Tıkla Giriş)</span>
+          <span style="color: var(--accent-success); font-weight: 600;">Hazır Hesaplar</span>
+        </div>
+
+        <div class="demo-cards-row">
+          <!-- Yönetici -->
+          <div class="demo-profile-card" onclick="quickLoginAs('ADMIN', 'Özate Ailesi', 'yonetici@ozate.com')" title="Tüm finans ve yönetim yetkisi">
+            <span class="demo-card-icon">👑</span>
+            <span class="demo-card-name">Özate Ailesi</span>
+            <span class="demo-card-role">Çiftlik Sahibi</span>
+          </div>
+
+          <!-- Veteriner -->
+          <div class="demo-profile-card" onclick="quickLoginAs('VET', 'Dr. Nilüfer', 'veteriner@ozate.com')" title="Sürü, tohumlama ve aşı takibi">
+            <span class="demo-card-icon">🩺</span>
+            <span class="demo-card-name">Dr. Nilüfer</span>
+            <span class="demo-card-role">Veteriner Hekim</span>
+          </div>
+
+          <!-- Bakıcı -->
+          <div class="demo-profile-card" onclick="quickLoginAs('WORKER', 'Ahmet Usta', 'bakici@ozate.com')" title="Sağım, tank ve yem girişi">
+            <span class="demo-card-icon">👨‍🌾</span>
+            <span class="demo-card-name">Ahmet Usta</span>
+            <span class="demo-card-role">Sürü Bakıcısı</span>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 1rem; font-size: 0.7rem; color: var(--text-dim);">
+          <a href="index.html" style="color: inherit; text-decoration: underline dotted;">Giriş yapmadan doğrudan prototip paneline git →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // =========================================================================
+    // LOGIN MANTIĞI & OTURUM YÖNETİMİ
+    // =========================================================================
+
+    let enteredPin = '';
+
+    function switchLoginTab(tab) {
+      document.getElementById('tabBtnEmail').classList.toggle('active', tab === 'email');
+      document.getElementById('tabBtnPin').classList.toggle('active', tab === 'pin');
+      document.getElementById('paneEmail').classList.toggle('active', tab === 'email');
+      document.getElementById('panePin').classList.toggle('active', tab === 'pin');
+    }
+
+    function togglePasswordVisibility() {
+      const pwdInput = document.getElementById('loginPassword');
+      if (pwdInput.type === 'password') {
+        pwdInput.type = 'text';
+      } else {
+        pwdInput.type = 'password';
+      }
+    }
+
+    function handleForgotPassword() {
+      alert('Şifre sıfırlama bağlantısı sistem yöneticisine (Özate Ailesi) iletildi.\nDemo şifresi: ozate2026');
+    }
+
+    // PIN Klavye Aksiyonları
+    function appendPin(digit) {
+      if (enteredPin.length < 4) {
+        enteredPin += digit;
+        updatePinBoxes();
+        if (enteredPin.length === 4) {
+          setTimeout(() => handlePinLogin(new Event('submit')), 150);
+        }
+      }
+    }
+
+    function clearPin() {
+      enteredPin = '';
+      updatePinBoxes();
+    }
+
+    function updatePinBoxes() {
+      for (let i = 1; i <= 4; i++) {
+        const box = document.getElementById(`pinDigit${i}`);
+        if (i <= enteredPin.length) {
+          box.value = enteredPin[i - 1];
+        } else {
+          box.value = '';
+        }
+      }
+    }
+
+    function getFarmUsers() {
+      try {
+        const raw = localStorage.getItem('ozate_farm_data_v1');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed.users && Array.isArray(parsed.users) && parsed.users.length > 0) {
+            return parsed.users;
+          }
+        }
+      } catch(e) {}
+      return [
+        { name: 'Ahmet Özate', email: 'admin@ozate.com', role: 'ADMIN', pin: '1923' },
+        { name: 'Dr. Nilüfer Çetin', email: 'vet.nilufer@ozate.com', role: 'VET', pin: '1923' },
+        { name: 'Mehmet Bakıcı', email: 'mehmet.bakici@ozate.com', role: 'WORKER', pin: '1923' }
+      ];
+    }
+
+    function handlePinLogin(e) {
+      if (e) e.preventDefault();
+      const users = getFarmUsers();
+      const matched = users.find(u => u.pin === enteredPin && u.status !== 'INACTIVE');
+      if (matched) {
+        processSuccessfulLogin({
+          name: matched.name,
+          email: matched.email,
+          role: matched.role,
+          authMethod: 'PIN'
+        });
+      } else if (enteredPin === '1923' || enteredPin === '1234' || enteredPin === '2026' || enteredPin === '0000') {
+        processSuccessfulLogin({
+          name: 'Ahmet Özate',
+          email: 'admin@ozate.com',
+          role: 'ADMIN',
+          authMethod: 'PIN'
+        });
+      } else {
+        alert('Hatalı PIN Kodu! Kayıtlı bir personelin 4 haneli PIN kodunu giriniz (Demo PIN: 1923)');
+        clearPin();
+      }
+    }
+
+    function handleEmailLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+
+      if (!email || !password) {
+        alert('Lütfen e-posta ve şifrenizi giriniz.');
+        return;
+      }
+
+      const users = getFarmUsers();
+      const matched = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+      if (matched) {
+        processSuccessfulLogin({
+          name: matched.name,
+          email: matched.email,
+          role: matched.role,
+          authMethod: 'PASSWORD'
+        });
+        return;
+      }
+
+      let role = 'ADMIN';
+      let name = 'Özate Ailesi';
+      if (email.includes('vet')) {
+        role = 'VET';
+        name = 'Vet. Dr. Nilüfer';
+      } else if (email.includes('bakici')) {
+        role = 'WORKER';
+        name = 'Ahmet Usta';
+      }
+
+      processSuccessfulLogin({
+        name,
+        email,
+        role,
+        authMethod: 'PASSWORD'
+      });
+    }
+
+    function quickLoginAs(role, name, email) {
+      processSuccessfulLogin({
+        name,
+        email,
+        role,
+        authMethod: 'QUICK_DEMO'
+      });
+    }
+
+    function processSuccessfulLogin(user) {
+      const loader = document.getElementById('loginLoader');
+      const loaderText = document.getElementById('loginLoaderText');
+      loader.style.display = 'flex';
+      loaderText.textContent = `${user.name} kimliği doğrulanıyor, ERP yükleniyor...`;
+
+      // Oturumu Yerel Hafızaya Yaz
+      const session = {
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        authMethod: user.authMethod,
+        loginAt: new Date().toISOString()
+      };
+
+      localStorage.setItem('ozate_session', JSON.stringify(session));
+      localStorage.setItem('ozate_user_role', user.role);
+
+      // Akıcı Geçiş ile index.html'e Yönlendir
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 700);
+    }
+
+    // Tema Yönetimi (Koyu / Açık)
+    function setLoginTheme(theme) {
+      document.body.setAttribute('data-theme', theme);
+      localStorage.setItem('ozate_theme', theme);
+
+      const btnDark = document.getElementById('loginThemeBtnDark');
+      const btnLight = document.getElementById('loginThemeBtnLight');
+      if (btnDark) btnDark.classList.toggle('active', theme === 'dark');
+      if (btnLight) btnLight.classList.toggle('active', theme === 'light');
+    }
+
+    // Halihazırda aktif oturum ve tema varsa kontrol et
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('ozate_theme') || 'dark';
+      setLoginTheme(savedTheme);
+
+      const existingSession = localStorage.getItem('ozate_session');
+      if (existingSession) {
+        try {
+          const sess = JSON.parse(existingSession);
+          const link = document.querySelector('.demo-profiles-container a');
+          if (link) {
+            link.innerHTML = `Aktif oturumunuz var (${sess.name} - ${sess.role}). <strong>Doğrudan Panele Git →</strong>`;
+          }
+        } catch(e) {}
+      }
+    });
+  </script>
+</body>
+</html>
