@@ -3841,7 +3841,194 @@ function renderActiveReportContent() {
   tbody.innerHTML = '';
   if (tfoot) tfoot.innerHTML = '';
 
-  if (currentReportTab === 'finance') {
+  if (currentReportTab === 'balance') {
+    if (title) title.textContent = '📑 Finansal Bilanço Tablosu (Aktif / Pasif Varlık Dağılımı)';
+    if (sub) sub.textContent = 'Çiftlik işletmesinin dönen ve duran varlıkları, kısa vadeli borçları ve özkaynak dengesi';
+
+    // 1. DÖNEN VARLIKLAR HESAPLARI
+    let totalCashAndBank = 0;
+    (state.accounts || []).forEach(a => { totalCashAndBank += (Number(a.balance) || 0); });
+
+    let totalReceivables = 0;
+    (state.contacts || []).forEach(c => {
+      const bal = Number(c.balance) || 0;
+      if (bal > 0) totalReceivables += bal; // Müşteriden alacak
+    });
+
+    let totalIncomingChecks = 0;
+    (state.checks || []).forEach(chk => {
+      if (chk.type === 'INCOMING' && chk.status === 'PORTFOLIO') {
+        totalIncomingChecks += (Number(chk.amount) || 0);
+      }
+    });
+
+    let totalFeedMedInventory = 0;
+    (state.inventory || []).forEach(i => {
+      totalFeedMedInventory += (Number(i.quantity) || 0) * (Number(i.unitCost) || 0);
+    });
+
+    let totalTankMilkValue = 0;
+    const milkUnitPrice = 18.50; // Referans litre fiyatı
+    if (state.tanks) {
+      Object.values(state.tanks).forEach(t => {
+        totalTankMilkValue += (Number(t.current) || 0) * milkUnitPrice;
+      });
+    }
+
+    const currentAssets = totalCashAndBank + totalReceivables + totalIncomingChecks + totalFeedMedInventory + totalTankMilkValue;
+
+    // 2. DURAN VARLIKLAR (BİYOLOJİK & SABİT)
+    let totalCattleValue = 0;
+    (state.animals || []).forEach(an => {
+      const w = Number(an.weight) || 450;
+      // Kategori bazlı tahmini değer
+      if (an.category === 'Süt İneği') totalCattleValue += 85000;
+      else if (an.category === 'Gebe Düve') totalCattleValue += 95000;
+      else if (an.category === 'Damızlık Boğa') totalCattleValue += 130000;
+      else if (an.category === 'Besi Danası') totalCattleValue += Math.max(50000, w * 185);
+      else totalCattleValue += Math.max(25000, w * 160);
+    });
+
+    let totalSheepValue = 0;
+    (state.sheep || []).forEach(sh => {
+      const sw = Number(sh.weight) || 50;
+      if (sh.category === 'Damızlık Koç') totalSheepValue += 22000;
+      else totalSheepValue += Math.max(12000, sw * 210);
+    });
+
+    let totalAvailableQurbanValue = 0;
+    (state.qurbanAnimals || []).forEach(qa => {
+      if (qa.status !== 'SLAUGHTERED') {
+        totalAvailableQurbanValue += (Number(qa.totalPrice) || 0);
+      }
+    });
+
+    const fixedAssets = totalCattleValue + totalSheepValue + totalAvailableQurbanValue;
+    const totalAssets = currentAssets + fixedAssets; // TOPLAM AKTİF
+
+    // 3. KISA VADELİ YABANCI KAYNAKLAR (BORÇLAR)
+    let totalPayables = 0;
+    (state.contacts || []).forEach(c => {
+      const bal = Number(c.balance) || 0;
+      if (bal < 0) totalPayables += Math.abs(bal); // Satıcıya borç
+    });
+
+    let totalOutgoingChecks = 0;
+    (state.checks || []).forEach(chk => {
+      if (chk.type === 'OUTGOING' && chk.status === 'PORTFOLIO') {
+        totalOutgoingChecks += (Number(chk.amount) || 0);
+      }
+    });
+
+    let totalQurbanDepositsLiabilities = 0;
+    (state.qurbanShares || []).forEach(qs => {
+      totalQurbanDepositsLiabilities += (Number(qs.depositAmount) || 0);
+    });
+
+    const shortTermLiabilities = totalPayables + totalOutgoingChecks + totalQurbanDepositsLiabilities;
+
+    // 4. ÖZKAYNAKLAR & DÖNEM KÂRI
+    let netPeriodIncome = 0;
+    (state.transactions || []).forEach(t => {
+      if (t.status !== 'CANCELLED') {
+        if (t.type === 'INCOME') netPeriodIncome += t.amount;
+        if (t.type === 'EXPENSE') netPeriodIncome -= t.amount;
+      }
+    });
+
+    const calculatedEquity = totalAssets - shortTermLiabilities;
+    const baseCapital = calculatedEquity - netPeriodIncome;
+    const totalEquity = baseCapital + netPeriodIncome;
+    const totalLiabilitiesAndEquity = shortTermLiabilities + totalEquity; // TOPLAM PASİF
+
+    if (badge) badge.textContent = `Aktif/Pasif: ${formatCurrency(totalAssets)}`;
+
+    thead.innerHTML = `
+      <tr>
+        <th style="width: 28%;">Bilanço Kalemi</th>
+        <th style="width: 22%; text-align: right;">Aktif (Varlıklar)</th>
+        <th style="width: 28%;">Bilanço Kalemi</th>
+        <th style="width: 22%; text-align: right;">Pasif (Kaynaklar & Borçlar)</th>
+      </tr>
+    `;
+
+    const rows = [
+      {
+        aLabel: '<strong>1. DÖNEN VARLIKLAR</strong>', aVal: `<strong>${formatCurrency(currentAssets)}</strong>`, isH: true,
+        pLabel: '<strong>3. KISA VADELİ YABANCI KAYNAKLAR</strong>', pVal: `<strong>${formatCurrency(shortTermLiabilities)}</strong>`
+      },
+      {
+        aLabel: '• Kasa ve Banka Mevduatları (' + (state.accounts || []).length + ' Hesap)', aVal: formatCurrency(totalCashAndBank),
+        pLabel: '• Tedarikçi & Satıcı Cari Borçları', pVal: formatCurrency(totalPayables)
+      },
+      {
+        aLabel: '• Müşteri Alacakları (Ticari Senetsiz)', aVal: formatCurrency(totalReceivables),
+        pLabel: '• Keşide Edilen Borç Çekleri (Portföy)', pVal: formatCurrency(totalOutgoingChecks)
+      },
+      {
+        aLabel: '• Portföydeki Müşteri Çekleri (Tahsil Edilecek)', aVal: formatCurrency(totalIncomingChecks),
+        pLabel: '• Kurban Hissedarlarından Alınan Avans/Kaporalar', pVal: formatCurrency(totalQurbanDepositsLiabilities)
+      },
+      {
+        aLabel: '• Depo Yem, Kaba Yem ve İlaç Stokları', aVal: formatCurrency(totalFeedMedInventory),
+        pLabel: '• Diğer Kısa Vadeli Yükümlülükler', pVal: formatCurrency(0)
+      },
+      {
+        aLabel: '• Tanklardaki Ham Süt Varlığı (~' + milkUnitPrice + ' TL/L)', aVal: formatCurrency(totalTankMilkValue),
+        pLabel: '', pVal: ''
+      },
+      {
+        aLabel: '<strong>2. DURAN (BİYOLOJİK) VARLIKLAR</strong>', aVal: `<strong>${formatCurrency(fixedAssets)}</strong>`, isH: true,
+        pLabel: '<strong>4. ÖZKAYNAKLAR</strong>', pVal: `<strong>${formatCurrency(totalEquity)}</strong>`
+      },
+      {
+        aLabel: '• Büyükbaş Damızlık & Besi Sürüsü (' + (state.animals || []).length + ' Baş)', aVal: formatCurrency(totalCattleValue),
+        pLabel: '• Ödenmiş / Tahsisli İşletme Sermayesi', pVal: formatCurrency(baseCapital)
+      },
+      {
+        aLabel: '• Küçükbaş Koyun / Koç Sürüsü (' + (state.sheep || []).length + ' Baş)', aVal: formatCurrency(totalSheepValue),
+        pLabel: '• Dönem Net Kârı / (Zararı)', pVal: `<span style="font-weight:700; color:${netPeriodIncome >= 0 ? 'var(--accent-success)' : 'var(--accent-danger)'}">${formatCurrency(netPeriodIncome)}</span>`
+      },
+      {
+        aLabel: '• Kurbanlık Portföy Varlık Değeri (' + (state.qurbanAnimals || []).length + ' Hayvan)', aVal: formatCurrency(totalAvailableQurbanValue),
+        pLabel: '• Geçmiş Yıllar Kârları / Yedekler', pVal: formatCurrency(0)
+      }
+    ];
+
+    rows.forEach(r => {
+      const tr = document.createElement('tr');
+      if (r.isH) tr.style.backgroundColor = 'var(--bg-surface-hover)';
+      tr.innerHTML = `
+        <td style="${r.isH ? 'font-size:0.9rem;' : 'padding-left:16px;'}">${r.aLabel}</td>
+        <td style="text-align:right; font-weight:${r.isH ? '800' : '600'}; color:var(--text-main);">${r.aVal}</td>
+        <td style="${r.isH ? 'font-size:0.9rem;' : 'padding-left:16px;'}">${r.pLabel}</td>
+        <td style="text-align:right; font-weight:${r.isH ? '800' : '600'}; color:var(--text-main);">${r.pVal}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    if (tfoot) {
+      const currentRatio = shortTermLiabilities > 0 ? (currentAssets / shortTermLiabilities).toFixed(2) : '∞';
+      const workingCapital = currentAssets - shortTermLiabilities;
+      tfoot.innerHTML = `
+        <tr style="font-weight:800; font-size:1.02rem; background: rgba(30,77,43,0.12); border-top: 2px solid var(--border-subtle);">
+          <td>TOPLAM AKTİF (VARLIKLAR TOPLAMI)</td>
+          <td style="text-align:right; color:var(--accent-success);">${formatCurrency(totalAssets)}</td>
+          <td>TOPLAM PASİF (KAYNAKLAR TOPLAMI)</td>
+          <td style="text-align:right; color:var(--accent-blue);">${formatCurrency(totalLiabilitiesAndEquity)}</td>
+        </tr>
+        <tr style="font-size:0.8rem; background:var(--bg-surface-hover);">
+          <td colspan="2">
+            <span><strong>Likidite Cari Oran:</strong> ${currentRatio} (İdeal: > 1.5)</span>
+            <span style="margin-left: 15px;"><strong>Net İşletme Sermayesi:</strong> ${formatCurrency(workingCapital)}</span>
+          </td>
+          <td colspan="2" style="text-align:right;">
+            <span class="badge positive" style="font-size:0.75rem;">⚖️ Bilanço Dengede (Aktif = Pasif)</span>
+          </td>
+        </tr>
+      `;
+    }
+  } else if (currentReportTab === 'finance') {
     if (title) title.textContent = '💰 Finansal Kâr / Zarar & Nakit Akış Tablosu';
     if (sub) sub.textContent = 'Gelirler, giderler, cari hesap bağlantıları ve tahsilat durumları';
 
