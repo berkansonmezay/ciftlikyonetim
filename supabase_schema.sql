@@ -262,7 +262,72 @@ CREATE TABLE IF NOT EXISTS audit_logs (
 );
 
 -- =============================================================================
--- 12. PERFORMANS İNDEKSLERİ (INDEXES)
+-- 12. ÇEK TAKİP VE PORTFÖYÜ (CHECKS)
+-- =============================================================================
+CREATE TABLE IF NOT EXISTS checks (
+    id VARCHAR(50) PRIMARY KEY,
+    check_number VARCHAR(80) NOT NULL,
+    type VARCHAR(30) NOT NULL CHECK (type IN ('INCOMING', 'OUTGOING')), -- INCOMING: Alınan Çek, OUTGOING: Verilen Çek
+    amount NUMERIC(14, 2) NOT NULL,
+    issue_date DATE NOT NULL,
+    due_date DATE NOT NULL,
+    drawer VARCHAR(150) NOT NULL, -- Keşideci
+    bank_name VARCHAR(100) NOT NULL,
+    branch_name VARCHAR(100) DEFAULT '',
+    account_no VARCHAR(100) DEFAULT '',
+    contact_id VARCHAR(50) REFERENCES contacts(id) ON DELETE SET NULL,
+    status VARCHAR(30) NOT NULL DEFAULT 'PORTFOLIO' 
+        CHECK (status IN ('PORTFOLIO', 'COLLECTED', 'ENDORSED', 'PAID', 'BOUNCED', 'CANCELLED')),
+    endorsed_to_contact_id VARCHAR(50) REFERENCES contacts(id) ON DELETE SET NULL,
+    target_account_id VARCHAR(50) REFERENCES accounts(id) ON DELETE SET NULL,
+    notes TEXT DEFAULT '',
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- =============================================================================
+-- 13. KURBAN KESİM VE HİSSE YÖNETİMİ (QURBAN ANIMALS & SHARES)
+-- =============================================================================
+CREATE TABLE IF NOT EXISTS qurban_animals (
+    id VARCHAR(50) PRIMARY KEY,
+    qurban_no VARCHAR(50) NOT NULL UNIQUE, -- Örn: KB-01, KK-05
+    animal_type VARCHAR(30) NOT NULL CHECK (animal_type IN ('BÜYÜKBAŞ', 'KÜÇÜKBAŞ')),
+    source_animal_id VARCHAR(50) DEFAULT NULL,
+    ear_tag VARCHAR(50) DEFAULT '',
+    breed VARCHAR(80) DEFAULT '',
+    live_weight NUMERIC(8, 2) NOT NULL DEFAULT 0,
+    carcass_weight NUMERIC(8, 2) DEFAULT 0,
+    total_price NUMERIC(14, 2) NOT NULL DEFAULT 0,
+    share_count INT NOT NULL DEFAULT 7,
+    slaughter_day INT NOT NULL DEFAULT 1,
+    slaughter_order INT DEFAULT NULL,
+    slaughter_time VARCHAR(20) DEFAULT '',
+    status VARCHAR(30) NOT NULL DEFAULT 'AVAILABLE'
+        CHECK (status IN ('AVAILABLE', 'PARTIALLY_RESERVED', 'SOLD_OUT', 'SLAUGHTERED', 'COMPLETED')),
+    notes TEXT DEFAULT '',
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS qurban_shares (
+    id VARCHAR(50) PRIMARY KEY,
+    qurban_id VARCHAR(50) NOT NULL REFERENCES qurban_animals(id) ON DELETE CASCADE,
+    share_index INT NOT NULL,
+    shareholder_name VARCHAR(150) NOT NULL,
+    phone VARCHAR(50) NOT NULL,
+    share_price NUMERIC(14, 2) NOT NULL,
+    deposit_amount NUMERIC(14, 2) NOT NULL DEFAULT 0,
+    payment_status VARCHAR(30) NOT NULL DEFAULT 'UNPAID' CHECK (payment_status IN ('PAID', 'PARTIAL', 'UNPAID')),
+    payment_method VARCHAR(50) DEFAULT 'CASH',
+    check_id VARCHAR(50) REFERENCES checks(id) ON DELETE SET NULL,
+    contact_id VARCHAR(50) REFERENCES contacts(id) ON DELETE SET NULL,
+    proxy_given BOOLEAN NOT NULL DEFAULT FALSE,
+    meat_weight NUMERIC(8, 2) DEFAULT 0,
+    is_delivered BOOLEAN NOT NULL DEFAULT FALSE,
+    notes TEXT DEFAULT '',
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- =============================================================================
+-- 14. PERFORMANS İNDEKSLERİ (INDEXES)
 -- =============================================================================
 CREATE INDEX IF NOT EXISTS idx_cattle_eartag ON cattle_animals(ear_tag);
 CREATE INDEX IF NOT EXISTS idx_cattle_paddock ON cattle_animals(paddock);
@@ -273,9 +338,14 @@ CREATE INDEX IF NOT EXISTS idx_tx_contact ON transactions(contact_id);
 CREATE INDEX IF NOT EXISTS idx_tx_account ON transactions(account_id);
 CREATE INDEX IF NOT EXISTS idx_tasks_due ON tasks(due_date);
 CREATE INDEX IF NOT EXISTS idx_milk_date ON milk_productions(date);
+CREATE INDEX IF NOT EXISTS idx_checks_due ON checks(due_date);
+CREATE INDEX IF NOT EXISTS idx_checks_status ON checks(status);
+CREATE INDEX IF NOT EXISTS idx_checks_contact ON checks(contact_id);
+CREATE INDEX IF NOT EXISTS idx_qurban_order ON qurban_animals(slaughter_day, slaughter_order);
+CREATE INDEX IF NOT EXISTS idx_qurban_shares_qurban ON qurban_shares(qurban_id);
 
 -- =============================================================================
--- 13. ROW LEVEL SECURITY (RLS) POLİTİKALARI
+-- 15. ROW LEVEL SECURITY (RLS) POLİTİKALARI
 -- =============================================================================
 ALTER TABLE farm_settings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE farm_parameters ENABLE ROW LEVEL SECURITY;
@@ -296,6 +366,9 @@ ALTER TABLE transfers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE tasks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE farm_users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE checks ENABLE ROW LEVEL SECURITY;
+ALTER TABLE qurban_animals ENABLE ROW LEVEL SECURITY;
+ALTER TABLE qurban_shares ENABLE ROW LEVEL SECURITY;
 
 -- Anonim ve Doğrulanmış Kullanıcılar İçin İzinler (Supabase REST API İstemcisi)
 DO $$
@@ -310,7 +383,8 @@ BEGIN
             'cattle_animals', 'cattle_weights', 'cattle_health_logs', 
             'sheep_animals', 'sheep_health_logs', 'sheep_shearings', 'sheep_mating_seasons', 
             'milk_tanks', 'milk_productions', 'inventory_items', 'transactions', 
-            'transfers', 'tasks', 'farm_users', 'audit_logs'
+            'transfers', 'tasks', 'farm_users', 'audit_logs',
+            'checks', 'qurban_animals', 'qurban_shares'
         )
     LOOP
         EXECUTE format('DROP POLICY IF EXISTS "Public full access policy" ON %I;', t);
@@ -320,7 +394,7 @@ END
 $$;
 
 -- =============================================================================
--- 14. BAŞLANGIÇ VERİLERİ (SEED DATA)
+-- 16. BAŞLANGIÇ VERİLERİ (SEED DATA)
 -- =============================================================================
 
 -- Çiftlik Bilgisi
@@ -432,4 +506,33 @@ INSERT INTO farm_users (id, name, email, phone, role, title, pin, status) VALUES
 ('usr-2', 'Dr. Nilüfer Çetin', 'vet.nilufer@ozate.com', '0533 111 22 33', 'VET', 'Sorumlu Veteriner Hekim', '1923', 'ACTIVE'),
 ('usr-3', 'Mehmet Bakıcı', 'mehmet.bakici@ozate.com', '0544 222 33 44', 'WORKER', 'Baş Sağımcı & Sürü Sorumlusu', '1923', 'ACTIVE'),
 ('usr-4', 'Ayşe Muhasebe', 'muhasebe@ozate.com', '0535 333 44 55', 'ACCOUNTANT', 'Ön Muhasebe & Finans Uzmanı', '1923', 'ACTIVE')
+ON CONFLICT (id) DO NOTHING;
+
+-- Çekler (Örnek Alınan ve Verilen Çekler)
+INSERT INTO checks (id, check_number, type, amount, issue_date, due_date, drawer, bank_name, branch_name, account_no, contact_id, status, notes) VALUES
+('chk-1', 'CK-884210', 'INCOMING', 45000.00, '2026-09-25', '2026-10-25', 'Bursa Et & Kasaplar Birliği', 'Vakıfbank', 'Heykel Şubesi', 'TR33 0001 ...', 'ct-2', 'PORTFOLIO', 'Besi hayvanı satışına mahsuben alınan vadeli müşteri çeki'),
+('chk-2', 'CK-991204', 'INCOMING', 32500.00, '2026-10-01', '2026-11-15', 'Kemal Erdem (Kurban Hissesi)', 'İş Bankası', 'Nilüfer Şubesi', 'TR64 0006 ...', 'ct-1', 'PORTFOLIO', '2026 Kurbanlık 2 hisse peşinat ve bakiye çeki'),
+('chk-3', 'CK-104921', 'OUTGOING', 55000.00, '2026-09-10', '2026-10-30', 'Özate Çiftliği İşletmesi', 'Ziraat Bankası', 'Bursa Ticari', 'TR45 0001 ...', 'ct-3', 'PORTFOLIO', 'Toros Yem sanayine 30 ton silaj ve yem bedeli için verilen çek')
+ON CONFLICT (id) DO NOTHING;
+
+-- Kurbanlık Hayvanlar
+INSERT INTO qurban_animals (id, qurban_no, animal_type, source_animal_id, ear_tag, breed, live_weight, carcass_weight, total_price, share_count, slaughter_day, slaughter_order, slaughter_time, status, notes) VALUES
+('qrb-1', 'KB-01', 'BÜYÜKBAŞ', 'an-3', 'TR1600031592', 'Simental', 610.00, 335.00, 168000.00, 7, 1, 1, '08:30', 'SOLD_OUT', 'Kapak açmış, besi kondisyonu mükemmel tosun. 7 hissesi tamamlandı.'),
+('qrb-2', 'KB-02', 'BÜYÜKBAŞ', 'an-4', 'TR1600047321', 'Angus', 540.00, 305.00, 154000.00, 7, 1, 2, '09:15', 'PARTIALLY_RESERVED', 'Et ırkı Angus tosun. 5 hisse satıldı, 2 boş hisse mevcut.'),
+('qrb-3', 'KK-01', 'KÜÇÜKBAŞ', 'sh-3', 'TR16-R001', 'Merinos Koç', 95.00, 48.00, 22000.00, 1, 1, 3, '10:00', 'SOLD_OUT', 'Kurbanlık vasfında iri boy Merinos damızlık koç.'),
+('qrb-4', 'KK-02', 'KÜÇÜKBAŞ', 'sh-4', 'TR16-R002', 'Kıvırcık Koç', 88.00, 44.00, 19500.00, 1, 2, 1, '09:00', 'AVAILABLE', 'Bayramın 2. günü kesimi için müsait kıvırcık toklu.')
+ON CONFLICT (id) DO NOTHING;
+
+-- Kurban Hissedarları
+INSERT INTO qurban_shares (id, qurban_id, share_index, shareholder_name, phone, share_price, deposit_amount, payment_status, payment_method, proxy_given, meat_weight, is_delivered, notes) VALUES
+('sh-q1-1', 'qrb-1', 1, 'Hasan Hüseyin Yılmaz', '0532 234 56 78', 24000.00, 24000.00, 'PAID', 'CASH', true, 48.00, false, '1. Hisse - Vekalet bizzat alındı'),
+('sh-q1-2', 'qrb-1', 2, 'Kemal Erdem', '0533 345 67 89', 24000.00, 24000.00, 'PAID', 'CHECK', true, 48.00, false, '2. Hisse - Çekle ödendi (CK-991204)'),
+('sh-q1-3', 'qrb-1', 3, 'İbrahim Çelik', '0535 456 78 90', 24000.00, 10000.00, 'PARTIAL', 'TRANSFER', true, 47.50, false, '3. Hisse - Kalan 14.000 TL bayram sabahı'),
+('sh-q1-4', 'qrb-1', 4, 'Mustafa Koç', '0542 567 89 01', 24000.00, 24000.00, 'PAID', 'CASH', true, 48.00, false, '4. Hisse'),
+('sh-q1-5', 'qrb-1', 5, 'Fatma Demir', '0536 678 90 12', 24000.00, 12000.00, 'PARTIAL', 'CARD', true, 48.00, false, '5. Hisse'),
+('sh-q1-6', 'qrb-1', 6, 'Osman Yıldız', '0555 789 01 23', 24000.00, 24000.00, 'PAID', 'TRANSFER', true, 47.50, false, '6. Hisse'),
+('sh-q1-7', 'qrb-1', 7, 'Ali Rıza Aksoy', '0538 890 12 34', 24000.00, 24000.00, 'PAID', 'CASH', true, 48.00, false, '7. Hisse'),
+('sh-q2-1', 'qrb-2', 1, 'Recep Aydın', '0532 901 23 45', 22000.00, 10000.00, 'PARTIAL', 'CASH', true, 0.00, false, '1. Hisse'),
+('sh-q2-2', 'qrb-2', 2, 'Murat Doğan', '0533 012 34 56', 22000.00, 22000.00, 'PAID', 'TRANSFER', true, 0.00, false, '2. Hisse'),
+('sh-q3-1', 'qrb-3', 1, 'Hacı Mehmet Şentürk', '0532 444 55 66', 22000.00, 22000.00, 'PAID', 'CASH', true, 48.00, false, 'Tek Hissedar (Küçükbaş)')
 ON CONFLICT (id) DO NOTHING;

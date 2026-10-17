@@ -319,6 +319,29 @@ const DEFAULT_STATE = {
     { id: 'log-1', timestamp: '2026-10-10 14:30', type: 'SİSTEM', user: 'Ahmet Özate', details: 'Sistem başlatıldı ve çiftlik parametreleri yüklendi.' },
     { id: 'log-2', timestamp: '2026-10-10 16:45', type: 'SÜT GİRİŞİ', user: 'Mehmet Bakıcı', details: 'Akşam sağımı: Tank 1 +1.080 L süt ilave edildi.' },
     { id: 'log-3', timestamp: '2026-10-11 09:15', type: 'FİNANS', user: 'Ayşe Muhasebe', details: 'Sütaş cari hesabına ₺64.750 vadeli süt satış faturası işlendi.' }
+  ],
+  checks: [
+    { id: 'chk-1', checkNumber: 'CK-884210', type: 'INCOMING', amount: 45000.00, issueDate: '2026-09-25', dueDate: '2026-10-25', drawer: 'Bursa Et & Kasaplar Birliği', bankName: 'Vakıfbank', branchName: 'Heykel Şubesi', accountNo: 'TR33 0001 ...', contactId: 'ct-2', status: 'PORTFOLIO', endorsedToContactId: null, targetAccountId: null, notes: 'Besi hayvanı satışına mahsuben alınan vadeli müşteri çeki' },
+    { id: 'chk-2', checkNumber: 'CK-991204', type: 'INCOMING', amount: 32500.00, issueDate: '2026-10-01', dueDate: '2026-11-15', drawer: 'Kemal Erdem (Kurban Hissesi)', bankName: 'İş Bankası', branchName: 'Nilüfer Şubesi', accountNo: 'TR64 0006 ...', contactId: 'ct-1', status: 'PORTFOLIO', endorsedToContactId: null, targetAccountId: null, notes: '2026 Kurbanlık 2 hisse peşinat ve bakiye çeki' },
+    { id: 'chk-3', checkNumber: 'CK-104921', type: 'OUTGOING', amount: 55000.00, issueDate: '2026-09-10', dueDate: '2026-10-30', drawer: 'Özate Çiftliği İşletmesi', bankName: 'Ziraat Bankası', branchName: 'Bursa Ticari', accountNo: 'TR45 0001 ...', contactId: 'ct-3', status: 'PORTFOLIO', endorsedToContactId: null, targetAccountId: null, notes: 'Toros Yem sanayine 30 ton silaj ve yem bedeli için verilen çek' }
+  ],
+  qurbanAnimals: [
+    { id: 'qrb-1', qurbanNo: 'KB-01', animalType: 'BÜYÜKBAŞ', sourceAnimalId: 'an-3', earTag: 'TR1600031592', breed: 'Simental', liveWeight: 610.00, carcassWeight: 335.00, totalPrice: 168000.00, shareCount: 7, slaughterDay: 1, slaughterOrder: 1, slaughterTime: '08:30', status: 'SOLD_OUT', notes: 'Kapak açmış, besi kondisyonu mükemmel tosun. 7 hissesi tamamlandı.' },
+    { id: 'qrb-2', qurbanNo: 'KB-02', animalType: 'BÜYÜKBAŞ', sourceAnimalId: 'an-4', earTag: 'TR1600047321', breed: 'Angus', liveWeight: 540.00, carcassWeight: 305.00, totalPrice: 154000.00, shareCount: 7, slaughterDay: 1, slaughterOrder: 2, slaughterTime: '09:15', status: 'PARTIALLY_RESERVED', notes: 'Et ırkı Angus tosun. 5 hisse satıldı, 2 boş hisse mevcut.' },
+    { id: 'qrb-3', qurbanNo: 'KK-01', animalType: 'KÜÇÜKBAŞ', sourceAnimalId: 'sh-3', earTag: 'TR16-R001', breed: 'Merinos Koç', liveWeight: 95.00, carcassWeight: 48.00, totalPrice: 22000.00, shareCount: 1, slaughterDay: 1, slaughterOrder: 3, slaughterTime: '10:00', status: 'SOLD_OUT', notes: 'Kurbanlık vasfında iri boy Merinos damızlık koç.' },
+    { id: 'qrb-4', qurbanNo: 'KK-02', animalType: 'KÜÇÜKBAŞ', sourceAnimalId: 'sh-4', earTag: 'TR16-R002', breed: 'Kıvırcık Koç', liveWeight: 88.00, carcassWeight: 44.00, totalPrice: 19500.00, shareCount: 1, slaughterDay: 2, slaughterOrder: 1, slaughterTime: '09:00', status: 'AVAILABLE', notes: 'Bayramın 2. günü kesimi için müsait kıvırcık toklu.' }
+  ],
+  qurbanShares: [
+    { id: 'sh-q1-1', qurbanId: 'qrb-1', shareIndex: 1, shareholderName: 'Hasan Hüseyin Yılmaz', phone: '0532 234 56 78', sharePrice: 24000.00, depositAmount: 24000.00, paymentStatus: 'PAID', paymentMethod: 'CASH', checkId: null, contactId: null, proxyGiven: true, meatWeight: 48.00, isDelivered: false, notes: '1. Hisse - Vekalet bizzat alındı' },
+    { id: 'sh-q1-2', qurbanId: 'qrb-1', shareIndex: 2, shareholderName: 'Kemal Erdem', phone: '0533 345 67 89', sharePrice: 24000.00, depositAmount: 24000.00, paymentStatus: 'PAID', paymentMethod: 'CHECK', checkId: 'chk-2', contactId: 'ct-1', proxyGiven: true, meatWeight: 48.00, isDelivered: false, notes: '2. Hisse - Çekle ödendi (CK-991204)' },
+    { id: 'sh-q1-3', qurbanId: 'qrb-1', shareIndex: 3, shareholderName: 'İbrahim Çelik', phone: '0535 456 78 90', sharePrice: 24000.00, depositAmount: 10000.00, paymentStatus: 'PARTIAL', paymentMethod: 'TRANSFER', checkId: null, contactId: null, proxyGiven: true, meatWeight: 47.50, isDelivered: false, notes: '3. Hisse - Kalan 14.000 TL bayram sabahı' },
+    { id: 'sh-q1-4', qurbanId: 'qrb-1', shareIndex: 4, shareholderName: 'Mustafa Koç', phone: '0542 567 89 01', sharePrice: 24000.00, depositAmount: 24000.00, paymentStatus: 'PAID', paymentMethod: 'CASH', checkId: null, contactId: null, proxyGiven: true, meatWeight: 48.00, isDelivered: false, notes: '4. Hisse' },
+    { id: 'sh-q1-5', qurbanId: 'qrb-1', shareIndex: 5, shareholderName: 'Fatma Demir', phone: '0536 678 90 12', sharePrice: 24000.00, depositAmount: 12000.00, paymentStatus: 'PARTIAL', paymentMethod: 'CARD', checkId: null, contactId: null, proxyGiven: true, meatWeight: 48.00, isDelivered: false, notes: '5. Hisse' },
+    { id: 'sh-q1-6', qurbanId: 'qrb-1', shareIndex: 6, shareholderName: 'Osman Yıldız', phone: '0555 789 01 23', sharePrice: 24000.00, depositAmount: 24000.00, paymentStatus: 'PAID', paymentMethod: 'TRANSFER', checkId: null, contactId: null, proxyGiven: true, meatWeight: 47.50, isDelivered: false, notes: '6. Hisse' },
+    { id: 'sh-q1-7', qurbanId: 'qrb-1', shareIndex: 7, shareholderName: 'Ali Rıza Aksoy', phone: '0538 890 12 34', sharePrice: 24000.00, depositAmount: 24000.00, paymentStatus: 'PAID', paymentMethod: 'CASH', checkId: null, contactId: null, proxyGiven: true, meatWeight: 48.00, isDelivered: false, notes: '7. Hisse' },
+    { id: 'sh-q2-1', qurbanId: 'qrb-2', shareIndex: 1, shareholderName: 'Recep Aydın', phone: '0532 901 23 45', sharePrice: 22000.00, depositAmount: 10000.00, paymentStatus: 'PARTIAL', paymentMethod: 'CASH', checkId: null, contactId: null, proxyGiven: true, meatWeight: 0.00, isDelivered: false, notes: '1. Hisse' },
+    { id: 'sh-q2-2', qurbanId: 'qrb-2', shareIndex: 2, shareholderName: 'Murat Doğan', phone: '0533 012 34 56', sharePrice: 22000.00, depositAmount: 22000.00, paymentStatus: 'PAID', paymentMethod: 'TRANSFER', checkId: null, contactId: null, proxyGiven: true, meatWeight: 0.00, isDelivered: false, notes: '2. Hisse' },
+    { id: 'sh-q3-1', qurbanId: 'qrb-3', shareIndex: 1, shareholderName: 'Hacı Mehmet Şentürk', phone: '0532 444 55 66', sharePrice: 22000.00, depositAmount: 22000.00, paymentStatus: 'PAID', paymentMethod: 'CASH', checkId: null, contactId: null, proxyGiven: true, meatWeight: 48.00, isDelivered: false, notes: 'Tek Hissedar (Küçükbaş)' }
   ]
 };
 
@@ -368,6 +391,30 @@ function loadState() {
           state.parameters.sheepCategories = [...DEFAULT_STATE.parameters.sheepCategories];
         }
       }
+      if (!Array.isArray(state.animals) || state.animals.length === 0) {
+        state.animals = JSON.parse(JSON.stringify(DEFAULT_STATE.animals));
+      }
+      if (!Array.isArray(state.accounts) || state.accounts.length === 0) {
+        state.accounts = JSON.parse(JSON.stringify(DEFAULT_STATE.accounts));
+      }
+      if (!Array.isArray(state.transfers) || state.transfers.length === 0) {
+        state.transfers = JSON.parse(JSON.stringify(DEFAULT_STATE.transfers || []));
+      }
+      if (!Array.isArray(state.contacts) || state.contacts.length === 0) {
+        state.contacts = JSON.parse(JSON.stringify(DEFAULT_STATE.contacts));
+      }
+      if (!Array.isArray(state.inventory) || state.inventory.length === 0) {
+        state.inventory = JSON.parse(JSON.stringify(DEFAULT_STATE.inventory));
+      }
+      if (!Array.isArray(state.milkProductions) || state.milkProductions.length === 0) {
+        state.milkProductions = JSON.parse(JSON.stringify(DEFAULT_STATE.milkProductions));
+      }
+      if (!Array.isArray(state.transactions) || state.transactions.length === 0) {
+        state.transactions = JSON.parse(JSON.stringify(DEFAULT_STATE.transactions));
+      }
+      if (!Array.isArray(state.tasks) || state.tasks.length === 0) {
+        state.tasks = JSON.parse(JSON.stringify(DEFAULT_STATE.tasks));
+      }
       if (!Array.isArray(state.sheep) || state.sheep.length === 0) {
         state.sheep = JSON.parse(JSON.stringify(DEFAULT_STATE.sheep));
       }
@@ -382,6 +429,15 @@ function loadState() {
       }
       if (!state.auditLogs || !Array.isArray(state.auditLogs) || state.auditLogs.length === 0) {
         state.auditLogs = JSON.parse(JSON.stringify(DEFAULT_STATE.auditLogs));
+      }
+      if (!Array.isArray(state.checks) || state.checks.length === 0) {
+        state.checks = JSON.parse(JSON.stringify(DEFAULT_STATE.checks));
+      }
+      if (!Array.isArray(state.qurbanAnimals) || state.qurbanAnimals.length === 0) {
+        state.qurbanAnimals = JSON.parse(JSON.stringify(DEFAULT_STATE.qurbanAnimals));
+      }
+      if (!Array.isArray(state.qurbanShares) || state.qurbanShares.length === 0) {
+        state.qurbanShares = JSON.parse(JSON.stringify(DEFAULT_STATE.qurbanShares));
       }
 
       // Kasa & Banka hesap adları senkronizasyonu
@@ -459,6 +515,8 @@ const PAGE_TITLES = {
   inventory: { title: 'Yem ve Stok Deposu', sub: 'Konsantre yemler, kaba yem, ilaçlar ve kritik stok uyarıları' },
   tasks: { title: 'Görevler & İş Takvimi', sub: 'Aşı takvimi, tohumlama kontrolleri, doğum alarmları ve operasyonel görevler' },
   reports: { title: 'Çiftlik Raporları ve Analitik', sub: 'Dönemsel kâr-zarar, nakit akışı ve verimlilik raporları' },
+  checks: { title: 'Çek Takip & Portföy Yönetimi', sub: 'Müşteri çekleri, verilen borç çekleri, vadesi yaklaşanlar, banka tahsilatı ve ciro işlemleri' },
+  qurban: { title: 'Kurban Satış & Kesimhane Yönetimi', sub: 'Büyükbaş 1-7 hisse organizasyonu, küçükbaş kurbanlıklar, kesimhane randevu sırası ve pay teslimatı' },
   definitions: { title: 'Çiftlik Tanımları', sub: 'Gelir/gider kategorileri, müşteri/tedarikçi grupları, padoklar ve ırkları dinamik yönetin' },
   users: { title: 'Kullanıcı Yönetimi', sub: 'Sisteme giriş yapabilen yetkililer, veterinerler, bakıcılar ve erişim şifreleri' },
   settings: { title: 'Çiftlik Ayarları', sub: 'İşletme kimlik bilgileri, operasyonel para birimi ve iletişim ayarları' },
@@ -513,11 +571,17 @@ function renderPageContent(pageId) {
     case 'contacts':
       renderContactsPage();
       break;
+    case 'checks':
+      renderChecksPage();
+      break;
     case 'animals':
       renderAnimalsTable();
       break;
     case 'sheep':
       renderSheepPage();
+      break;
+    case 'qurban':
+      renderQurbanPage();
       break;
     case 'milk':
       renderMilkTable();
@@ -541,7 +605,7 @@ function renderPageContent(pageId) {
       renderSettingsPage();
       break;
     case 'security':
-      renderSettingsPage();
+      renderSecurityPage();
       break;
   }
 }
@@ -573,15 +637,23 @@ function renderDashboard() {
     if (c.balance < 0) totalPayable += Math.abs(c.balance);
   });
 
-  // Günlük Süt (Bugünkü son 2 kayıt toplamı)
-  const todayMilks = state.milkProductions.filter(m => m.date === '2026-10-10');
-  const todayLiters = todayMilks.reduce((sum, m) => sum + m.liters, 0) || 1420;
+  // Günlük Süt (Bugünkü veya en son sağım gününün toplamı)
+  const todayIso = new Date().toISOString().split('T')[0];
+  let todayMilks = (state.milkProductions || []).filter(m => m.date === todayIso);
+  if (todayMilks.length === 0 && state.milkProductions && state.milkProductions.length > 0) {
+    const latestDate = state.milkProductions[0].date;
+    todayMilks = state.milkProductions.filter(m => m.date === latestDate);
+  }
+  const todayLiters = todayMilks.reduce((sum, m) => sum + (parseFloat(m.liters) || 0), 0);
+
+  // Aktif Sürü Sayısı (Arşivdekiler hariç)
+  const activeCattleCount = state.animals.filter(a => !['Satıldı', 'Kesildi', 'Zayiat', 'Öldü'].includes(a.status)).length;
 
   // KPI'ları Doldur
   document.getElementById('kpiNetProfit').textContent = formatCurrency(netProfit);
   document.getElementById('kpiCashBalance').textContent = formatCurrency(totalCash);
   document.getElementById('kpiMilkYield').textContent = todayLiters.toLocaleString('tr-TR') + ' L';
-  document.getElementById('kpiAnimalCount').textContent = state.animals.length + ' Baş';
+  document.getElementById('kpiAnimalCount').textContent = activeCattleCount + ' Baş';
   
   // Küçükbaş KPI & Sidebar Badge Güncellemesi
   const sheepCount = (state.sheep || []).length;
@@ -809,41 +881,59 @@ function deleteTransaction(txId) {
 // =============================================================================
 
 function renderAccountsPage() {
-  const container = document.getElementById('accountsListContainer');
-  if (!container) return;
-  container.innerHTML = '';
+  if (!state.accounts || !Array.isArray(state.accounts) || state.accounts.length === 0) {
+    state.accounts = JSON.parse(JSON.stringify(DEFAULT_STATE.accounts));
+  }
+  if (!state.transfers || !Array.isArray(state.transfers)) {
+    state.transfers = JSON.parse(JSON.stringify(DEFAULT_STATE.transfers || []));
+  }
 
-  state.accounts.forEach(acc => {
-    const card = document.createElement('div');
-    card.className = 'account-card';
-    card.innerHTML = `
-      <div class="account-header">
-        <span class="account-type">${acc.type === 'BANK' ? '🏦 Banka Hesabı' : (acc.type === 'CASH' ? '💵 Nakit Kasa' : '💳 Kart/POS')}</span>
-        <span class="badge positive">Aktif</span>
-      </div>
-      <div class="account-name">${acc.name}</div>
-      <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 4px;">${acc.iban}</div>
-      <div class="account-balance text-green">${formatCurrency(acc.balance)}</div>
-    `;
-    container.appendChild(card);
-  });
+  const container = document.getElementById('accountsListContainer');
+  if (container) {
+    container.innerHTML = '';
+
+    if (state.accounts.length === 0) {
+      container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:2.5rem; color:var(--text-muted);">Kayıtlı kasa veya banka hesabı bulunamadı.</div>`;
+    } else {
+      state.accounts.forEach(acc => {
+        const card = document.createElement('div');
+        card.className = 'account-card';
+        card.innerHTML = `
+          <div class="account-header">
+            <span class="account-type">${acc.type === 'BANK' ? '🏦 Banka Hesabı' : (acc.type === 'CASH' ? '💵 Nakit Kasa' : '💳 Kart/POS')}</span>
+            <span class="badge positive">Aktif</span>
+          </div>
+          <div class="account-name">${escapeHtml(acc.name)}</div>
+          <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 4px;">${escapeHtml(acc.iban || '-')}</div>
+          <div class="account-balance text-green">${formatCurrency(acc.balance || 0)}</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+  }
 
   // Transfer Listesi
   const trTbody = document.getElementById('transfersTbody');
-  trTbody.innerHTML = '';
-  state.transfers.forEach(tr => {
-    const fromA = state.accounts.find(a => a.id === tr.fromAcc);
-    const toA = state.accounts.find(a => a.id === tr.toAcc);
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${formatDate(tr.date)}</td>
-      <td>${fromA ? fromA.name : '-'}</td>
-      <td>${toA ? toA.name : '-'}</td>
-      <td style="font-weight: 700; color: var(--accent-blue);">${formatCurrency(tr.amount)}</td>
-      <td>${tr.note || 'Virman transferi'}</td>
-    `;
-    trTbody.appendChild(row);
-  });
+  if (trTbody) {
+    trTbody.innerHTML = '';
+    if (state.transfers.length === 0) {
+      trTbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:2rem; color:var(--text-muted);">Kayıtlı virman veya transfer hareketi bulunamadı.</td></tr>`;
+    } else {
+      [...state.transfers].reverse().forEach(tr => {
+        const fromA = state.accounts.find(a => a.id === tr.fromAcc);
+        const toA = state.accounts.find(a => a.id === tr.toAcc);
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${formatDate(tr.date)}</td>
+          <td>${fromA ? escapeHtml(fromA.name) : '-'}</td>
+          <td>${toA ? escapeHtml(toA.name) : '-'}</td>
+          <td style="font-weight: 700; color: var(--accent-blue);">${formatCurrency(tr.amount || 0)}</td>
+          <td>${escapeHtml(tr.note || 'Virman transferi')}</td>
+        `;
+        trTbody.appendChild(row);
+      });
+    }
+  }
 }
 
 // =============================================================================
@@ -1023,16 +1113,1344 @@ function renderContactsPage() {
 }
 
 // =============================================================================
+// 7.1 ÇEK TAKİP VE PORTFÖY YÖNETİMİ
+// =============================================================================
+
+let activeCheckTab = 'ALL';
+
+function renderChecksPage() {
+  if (!state.checks) state.checks = [];
+
+  const now = new Date();
+  const in15Days = new Date();
+  in15Days.setDate(in15Days.getDate() + 15);
+
+  let portfolioTotal = 0;
+  let portfolioCount = 0;
+  let outgoingTotal = 0;
+  let outgoingCount = 0;
+  let upcomingTotal = 0;
+  let upcomingCount = 0;
+  let settledTotal = 0;
+
+  state.checks.forEach(c => {
+    const amt = parseFloat(c.amount) || 0;
+    const due = new Date(c.dueDate);
+
+    if (c.type === 'INCOMING' && c.status === 'PORTFOLIO') {
+      portfolioTotal += amt;
+      portfolioCount++;
+    }
+    if (c.type === 'OUTGOING' && c.status === 'PORTFOLIO') {
+      outgoingTotal += amt;
+      outgoingCount++;
+    }
+    if (c.status === 'PORTFOLIO' && due <= in15Days) {
+      upcomingTotal += amt;
+      upcomingCount++;
+    }
+    if (c.status === 'COLLECTED' || c.status === 'PAID') {
+      settledTotal += amt;
+    }
+  });
+
+  const kpiPortTot = document.getElementById('kpiPortfolioChecksTotal');
+  if (kpiPortTot) kpiPortTot.textContent = formatCurrency(portfolioTotal);
+  const kpiPortCnt = document.getElementById('kpiPortfolioChecksCount');
+  if (kpiPortCnt) kpiPortCnt.textContent = portfolioCount;
+
+  const kpiOutTot = document.getElementById('kpiOutgoingChecksTotal');
+  if (kpiOutTot) kpiOutTot.textContent = formatCurrency(outgoingTotal);
+  const kpiOutCnt = document.getElementById('kpiOutgoingChecksCount');
+  if (kpiOutCnt) kpiOutCnt.textContent = outgoingCount;
+
+  const kpiUpTot = document.getElementById('kpiUpcomingChecksTotal');
+  if (kpiUpTot) kpiUpTot.textContent = formatCurrency(upcomingTotal);
+  const kpiUpCnt = document.getElementById('kpiUpcomingChecksCount');
+  if (kpiUpCnt) kpiUpCnt.textContent = upcomingCount;
+
+  const kpiSetTot = document.getElementById('kpiSettledChecksTotal');
+  if (kpiSetTot) kpiSetTot.textContent = formatCurrency(settledTotal);
+
+  // Tab Rozetleri
+  const bAll = document.getElementById('tabCheckBadgeAll');
+  if (bAll) bAll.textContent = state.checks.length;
+  const bInc = document.getElementById('tabCheckBadgeIncoming');
+  if (bInc) bInc.textContent = state.checks.filter(c => c.type === 'INCOMING').length;
+  const bOut = document.getElementById('tabCheckBadgeOutgoing');
+  if (bOut) bOut.textContent = state.checks.filter(c => c.type === 'OUTGOING').length;
+  const bUp = document.getElementById('tabCheckBadgeUpcoming');
+  if (bUp) bUp.textContent = upcomingCount;
+  const bSet = document.getElementById('tabCheckBadgeSettled');
+  if (bSet) bSet.textContent = state.checks.filter(c => c.status === 'COLLECTED' || c.status === 'PAID').length;
+
+  // Sidebar badge
+  const sbCheckBadge = document.getElementById('sidebarCheckBadge');
+  if (sbCheckBadge) {
+    sbCheckBadge.textContent = portfolioCount + outgoingCount;
+    sbCheckBadge.style.display = (portfolioCount + outgoingCount > 0) ? 'inline-block' : 'none';
+  }
+
+  renderChecksTable();
+}
+
+function switchCheckTab(tab) {
+  activeCheckTab = tab;
+  document.querySelectorAll('[data-check-tab]').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-check-tab') === tab);
+  });
+  renderChecksTable();
+}
+
+function renderChecksTable() {
+  const tbody = document.getElementById('checksTbody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+
+  const statusFilter = document.getElementById('filterCheckStatus')?.value || 'ALL';
+  const searchTerm = (document.getElementById('filterCheckSearch')?.value || '').toLowerCase().trim();
+
+  const now = new Date();
+  const in15Days = new Date();
+  in15Days.setDate(in15Days.getDate() + 15);
+
+  const filtered = (state.checks || []).filter(c => {
+    // Tab filtre
+    if (activeCheckTab === 'INCOMING' && c.type !== 'INCOMING') return false;
+    if (activeCheckTab === 'OUTGOING' && c.type !== 'OUTGOING') return false;
+    if (activeCheckTab === 'UPCOMING') {
+      const due = new Date(c.dueDate);
+      if (c.status !== 'PORTFOLIO' || due > in15Days) return false;
+    }
+    if (activeCheckTab === 'SETTLED' && !(c.status === 'COLLECTED' || c.status === 'PAID')) return false;
+
+    // Durum filtre
+    if (statusFilter !== 'ALL' && c.status !== statusFilter) return false;
+
+    // Arama
+    if (searchTerm) {
+      const contact = (state.contacts || []).find(ct => ct.id === c.contactId);
+      const contactName = contact ? contact.name.toLowerCase() : '';
+      const text = `${c.checkNumber} ${c.drawer} ${c.bankName} ${c.branchName || ''} ${c.notes || ''} ${contactName}`.toLowerCase();
+      if (!text.includes(searchTerm)) return false;
+    }
+
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 2rem; color: var(--text-dim);">Kriterlere uygun çek kaydı bulunamadı.</td></tr>`;
+    return;
+  }
+
+  // Vade tarihine göre sırala
+  filtered.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+
+  filtered.forEach(c => {
+    const tr = document.createElement('tr');
+    const contact = (state.contacts || []).find(ct => ct.id === c.contactId);
+    const contactName = contact ? contact.name : (c.drawer || '—');
+
+    const due = new Date(c.dueDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    due.setHours(0, 0, 0, 0);
+    const diffTime = due - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    let dueTag = '';
+    if (c.status === 'PORTFOLIO') {
+      if (diffDays < 0) {
+        dueTag = `<span style="display:inline-block; font-size:0.68rem; color:#ef4444; font-weight:700; background:rgba(239,68,68,0.12); padding:1px 6px; border-radius:4px; margin-top:2px;">⚠️ Vadesi Geçti (${Math.abs(diffDays)} gün)</span>`;
+      } else if (diffDays === 0) {
+        dueTag = `<span style="display:inline-block; font-size:0.68rem; color:#f59e0b; font-weight:700; background:rgba(245,158,11,0.12); padding:1px 6px; border-radius:4px; margin-top:2px;">🔔 Bugün Doluyor</span>`;
+      } else if (diffDays <= 15) {
+        dueTag = `<span style="display:inline-block; font-size:0.68rem; color:#eab308; font-weight:700; background:rgba(234,179,8,0.12); padding:1px 6px; border-radius:4px; margin-top:2px;">⏰ ${diffDays} gün kaldı</span>`;
+      } else {
+        dueTag = `<span style="display:inline-block; font-size:0.68rem; color:var(--text-dim); margin-top:2px;">${diffDays} gün</span>`;
+      }
+    }
+
+    let statusBadge = '';
+    switch (c.status) {
+      case 'PORTFOLIO':
+        statusBadge = `<span class="badge-check portfolio">Portföyde</span>`;
+        break;
+      case 'COLLECTED':
+        statusBadge = `<span class="badge-check collected">Tahsil Edildi</span>`;
+        break;
+      case 'ENDORSED':
+        statusBadge = `<span class="badge-check endorsed">Ciro Edildi</span>`;
+        break;
+      case 'PAID':
+        statusBadge = `<span class="badge-check paid">Ödendi</span>`;
+        break;
+      case 'BOUNCED':
+        statusBadge = `<span class="badge-check bounced">Karşılıksız</span>`;
+        break;
+      case 'CANCELLED':
+        statusBadge = `<span class="badge-check cancelled">İptal / İade</span>`;
+        break;
+      default:
+        statusBadge = `<span class="badge-check">${c.status}</span>`;
+    }
+
+    // Aksiyon butonları
+    let actionButtons = '';
+    if (c.type === 'INCOMING' && c.status === 'PORTFOLIO') {
+      actionButtons += `
+        <button class="btn btn-sm btn-secondary" style="padding: 3px 8px; font-size: 0.74rem;" onclick="openCollectCheckModal('${c.id}')" title="Bankada Tahsil Et">
+          🏦 Tahsil Et
+        </button>
+        <button class="btn btn-sm btn-ghost" style="padding: 3px 8px; font-size: 0.74rem;" onclick="openEndorseCheckModal('${c.id}')" title="Tedarikçiye Ciro Et">
+          🔄 Ciro Et
+        </button>
+        <button class="btn btn-sm btn-ghost" style="padding: 3px 6px; font-size: 0.74rem; color: var(--accent-red);" onclick="markCheckBounced('${c.id}')" title="Karşılıksız İşle">
+          ⚠️
+        </button>
+      `;
+    } else if (c.type === 'OUTGOING' && c.status === 'PORTFOLIO') {
+      actionButtons += `
+        <button class="btn btn-sm btn-secondary" style="padding: 3px 8px; font-size: 0.74rem;" onclick="markOutgoingCheckPaid('${c.id}')" title="Bankadan Ödendi Olarak İşle">
+          ✅ Ödendi İşle
+        </button>
+      `;
+    }
+
+    actionButtons += `
+      <button class="btn btn-sm btn-ghost" style="padding: 3px 6px; font-size: 0.74rem;" onclick="openEditCheckModal('${c.id}')" title="Düzenle">
+        ✏️
+      </button>
+      <button class="btn btn-sm btn-ghost" style="padding: 3px 6px; font-size: 0.74rem; color: var(--accent-red);" onclick="deleteCheckRecord('${c.id}')" title="Sil">
+        🗑️
+      </button>
+    `;
+
+    tr.innerHTML = `
+      <td>
+        <span class="badge" style="background: ${c.type === 'INCOMING' ? 'rgba(30, 77, 43, 0.2)' : 'rgba(123, 30, 38, 0.2)'}; color: ${c.type === 'INCOMING' ? 'var(--accent-success)' : 'var(--accent-red)'}; font-weight: 700;">
+          ${c.type === 'INCOMING' ? '📥 Alınan' : '📤 Verilen'}
+        </span>
+      </td>
+      <td><strong>${c.checkNumber}</strong></td>
+      <td>
+        <div><strong>${c.drawer}</strong></div>
+        <div style="font-size: 0.76rem; color: var(--text-dim);">${contactName !== c.drawer ? 'Cari: ' + contactName : ''}</div>
+      </td>
+      <td>
+        <div>${c.bankName}</div>
+        <div style="font-size: 0.76rem; color: var(--text-dim);">${c.branchName || ''}</div>
+      </td>
+      <td>${formatDate(c.issueDate)}</td>
+      <td>
+        <div><strong>${formatDate(c.dueDate)}</strong></div>
+        <div>${dueTag}</div>
+      </td>
+      <td>
+        <strong style="font-size: 1.05rem; font-family: var(--font-heading); color: ${c.type === 'INCOMING' ? 'var(--accent-success)' : 'var(--accent-red)'};">
+          ${formatCurrency(c.amount)}
+        </strong>
+      </td>
+      <td>${statusBadge}</td>
+      <td style="text-align: right;">
+        <div style="display: inline-flex; gap: 4px; align-items: center; justify-content: flex-end;">
+          ${actionButtons}
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function openNewCheckModal(defaultType = 'INCOMING') {
+  const form = document.getElementById('checkForm');
+  if (form) form.reset();
+
+  document.getElementById('checkEditingId').value = '';
+  document.getElementById('modalCheckTitle').textContent = 'Yeni Çek Girişi';
+  document.getElementById('checkType').value = defaultType;
+
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('checkIssueDate').value = today;
+
+  const dueD = new Date();
+  dueD.setDate(dueD.getDate() + 30);
+  document.getElementById('checkDueDate').value = dueD.toISOString().split('T')[0];
+
+  populateCheckContactDropdown();
+  openModal('modalCheck');
+}
+
+function openEditCheckModal(chkId) {
+  const chk = (state.checks || []).find(c => c.id === chkId);
+  if (!chk) return;
+
+  document.getElementById('checkEditingId').value = chk.id;
+  document.getElementById('modalCheckTitle').textContent = 'Çek Kaydını Düzenle';
+  document.getElementById('checkType').value = chk.type;
+  document.getElementById('checkNumber').value = chk.checkNumber;
+  document.getElementById('checkAmount').value = chk.amount;
+  document.getElementById('checkDueDate').value = chk.dueDate;
+  document.getElementById('checkIssueDate').value = chk.issueDate;
+  document.getElementById('checkDrawer').value = chk.drawer;
+  document.getElementById('checkBankName').value = chk.bankName;
+  document.getElementById('checkBranchName').value = chk.branchName || '';
+  document.getElementById('checkStatus').value = chk.status;
+  document.getElementById('checkNotes').value = chk.notes || '';
+
+  populateCheckContactDropdown();
+  if (chk.contactId) {
+    document.getElementById('checkContact').value = chk.contactId;
+  }
+
+  openModal('modalCheck');
+}
+
+function populateCheckContactDropdown() {
+  const select = document.getElementById('checkContact');
+  if (!select) return;
+  select.innerHTML = '<option value="">-- Cari Seçilmedi --</option>';
+
+  (state.contacts || []).forEach(ct => {
+    const opt = document.createElement('option');
+    opt.value = ct.id;
+    opt.textContent = `${ct.name} (${ct.type === 'CUSTOMER' ? 'Müşteri' : 'Tedarikçi'})`;
+    select.appendChild(opt);
+  });
+}
+
+function onCheckTypeChanged() {
+  const type = document.getElementById('checkType').value;
+  if (type === 'OUTGOING' && !document.getElementById('checkDrawer').value) {
+    document.getElementById('checkDrawer').value = state.farm?.name || 'Özate Çiftliği';
+  }
+}
+
+function handleCheckSubmit(e) {
+  e.preventDefault();
+  const editingId = document.getElementById('checkEditingId').value;
+  const type = document.getElementById('checkType').value;
+  const checkNumber = document.getElementById('checkNumber').value.trim();
+  const amount = parseFloat(document.getElementById('checkAmount').value) || 0;
+  const dueDate = document.getElementById('checkDueDate').value;
+  const issueDate = document.getElementById('checkIssueDate').value;
+  const drawer = document.getElementById('checkDrawer').value.trim();
+  const bankName = document.getElementById('checkBankName').value.trim();
+  const branchName = document.getElementById('checkBranchName').value.trim();
+  const contactId = document.getElementById('checkContact').value || null;
+  const status = document.getElementById('checkStatus').value;
+  const notes = document.getElementById('checkNotes').value.trim();
+
+  if (!state.checks) state.checks = [];
+
+  if (editingId) {
+    const chk = state.checks.find(c => c.id === editingId);
+    if (chk) {
+      chk.type = type;
+      chk.checkNumber = checkNumber;
+      chk.amount = amount;
+      chk.dueDate = dueDate;
+      chk.issueDate = issueDate;
+      chk.drawer = drawer;
+      chk.bankName = bankName;
+      chk.branchName = branchName;
+      chk.contactId = contactId;
+      chk.status = status;
+      chk.notes = notes;
+
+      if (window.dbService && window.dbService.upsertCheck) {
+        window.dbService.upsertCheck(chk);
+      }
+      logAudit('ÇEK GÜNCELLENDİ', `${checkNumber} no'lu çek bilgileri güncellendi (${formatCurrency(amount)})`);
+    }
+  } else {
+    const newCheck = {
+      id: 'chk-' + Date.now(),
+      checkNumber,
+      type,
+      amount,
+      dueDate,
+      issueDate,
+      drawer,
+      bankName,
+      branchName,
+      contactId,
+      status,
+      endorsedToContactId: null,
+      targetAccountId: null,
+      notes
+    };
+    state.checks.unshift(newCheck);
+
+    if (window.dbService && window.dbService.upsertCheck) {
+      window.dbService.upsertCheck(newCheck);
+    }
+    logAudit('YENİ ÇEK GİRİŞİ', `${type === 'INCOMING' ? 'Alınan' : 'Verilen'} çek sisteme işlendi: ${checkNumber} - ${formatCurrency(amount)}`);
+  }
+
+  saveState();
+  closeModal('modalCheck');
+  renderChecksPage();
+}
+
+function openCollectCheckModal(chkId) {
+  const chk = (state.checks || []).find(c => c.id === chkId);
+  if (!chk) return;
+
+  document.getElementById('collectCheckId').value = chk.id;
+  document.getElementById('collectCheckSummary').textContent = `${chk.checkNumber} - ${chk.drawer} (${chk.bankName})`;
+  document.getElementById('collectCheckAmount').textContent = formatCurrency(chk.amount);
+
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('collectDate').value = today;
+
+  const accSelect = document.getElementById('collectAccount');
+  if (accSelect) {
+    accSelect.innerHTML = '';
+    (state.accounts || []).forEach(a => {
+      const opt = document.createElement('option');
+      opt.value = a.id;
+      opt.textContent = `${a.name} (Bakiye: ${formatCurrency(a.balance)})`;
+      accSelect.appendChild(opt);
+    });
+  }
+
+  openModal('modalCheckCollect');
+}
+
+function handleCheckCollectSubmit(e) {
+  e.preventDefault();
+  const chkId = document.getElementById('collectCheckId').value;
+  const targetAccId = document.getElementById('collectAccount').value;
+  const collectDate = document.getElementById('collectDate').value;
+
+  const chk = (state.checks || []).find(c => c.id === chkId);
+  if (!chk) return;
+
+  const acc = (state.accounts || []).find(a => a.id === targetAccId);
+  if (!acc) return;
+
+  chk.status = 'COLLECTED';
+  chk.targetAccountId = targetAccId;
+  acc.balance = (parseFloat(acc.balance) || 0) + chk.amount;
+
+  const newTx = {
+    id: 'tx-' + Date.now(),
+    date: collectDate,
+    type: 'INCOME',
+    category: 'Diğer Gelirler',
+    amount: chk.amount,
+    paidAmount: chk.amount,
+    status: 'PAID',
+    contactId: chk.contactId || null,
+    accountId: targetAccId,
+    desc: `Çek Tahsilatı: ${chk.checkNumber} (${chk.drawer} - ${chk.bankName})`
+  };
+  state.transactions.unshift(newTx);
+
+  if (window.dbService) {
+    if (window.dbService.upsertCheck) window.dbService.upsertCheck(chk);
+    if (window.dbService.upsertAccount) window.dbService.upsertAccount(acc);
+    if (window.dbService.upsertTransaction) window.dbService.upsertTransaction(newTx);
+  }
+
+  logAudit('ÇEK TAHSİL EDİLDİ', `${chk.checkNumber} no'lu çek ${acc.name} hesabına tahsil edildi (+${formatCurrency(chk.amount)})`);
+  saveState();
+  closeModal('modalCheckCollect');
+  renderChecksPage();
+  renderDashboard();
+  alert(`${chk.checkNumber} no'lu çek başarıyla tahsil edildi ve ${acc.name} hesabına aktarıldı! 🎉`);
+}
+
+function openEndorseCheckModal(chkId) {
+  const chk = (state.checks || []).find(c => c.id === chkId);
+  if (!chk) return;
+
+  document.getElementById('endorseCheckId').value = chk.id;
+  document.getElementById('endorseCheckSummary').textContent = `${chk.checkNumber} - ${chk.drawer} (${chk.bankName})`;
+  document.getElementById('endorseCheckAmount').textContent = formatCurrency(chk.amount);
+
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('endorseDate').value = today;
+
+  const contactSelect = document.getElementById('endorseContact');
+  if (contactSelect) {
+    contactSelect.innerHTML = '<option value="">-- Tedarikçi Seçiniz --</option>';
+    (state.contacts || []).filter(c => c.type === 'SUPPLIER').forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.id;
+      opt.textContent = `${c.name} (Mevcut Borç: ${formatCurrency(Math.abs(c.balance))})`;
+      contactSelect.appendChild(opt);
+    });
+  }
+
+  openModal('modalCheckEndorse');
+}
+
+function handleCheckEndorseSubmit(e) {
+  e.preventDefault();
+  const chkId = document.getElementById('endorseCheckId').value;
+  const targetContactId = document.getElementById('endorseContact').value;
+  const endorseDate = document.getElementById('endorseDate').value;
+
+  if (!targetContactId) {
+    alert('Lütfen çekin ciro edileceği tedarikçi cariyi seçiniz.');
+    return;
+  }
+
+  const chk = (state.checks || []).find(c => c.id === chkId);
+  if (!chk) return;
+
+  const contact = (state.contacts || []).find(c => c.id === targetContactId);
+  if (!contact) return;
+
+  chk.status = 'ENDORSED';
+  chk.endorsedToContactId = targetContactId;
+  contact.balance = (parseFloat(contact.balance) || 0) + chk.amount;
+
+  const newTx = {
+    id: 'tx-' + Date.now(),
+    date: endorseDate,
+    type: 'EXPENSE',
+    category: 'Diğer Giderler',
+    amount: chk.amount,
+    paidAmount: chk.amount,
+    status: 'PAID',
+    contactId: targetContactId,
+    accountId: null,
+    desc: `Çek Cirosu: ${chk.checkNumber} no'lu müşteri çeki ${contact.name} carisine devredildi.`
+  };
+  state.transactions.unshift(newTx);
+
+  if (window.dbService) {
+    if (window.dbService.upsertCheck) window.dbService.upsertCheck(chk);
+    if (window.dbService.upsertContact) window.dbService.upsertContact(contact);
+    if (window.dbService.upsertTransaction) window.dbService.upsertTransaction(newTx);
+  }
+
+  logAudit('ÇEK CİRO EDİLDİ', `${chk.checkNumber} no'lu çek ${contact.name} tedarikçisine ciro edildi (${formatCurrency(chk.amount)})`);
+  saveState();
+  closeModal('modalCheckEndorse');
+  renderChecksPage();
+  renderContactsPage();
+  alert(`${chk.checkNumber} no'lu çek başarıyla ${contact.name} carisine ciro edildi ve borç bakiyesinden düşüldü! 🔄`);
+}
+
+function markOutgoingCheckPaid(chkId) {
+  const chk = (state.checks || []).find(c => c.id === chkId);
+  if (!chk) return;
+
+  const defaultAcc = (state.accounts || []).find(a => a.type === 'BANK') || state.accounts[0];
+  const accName = prompt(`"${chk.checkNumber}" no'lu (${formatCurrency(chk.amount)}) borç çeki bankadan ödendi olarak işaretleniyor.\nÖdemenin düşeceği banka/kasa hesabını onaylayınız:`, defaultAcc ? defaultAcc.name : 'Ziraat Bankası Ticari');
+  if (!accName) return;
+
+  const targetAcc = (state.accounts || []).find(a => a.name.toLowerCase().includes(accName.toLowerCase())) || defaultAcc;
+
+  chk.status = 'PAID';
+  chk.targetAccountId = targetAcc ? targetAcc.id : null;
+
+  if (targetAcc) {
+    targetAcc.balance = (parseFloat(targetAcc.balance) || 0) - chk.amount;
+  }
+
+  const newTx = {
+    id: 'tx-' + Date.now(),
+    date: new Date().toISOString().split('T')[0],
+    type: 'EXPENSE',
+    category: 'Diğer Giderler',
+    amount: chk.amount,
+    paidAmount: chk.amount,
+    status: 'PAID',
+    contactId: chk.contactId || null,
+    accountId: targetAcc ? targetAcc.id : null,
+    desc: `Verilen Çek Ödemesi: ${chk.checkNumber} bankadan ödendi.`
+  };
+  state.transactions.unshift(newTx);
+
+  if (window.dbService) {
+    if (window.dbService.upsertCheck) window.dbService.upsertCheck(chk);
+    if (targetAcc && window.dbService.upsertAccount) window.dbService.upsertAccount(targetAcc);
+    if (window.dbService.upsertTransaction) window.dbService.upsertTransaction(newTx);
+  }
+
+  logAudit('VERİLEN ÇEK ÖDENDİ', `${chk.checkNumber} no'lu borç çeki bankadan ödendi (${formatCurrency(chk.amount)})`);
+  saveState();
+  renderChecksPage();
+  renderAccountsPage();
+  alert(`${chk.checkNumber} no'lu çek ödendi olarak kaydedildi!`);
+}
+
+function markCheckBounced(chkId) {
+  const chk = (state.checks || []).find(c => c.id === chkId);
+  if (!chk) return;
+
+  if (!confirm(`DİKKAT: "${chk.checkNumber}" no'lu (${formatCurrency(chk.amount)}) çek KARŞILIKSIZ / PROTESTOLU olarak işaretlenecek. Onaylıyor musunuz?`)) {
+    return;
+  }
+
+  chk.status = 'BOUNCED';
+  if (window.dbService && window.dbService.upsertCheck) {
+    window.dbService.upsertCheck(chk);
+  }
+
+  logAudit('KARŞILIKSIZ ÇEK', `⚠️ ${chk.checkNumber} no'lu çek karşılıksız çıktı (${formatCurrency(chk.amount)})`);
+  saveState();
+  renderChecksPage();
+  alert(`Çek karşılıksız olarak işaretlendi ve risk listesine alındı.`);
+}
+
+function deleteCheckRecord(chkId) {
+  const chk = (state.checks || []).find(c => c.id === chkId);
+  if (!chk) return;
+
+  if (!confirm(`"${chk.checkNumber}" numaralı çek kaydı kalıcı olarak silinecektir. Devam edilsin mi?`)) {
+    return;
+  }
+
+  state.checks = state.checks.filter(c => c.id !== chkId);
+  if (window.dbService && window.dbService.deleteCheck) {
+    window.dbService.deleteCheck(chkId);
+  }
+
+  logAudit('ÇEK SİLİNDİ', `${chk.checkNumber} no'lu çek kaydı sistemden silindi.`);
+  saveState();
+  renderChecksPage();
+}
+
+function printCheckBordro() {
+  window.print();
+}
+
+// =============================================================================
+// 7B. KURBAN SATIŞ & KESİMHANE YÖNETİMİ MODÜLÜ
+// =============================================================================
+
+let activeQurbanView = 'CARDS'; // 'CARDS' | 'SCHEDULE' | 'SHARES_TABLE'
+
+function renderQurbanPage() {
+  if (!state.qurbanAnimals || !Array.isArray(state.qurbanAnimals) || state.qurbanAnimals.length === 0) {
+    state.qurbanAnimals = JSON.parse(JSON.stringify(DEFAULT_STATE.qurbanAnimals));
+  }
+  if (!state.qurbanShares || !Array.isArray(state.qurbanShares) || state.qurbanShares.length === 0) {
+    state.qurbanShares = JSON.parse(JSON.stringify(DEFAULT_STATE.qurbanShares));
+  }
+
+  // Aktif görünüm sekmesini kontrol et
+  if (typeof activeQurbanView !== 'undefined') {
+    switchQurbanView(activeQurbanView);
+  }
+
+  const typeFilter = document.getElementById('filterQurbanType')?.value || 'ALL';
+  const dayFilter  = document.getElementById('filterQurbanDay')?.value  || 'ALL';
+  const search     = (document.getElementById('filterQurbanSearch')?.value || '').toLowerCase().trim();
+
+  // ── KPI Hesapla ────────────────────────────────────────────────────────────
+  const animals = state.qurbanAnimals;
+  const shares  = state.qurbanShares;
+
+  const bigCount   = animals.filter(a => a.animalType === 'BÜYÜKBAŞ').length;
+  const smallCount = animals.filter(a => a.animalType === 'KÜÇÜKBAŞ').length;
+  const totalShares = animals.reduce((s, a) => s + (parseInt(a.shareCount) || 0), 0);
+  const soldShares  = shares.length;
+  const occupancy   = totalShares > 0 ? Math.round((soldShares / totalShares) * 100) : 0;
+
+  let totalRevenue = 0, totalDeposit = 0, totalRemaining = 0;
+  shares.forEach(sh => {
+    const price   = parseFloat(sh.sharePrice)   || 0;
+    const deposit = parseFloat(sh.depositAmount) || 0;
+    totalRevenue   += price;
+    totalDeposit   += deposit;
+    totalRemaining += (price - deposit);
+  });
+
+  // ── KPI DOM Güncelle ───────────────────────────────────────────────────────
+  const _set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  _set('kpiQurbanAnimalCount',    animals.length);
+  _set('kpiQurbanTypeBreakdown',  `${bigCount} Büyükbaş, ${smallCount} Küçükbaş`);
+  _set('kpiQurbanOccupancyRate',  `%${occupancy}`);
+  _set('kpiQurbanSoldSharesCount', soldShares);
+  _set('kpiQurbanTotalSharesCount', totalShares);
+  _set('kpiQurbanRevenueTotal',   formatCurrency(totalRevenue));
+  _set('kpiQurbanRemainingBalance', formatCurrency(totalRemaining));
+  _set('kpiQurbanCollectedDeposit', formatCurrency(totalDeposit));
+
+  // Sidebar rozeti
+  const sbBadge = document.getElementById('sidebarQurbanBadge');
+  if (sbBadge) sbBadge.textContent = `${soldShares}/${totalShares}`;
+
+  // ── Filtreleme ─────────────────────────────────────────────────────────────
+  const filtered = animals.filter(a => {
+    if (typeFilter !== 'ALL' && a.animalType !== typeFilter) return false;
+    if (dayFilter  !== 'ALL' && String(a.slaughterDay) !== dayFilter) return false;
+    if (search) {
+      const hay = `${a.qurbanNo} ${a.earTag || ''} ${a.breed || ''} ${a.notes || ''}`.toLowerCase();
+      if (!hay.includes(search)) return false;
+    }
+    return true;
+  });
+
+  // ── Görünümleri Render Et ─────────────────────────────────────────────────
+  renderQurbanCards(filtered);
+  renderQurbanSchedule(filtered);
+  renderQurbanSharesTable(filtered);
+}
+
+function renderQurbanCards(animals) {
+  const container = document.getElementById('qurbanCardsContainer');
+  if (!container) return;
+
+  if (!animals.length) {
+    container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text-dim);">
+      <div style="font-size:3rem;margin-bottom:1rem;">🐑</div>
+      <div style="font-size:1rem;font-weight:600;">Kurbanlık kaydı bulunamadı.</div>
+      <div style="font-size:0.82rem;margin-top:0.5rem;">Yeni bir kurbanlık tanımlamak için "Yeni Kurbanlık Tanımla" butonuna tıklayın.</div>
+    </div>`;
+    return;
+  }
+
+  container.innerHTML = animals.map(a => {
+    const animalShares = (state.qurbanShares || []).filter(s => s.qurbanId === a.id);
+    const soldCount   = animalShares.length;
+    const totalShares = parseInt(a.shareCount) || 7;
+    const emptySlots  = totalShares - soldCount;
+    const fillPct     = Math.round((soldCount / totalShares) * 100);
+
+    const statusMap = {
+      AVAILABLE:          { label: 'Müsait',          color: 'var(--accent-success)',  bg: 'rgba(30,77,43,0.15)' },
+      PARTIALLY_RESERVED: { label: 'Kısmen Doldu',    color: '#eab308',                bg: 'rgba(234,179,8,0.15)' },
+      SOLD_OUT:           { label: 'Hisse Tamam',      color: '#3b82f6',                bg: 'rgba(43,114,186,0.15)' },
+      SLAUGHTERED:        { label: 'Kesildi',          color: 'var(--text-dim)',         bg: 'rgba(0,0,0,0.1)' },
+    };
+    const st = statusMap[a.status] || statusMap.AVAILABLE;
+    const typeIcon = a.animalType === 'BÜYÜKBAŞ' ? '🐂' : '🐑';
+
+    const shareSlots = Array.from({ length: totalShares }, (_, i) => {
+      const sh = animalShares.find(s => s.shareIndex === i + 1);
+      if (sh) {
+        const payColor = sh.paymentStatus === 'PAID' ? 'var(--accent-success)' : sh.paymentStatus === 'PARTIAL' ? '#eab308' : 'var(--accent-red)';
+        return `<div title="${sh.shareholderName} — ${sh.paymentStatus === 'PAID' ? 'Tam Ödendi' : sh.paymentStatus === 'PARTIAL' ? 'Kapora Alındı' : 'Ödeme Bekleniyor'}"
+          style="flex:1;height:28px;background:${payColor};border-radius:4px;opacity:0.9;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.62rem;font-weight:700;color:#fff;"
+          onclick="openEditShareModal('${sh.id}')">${i + 1}</div>`;
+      }
+      return `<div title="${i + 1}. Hisse — Boş"
+        style="flex:1;height:28px;background:var(--bg-surface-soft);border:1.5px dashed var(--border-subtle);border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.65rem;color:var(--text-dim);"
+        onclick="openAddShareModal('${a.id}', ${i + 1})">${i + 1}</div>`;
+    }).join('');
+
+    const shareRows = animalShares.slice(0, 3).map(sh => {
+      const payBadge = sh.paymentStatus === 'PAID'
+        ? `<span style="font-size:0.62rem;padding:1px 5px;border-radius:8px;background:rgba(30,77,43,0.2);color:var(--accent-success);">Tam Ödendi</span>`
+        : sh.paymentStatus === 'PARTIAL'
+        ? `<span style="font-size:0.62rem;padding:1px 5px;border-radius:8px;background:rgba(234,179,8,0.2);color:#eab308;">Kapora</span>`
+        : `<span style="font-size:0.62rem;padding:1px 5px;border-radius:8px;background:rgba(123,30,38,0.2);color:var(--accent-red);">Bekliyor</span>`;
+      return `<div style="display:flex;align-items:center;justify-content:space-between;padding:0.3rem 0;border-bottom:1px solid var(--border-subtle);font-size:0.78rem;">
+        <span style="font-weight:600;">${sh.shareIndex}. ${sh.shareholderName}</span>
+        <div style="display:flex;gap:6px;align-items:center;">${payBadge}
+          <button onclick="openEditShareModal('${sh.id}')" style="background:none;border:none;cursor:pointer;color:var(--text-dim);font-size:0.75rem;padding:0 2px;" title="Düzenle">✏️</button>
+          <button onclick="deleteQurbanShare('${sh.id}')" style="background:none;border:none;cursor:pointer;color:var(--accent-red);font-size:0.75rem;padding:0 2px;" title="Sil">🗑️</button>
+        </div>
+      </div>`;
+    }).join('');
+
+    const moreCount = animalShares.length - 3;
+
+    return `<div class="dashboard-panel" style="padding:0;overflow:hidden;">
+      <div style="padding:0.85rem 1rem 0.6rem;border-bottom:1px solid var(--border-subtle);display:flex;justify-content:space-between;align-items:flex-start;">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:1.5rem;">${typeIcon}</span>
+            <div>
+              <div style="font-weight:800;font-size:1rem;">${a.qurbanNo}</div>
+              <div style="font-size:0.75rem;color:var(--text-dim);">${a.breed || a.animalType} · ${a.liveWeight} kg canlı · ${a.carcassWeight ? a.carcassWeight + ' kg karkas' : '~' + Math.round(a.liveWeight * 0.55) + ' kg karkas (tahmini)'}</div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="font-size:0.72rem;padding:3px 8px;border-radius:8px;font-weight:700;background:${st.bg};color:${st.color};">${st.label}</span>
+          <button onclick="openEditQurbanAnimalModal('${a.id}')" style="background:none;border:none;cursor:pointer;color:var(--text-dim);font-size:0.85rem;" title="Düzenle">✏️</button>
+          <button onclick="openQurbanReceiptModal('${a.id}')" style="background:none;border:none;cursor:pointer;color:var(--text-dim);font-size:0.85rem;" title="Makbuz">🖨️</button>
+          <button onclick="deleteQurbanAnimal('${a.id}')" style="background:none;border:none;cursor:pointer;color:var(--accent-red);font-size:0.85rem;" title="Sil">🗑️</button>
+        </div>
+      </div>
+
+      <div style="padding:0.75rem 1rem;">
+        <!-- Bilgi Satırı -->
+        <div style="display:flex;gap:1.2rem;margin-bottom:0.75rem;font-size:0.78rem;color:var(--text-dim);">
+          <span>📅 ${a.slaughterDay}. Gün Kesimi</span>
+          <span>⏱️ ${a.slaughterTime || '—'}</span>
+          <span>🔢 ${a.slaughterOrder ? a.slaughterOrder + '. Sıra' : '—'}</span>
+          <span>💰 ${formatCurrency(parseFloat(a.totalPrice) || 0)}</span>
+        </div>
+
+        <!-- Hisse Şerit Göstergesi -->
+        <div style="margin-bottom:0.65rem;">
+          <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--text-dim);margin-bottom:4px;">
+            <span>Hisse Doluluk</span>
+            <span>${soldCount}/${totalShares} — %${fillPct}</span>
+          </div>
+          <div style="display:flex;gap:4px;">${shareSlots}</div>
+        </div>
+
+        <!-- Hissedar Listesi -->
+        <div style="min-height:40px;">${shareRows}</div>
+        ${moreCount > 0 ? `<div style="font-size:0.73rem;color:var(--text-dim);text-align:center;padding:0.25rem 0;">+${moreCount} hissedar daha</div>` : ''}
+
+        <!-- Aksiyonlar -->
+        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;justify-content:flex-end;">
+          ${emptySlots > 0 ? `<button class="btn btn-secondary" style="font-size:0.75rem;padding:0.3rem 0.75rem;" onclick="openAddShareModal('${a.id}', null)">
+            ➕ Hissedar Ekle (${emptySlots} boş)
+          </button>` : ''}
+          <button class="btn btn-ghost" style="font-size:0.75rem;padding:0.3rem 0.75rem;" onclick="openQurbanReceiptModal('${a.id}')">
+            🖨️ Makbuz
+          </button>
+        </div>
+        ${a.notes ? `<div style="margin-top:0.5rem;font-size:0.73rem;color:var(--text-dim);font-style:italic;">📝 ${a.notes}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderQurbanSchedule(animals) {
+  const container = document.getElementById('qurbanScheduleContainer');
+  if (!container) return;
+
+  const byDay = {};
+  animals.forEach(a => {
+    const d = a.slaughterDay || 1;
+    if (!byDay[d]) byDay[d] = [];
+    byDay[d].push(a);
+  });
+
+  if (!Object.keys(byDay).length) {
+    container.innerHTML = `<div class="dashboard-panel" style="text-align:center;padding:2rem;color:var(--text-dim);">Kesim programı için önce kurbanlık tanımlayın.</div>`;
+    return;
+  }
+
+  container.innerHTML = Object.keys(byDay).sort().map(day => {
+    const dayAnimals = byDay[day].sort((a, b) => (a.slaughterOrder || 99) - (b.slaughterOrder || 99));
+    const rows = dayAnimals.map(a => {
+      const animalShares = (state.qurbanShares || []).filter(s => s.qurbanId === a.id);
+      const soldCount = animalShares.length;
+      const totalShares = parseInt(a.shareCount) || 7;
+      const typeIcon = a.animalType === 'BÜYÜKBAŞ' ? '🐂' : '🐑';
+      const statusColor = a.status === 'SLAUGHTERED' ? 'var(--text-dim)' : a.status === 'SOLD_OUT' ? '#3b82f6' : 'var(--accent-success)';
+      return `<tr>
+        <td style="font-weight:700;">${a.slaughterOrder || '—'}</td>
+        <td>${a.slaughterTime || '—'}</td>
+        <td>${typeIcon} ${a.qurbanNo}</td>
+        <td>${a.breed || '—'} · ${a.liveWeight} kg</td>
+        <td>${formatCurrency(parseFloat(a.totalPrice) || 0)}</td>
+        <td><span style="font-weight:700;color:${statusColor};">${soldCount}/${totalShares}</span></td>
+        <td><span style="font-size:0.72rem;padding:2px 6px;border-radius:6px;background:rgba(43,114,186,0.12);color:#3b82f6;">${a.status === 'SLAUGHTERED' ? '✅ Kesildi' : a.status === 'SOLD_OUT' ? 'Hisse Tamam' : 'Aktif'}</span></td>
+        <td style="text-align:right;">
+          <button onclick="openQurbanReceiptModal('${a.id}')" class="btn btn-secondary" style="font-size:0.72rem;padding:0.2rem 0.6rem;">🖨️</button>
+        </td>
+      </tr>`;
+    }).join('');
+
+    return `<div class="dashboard-panel" style="margin-bottom:1rem;">
+      <div style="font-weight:800;font-size:0.9rem;padding:0 0 0.75rem;margin-bottom:0.75rem;border-bottom:1px solid var(--border-subtle);">
+        ⏱️ Bayramın ${day}. Günü — Kesim Programı (${dayAnimals.length} Kurban)
+      </div>
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead><tr><th>Sıra</th><th>Saat</th><th>Kurban No</th><th>Tür & Ağırlık</th><th>Toplam Bedel</th><th>Hisse</th><th>Durum</th><th style="text-align:right">Aksiyon</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderQurbanSharesTable(animals) {
+  const tbody = document.getElementById('qurbanAllSharesTbody');
+  if (!tbody) return;
+
+  const animalIds = animals.map(a => a.id);
+  const allShares = (state.qurbanShares || []).filter(s => animalIds.includes(s.qurbanId));
+
+  if (!allShares.length) {
+    tbody.innerHTML = `<tr><td colspan="12" style="text-align:center;padding:2rem;color:var(--text-dim);">Hissedar kaydı bulunamadı.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = allShares.map(sh => {
+    const animal = (state.qurbanAnimals || []).find(a => a.id === sh.qurbanId);
+    const remaining = (parseFloat(sh.sharePrice) || 0) - (parseFloat(sh.depositAmount) || 0);
+    const payMap = { PAID: { l: 'Tam Ödendi', c: 'var(--accent-success)' }, PARTIAL: { l: 'Kapora', c: '#eab308' }, PENDING: { l: 'Bekliyor', c: 'var(--accent-red)' } };
+    const pm = payMap[sh.paymentStatus] || payMap.PENDING;
+    const methodMap = { CASH: '💵', TRANSFER: '🏦', CARD: '💳', CHECK: '📑' };
+    return `<tr>
+      <td style="font-weight:700;">${animal?.qurbanNo || '—'}</td>
+      <td>${sh.shareIndex}. Hisse</td>
+      <td style="font-weight:600;">${sh.shareholderName}</td>
+      <td><a href="tel:${sh.phone}">${sh.phone}</a></td>
+      <td>${formatCurrency(parseFloat(sh.sharePrice) || 0)}</td>
+      <td style="color:var(--accent-success);">${formatCurrency(parseFloat(sh.depositAmount) || 0)}</td>
+      <td style="color:${remaining > 0 ? 'var(--accent-red)' : 'var(--text-dim)'};">${formatCurrency(remaining)}</td>
+      <td>${methodMap[sh.paymentMethod] || '—'} ${sh.paymentMethod || ''}</td>
+      <td>${sh.proxyGiven ? '✅' : '❌'}</td>
+      <td>${sh.meatWeight > 0 ? sh.meatWeight + ' kg' : '—'}</td>
+      <td>
+        <label style="cursor:pointer;display:flex;align-items:center;gap:4px;font-size:0.8rem;">
+          <input type="checkbox" ${sh.isDelivered ? 'checked' : ''} onchange="toggleShareDelivery('${sh.id}', this.checked)" style="width:15px;height:15px;">
+          ${sh.isDelivered ? '<span style="color:var(--accent-success);">Teslim</span>' : '<span style="color:var(--text-dim);">Bekliyor</span>'}
+        </label>
+      </td>
+      <td style="text-align:right;white-space:nowrap;">
+        <span style="font-size:0.7rem;padding:2px 6px;border-radius:6px;font-weight:700;background:${pm.c}22;color:${pm.c};">${pm.l}</span>
+        <button onclick="openEditShareModal('${sh.id}')" class="btn btn-ghost" style="font-size:0.72rem;padding:0.2rem 0.5rem;margin-left:4px;">✏️</button>
+        <button onclick="deleteQurbanShare('${sh.id}')" class="btn btn-ghost" style="font-size:0.72rem;padding:0.2rem 0.5rem;color:var(--accent-red);">🗑️</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function switchQurbanView(view) {
+  activeQurbanView = view;
+  document.querySelectorAll('[data-qurban-view]').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-qurban-view') === view);
+  });
+  const cards   = document.getElementById('qurbanCardsContainer');
+  const schedule = document.getElementById('qurbanScheduleContainer');
+  const table   = document.getElementById('qurbanSharesTableContainer');
+  if (cards)    cards.style.display    = view === 'CARDS'        ? 'grid' : 'none';
+  if (schedule) schedule.style.display = view === 'SCHEDULE'     ? 'block' : 'none';
+  if (table)    table.style.display    = view === 'SHARES_TABLE' ? 'block' : 'none';
+}
+
+// ── Kurbanlık Hayvan Formu ─────────────────────────────────────────────────
+
+function openNewQurbanAnimalModal() {
+  document.getElementById('qurbanAnimalEditingId').value = '';
+  document.getElementById('modalQurbanAnimalTitle').textContent = 'Yeni Kurbanlık Tanımla';
+  document.getElementById('qurbanAnimalForm').reset();
+  document.getElementById('qurbanSlaughterTime').value = '09:00';
+
+  // Mevcut hayvanları doldur
+  const srcSelect = document.getElementById('qurbanSourceAnimal');
+  if (srcSelect) {
+    const animals = [...(state.animals || []), ...(state.sheep || [])];
+    srcSelect.innerHTML = '<option value="">-- Manuel Olarak Gir --</option>' +
+      animals.map(a => `<option value="${a.id}" data-type="${a.earTag ? (state.animals?.includes(a) ? 'BIG' : 'SMALL') : 'BIG'}"
+        data-tag="${a.earTag || ''}" data-breed="${a.breed || ''}" data-weight="${a.weight || 0}">
+        ${a.earTag || a.id} — ${a.name || ''} (${a.breed || ''}, ${a.weight || 0} kg)
+      </option>`).join('');
+  }
+  calculateQurbanEstimates();
+  openModal('modalQurbanAnimal');
+}
+
+function openEditQurbanAnimalModal(animalId) {
+  const a = (state.qurbanAnimals || []).find(x => x.id === animalId);
+  if (!a) return;
+
+  openNewQurbanAnimalModal(); // formu temizle + hayvanları doldur
+  document.getElementById('qurbanAnimalEditingId').value = animalId;
+  document.getElementById('modalQurbanAnimalTitle').textContent = 'Kurbanlık Düzenle — ' + a.qurbanNo;
+
+  document.getElementById('qurbanAnimalType').value      = a.animalType;
+  document.getElementById('qurbanAnimalNo').value        = a.qurbanNo;
+  document.getElementById('qurbanEarTag').value          = a.earTag || '';
+  document.getElementById('qurbanBreed').value           = a.breed || '';
+  document.getElementById('qurbanLiveWeight').value      = a.liveWeight || '';
+  document.getElementById('qurbanTotalPrice').value      = a.totalPrice || '';
+  document.getElementById('qurbanShareCount').value      = String(a.shareCount || 7);
+  document.getElementById('qurbanSlaughterDay').value    = String(a.slaughterDay || 1);
+  document.getElementById('qurbanSlaughterOrder').value  = a.slaughterOrder || '';
+  document.getElementById('qurbanSlaughterTime').value   = a.slaughterTime || '09:00';
+  document.getElementById('qurbanNotes').value           = a.notes || '';
+  calculateQurbanEstimates();
+}
+
+function onQurbanTypeChanged() {
+  const type = document.getElementById('qurbanAnimalType').value;
+  const shareSelect = document.getElementById('qurbanShareCount');
+  if (type === 'KÜÇÜKBAŞ') {
+    shareSelect.value = '1';
+    shareSelect.disabled = true;
+  } else {
+    shareSelect.disabled = false;
+    if (shareSelect.value === '1') shareSelect.value = '7';
+  }
+  calculateQurbanEstimates();
+}
+
+function onQurbanSourceAnimalSelected() {
+  const sel = document.getElementById('qurbanSourceAnimal');
+  const opt = sel?.options[sel.selectedIndex];
+  if (!opt || !opt.value) return;
+  document.getElementById('qurbanEarTag').value  = opt.getAttribute('data-tag') || '';
+  document.getElementById('qurbanBreed').value   = opt.getAttribute('data-breed') || '';
+  document.getElementById('qurbanLiveWeight').value = opt.getAttribute('data-weight') || '';
+  calculateQurbanEstimates();
+}
+
+function calculateQurbanEstimates() {
+  const weight     = parseFloat(document.getElementById('qurbanLiveWeight')?.value) || 0;
+  const totalPrice = parseFloat(document.getElementById('qurbanTotalPrice')?.value) || 0;
+  const shares     = parseInt(document.getElementById('qurbanShareCount')?.value) || 7;
+
+  const carcass   = Math.round(weight * 0.55);
+  const meatShare = shares > 0 ? Math.round((carcass / shares) * 10) / 10 : 0;
+  const priceShare = shares > 0 ? Math.round(totalPrice / shares) : 0;
+
+  const _set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  _set('qurbanEstCarcass',    `~${carcass} kg`);
+  _set('qurbanEstShareMeat',  `~${meatShare} kg`);
+  _set('qurbanEstSharePrice', formatCurrency(priceShare));
+}
+
+function handleQurbanAnimalSubmit(e) {
+  e.preventDefault();
+  if (!state.qurbanAnimals) state.qurbanAnimals = [];
+
+  const editingId = document.getElementById('qurbanAnimalEditingId').value;
+  const liveWeight = parseFloat(document.getElementById('qurbanLiveWeight').value) || 0;
+
+  const data = {
+    animalType:     document.getElementById('qurbanAnimalType').value,
+    qurbanNo:       document.getElementById('qurbanAnimalNo').value.trim().toUpperCase(),
+    sourceAnimalId: document.getElementById('qurbanSourceAnimal').value || null,
+    earTag:         document.getElementById('qurbanEarTag').value.trim(),
+    breed:          document.getElementById('qurbanBreed').value.trim(),
+    liveWeight:     liveWeight,
+    carcassWeight:  Math.round(liveWeight * 0.55 * 10) / 10,
+    totalPrice:     parseFloat(document.getElementById('qurbanTotalPrice').value) || 0,
+    shareCount:     parseInt(document.getElementById('qurbanShareCount').value) || 7,
+    slaughterDay:   parseInt(document.getElementById('qurbanSlaughterDay').value) || 1,
+    slaughterOrder: parseInt(document.getElementById('qurbanSlaughterOrder').value) || null,
+    slaughterTime:  document.getElementById('qurbanSlaughterTime').value,
+    notes:          document.getElementById('qurbanNotes').value.trim(),
+  };
+
+  // Durumu otomatik güncelle
+  const soldShares = (state.qurbanShares || []).filter(s => s.qurbanId === editingId || (!editingId)).length;
+  data.status = data.shareCount <= soldShares ? 'SOLD_OUT' : soldShares > 0 ? 'PARTIALLY_RESERVED' : 'AVAILABLE';
+
+  if (editingId) {
+    const idx = state.qurbanAnimals.findIndex(a => a.id === editingId);
+    if (idx > -1) {
+      data.status = state.qurbanAnimals[idx].status; // durumu koru
+      state.qurbanAnimals[idx] = { ...state.qurbanAnimals[idx], ...data };
+    }
+    logAudit('KURBAN GÜNCELLENDİ', `${data.qurbanNo} kurbanlık bilgileri güncellendi`);
+  } else {
+    data.id = `qrb-${Date.now()}`;
+    data.status = 'AVAILABLE';
+    state.qurbanAnimals.push(data);
+    logAudit('KURBAN EKLENDİ', `${data.qurbanNo} kurbanlık tanımlandı (${formatCurrency(data.totalPrice)})`);
+  }
+
+  saveState();
+  closeModal('modalQurbanAnimal');
+  renderQurbanPage();
+  showToastNotification(`${data.qurbanNo} kurbanlık kaydedildi ✅`);
+}
+
+function deleteQurbanAnimal(animalId) {
+  const a = (state.qurbanAnimals || []).find(x => x.id === animalId);
+  if (!a) return;
+  const shareCount = (state.qurbanShares || []).filter(s => s.qurbanId === animalId).length;
+  if (!confirm(`${a.qurbanNo} kurbanlık ve bağlı ${shareCount} hissedar kaydı silinecek. Emin misiniz?`)) return;
+  state.qurbanAnimals = state.qurbanAnimals.filter(x => x.id !== animalId);
+  state.qurbanShares  = (state.qurbanShares || []).filter(s => s.qurbanId !== animalId);
+  logAudit('KURBAN SİLİNDİ', `${a.qurbanNo} ve bağlı hisseler silindi`);
+  saveState();
+  renderQurbanPage();
+  showToastNotification(`${a.qurbanNo} silindi.`);
+}
+
+// ── Hissedar Formu ─────────────────────────────────────────────────────────
+
+function openAddShareModal(animalId, shareIndex) {
+  if (!state.qurbanAnimals) return;
+  const animal = state.qurbanAnimals.find(a => a.id === animalId);
+  if (!animal) return;
+
+  // Boş bir slot bul
+  const existingShares = (state.qurbanShares || []).filter(s => s.qurbanId === animalId);
+  const totalShares = parseInt(animal.shareCount) || 7;
+
+  if (existingShares.length >= totalShares) {
+    showToastNotification('Bu kurbanlık için tüm hisseler dolu!');
+    return;
+  }
+
+  let nextIndex = shareIndex;
+  if (!nextIndex) {
+    const usedIndexes = existingShares.map(s => s.shareIndex);
+    for (let i = 1; i <= totalShares; i++) {
+      if (!usedIndexes.includes(i)) { nextIndex = i; break; }
+    }
+  }
+
+  document.getElementById('qurbanShareEditingId').value   = '';
+  document.getElementById('qurbanShareAnimalId').value    = animalId;
+  document.getElementById('modalQurbanShareTitle').textContent = `Hissedar Ekle — ${animal.qurbanNo}`;
+  document.getElementById('qurbanShareAnimalHeader').textContent = `${animal.qurbanNo} · ${animal.breed || animal.animalType} · ${animal.liveWeight} kg`;
+  document.getElementById('qurbanShareIndexDisplay').textContent = `${nextIndex}. Hisse`;
+  document.getElementById('qurbanShareForm').reset();
+  document.getElementById('shareDeposit').value = '0';
+
+  // Hisse bedelini otomatik doldur
+  const pricePerShare = Math.round((parseFloat(animal.totalPrice) || 0) / totalShares);
+  document.getElementById('sharePrice').value = pricePerShare;
+  calculateShareRemaining();
+  document.getElementById('shareCheckGroup').style.display = 'none';
+  openModal('modalQurbanShare');
+}
+
+function openEditShareModal(shareId) {
+  const sh = (state.qurbanShares || []).find(s => s.id === shareId);
+  if (!sh) return;
+  const animal = (state.qurbanAnimals || []).find(a => a.id === sh.qurbanId);
+
+  document.getElementById('qurbanShareEditingId').value   = shareId;
+  document.getElementById('qurbanShareAnimalId').value    = sh.qurbanId;
+  document.getElementById('modalQurbanShareTitle').textContent = `Hissedar Düzenle — ${animal?.qurbanNo || ''}`;
+  document.getElementById('qurbanShareAnimalHeader').textContent = `${animal?.qurbanNo || ''} · ${animal?.breed || ''} · ${animal?.liveWeight || ''} kg`;
+  document.getElementById('qurbanShareIndexDisplay').textContent = `${sh.shareIndex}. Hisse`;
+
+  document.getElementById('shareholderName').value      = sh.shareholderName;
+  document.getElementById('shareholderPhone').value     = sh.phone || '';
+  document.getElementById('sharePrice').value           = sh.sharePrice || '';
+  document.getElementById('shareDeposit').value         = sh.depositAmount || 0;
+  document.getElementById('sharePaymentMethod').value   = sh.paymentMethod || 'CASH';
+  document.getElementById('shareMeatWeight').value      = sh.meatWeight || '';
+  document.getElementById('shareProxyGiven').checked    = !!sh.proxyGiven;
+  document.getElementById('shareIsDelivered').checked   = !!sh.isDelivered;
+  document.getElementById('shareNotes').value           = sh.notes || '';
+
+  const checkGroup = document.getElementById('shareCheckGroup');
+  checkGroup.style.display = sh.paymentMethod === 'CHECK' ? 'block' : 'none';
+  if (sh.paymentMethod === 'CHECK') {
+    document.getElementById('shareCheckNumber').value = sh.checkId || '';
+  }
+  calculateShareRemaining();
+  openModal('modalQurbanShare');
+}
+
+function calculateShareRemaining() {
+  const price   = parseFloat(document.getElementById('sharePrice')?.value) || 0;
+  const deposit = parseFloat(document.getElementById('shareDeposit')?.value) || 0;
+  const remaining = price - deposit;
+  const el = document.getElementById('shareRemainingDisplay');
+  if (el) {
+    el.textContent = formatCurrency(remaining);
+    el.style.color = remaining > 0 ? 'var(--accent-red)' : 'var(--accent-success)';
+  }
+}
+
+function onSharePaymentMethodChanged() {
+  const method = document.getElementById('sharePaymentMethod')?.value;
+  const checkGroup = document.getElementById('shareCheckGroup');
+  if (checkGroup) checkGroup.style.display = method === 'CHECK' ? 'block' : 'none';
+}
+
+function handleQurbanShareSubmit(e) {
+  e.preventDefault();
+  if (!state.qurbanShares) state.qurbanShares = [];
+
+  const editingId = document.getElementById('qurbanShareEditingId').value;
+  const animalId  = document.getElementById('qurbanShareAnimalId').value;
+  const animal    = (state.qurbanAnimals || []).find(a => a.id === animalId);
+
+  // Hisse numarasını belirle
+  let shareIndex;
+  if (editingId) {
+    shareIndex = (state.qurbanShares.find(s => s.id === editingId) || {}).shareIndex || 1;
+  } else {
+    const existingIndexes = state.qurbanShares.filter(s => s.qurbanId === animalId).map(s => s.shareIndex);
+    for (let i = 1; i <= (parseInt(animal?.shareCount) || 7); i++) {
+      if (!existingIndexes.includes(i)) { shareIndex = i; break; }
+    }
+    shareIndex = shareIndex || (existingIndexes.length + 1);
+  }
+
+  const price   = parseFloat(document.getElementById('sharePrice').value) || 0;
+  const deposit = parseFloat(document.getElementById('shareDeposit').value) || 0;
+  const payStatus = deposit >= price ? 'PAID' : deposit > 0 ? 'PARTIAL' : 'PENDING';
+
+  const data = {
+    qurbanId:        animalId,
+    shareIndex,
+    shareholderName: document.getElementById('shareholderName').value.trim(),
+    phone:           document.getElementById('shareholderPhone').value.trim(),
+    sharePrice:      price,
+    depositAmount:   deposit,
+    paymentStatus:   payStatus,
+    paymentMethod:   document.getElementById('sharePaymentMethod').value,
+    checkId:         document.getElementById('sharePaymentMethod').value === 'CHECK' ? document.getElementById('shareCheckNumber').value.trim() : null,
+    meatWeight:      parseFloat(document.getElementById('shareMeatWeight').value) || 0,
+    proxyGiven:      document.getElementById('shareProxyGiven').checked,
+    isDelivered:     document.getElementById('shareIsDelivered').checked,
+    notes:           document.getElementById('shareNotes').value.trim(),
+  };
+
+  if (editingId) {
+    const idx = state.qurbanShares.findIndex(s => s.id === editingId);
+    if (idx > -1) state.qurbanShares[idx] = { ...state.qurbanShares[idx], ...data };
+    logAudit('HİSSEDAR GÜNCELLENDİ', `${data.shareholderName} hisse bilgileri güncellendi`);
+  } else {
+    data.id = `sh-q-${Date.now()}`;
+    data.contactId = null;
+    state.qurbanShares.push(data);
+    logAudit('HİSSEDAR EKLENDİ', `${animal?.qurbanNo || ''} ${shareIndex}. hisse: ${data.shareholderName} (${formatCurrency(price)})`);
+  }
+
+  // Hayvanın durumunu güncelle
+  if (animal) {
+    const soldCount = state.qurbanShares.filter(s => s.qurbanId === animalId).length;
+    const totalShares = parseInt(animal.shareCount) || 7;
+    animal.status = soldCount >= totalShares ? 'SOLD_OUT' : soldCount > 0 ? 'PARTIALLY_RESERVED' : 'AVAILABLE';
+  }
+
+  saveState();
+  closeModal('modalQurbanShare');
+  renderQurbanPage();
+  showToastNotification(`${data.shareholderName} hissedar kaydedildi ✅`);
+}
+
+function toggleShareDelivery(shareId, isDelivered) {
+  const sh = (state.qurbanShares || []).find(s => s.id === shareId);
+  if (!sh) return;
+  sh.isDelivered = isDelivered;
+  logAudit('ET TESLİMATI', `${sh.shareholderName} pay teslimi ${isDelivered ? 'tamamlandı' : 'geri alındı'}`);
+  saveState();
+  renderQurbanPage();
+  showToastNotification(isDelivered ? `${sh.shareholderName} — Pay teslim edildi ✅` : 'Teslimat geri alındı.');
+}
+
+function deleteQurbanShare(shareId) {
+  const sh = (state.qurbanShares || []).find(s => s.id === shareId);
+  if (!sh) return;
+  if (!confirm(`${sh.shareholderName} hissedar kaydı silinecek. Emin misiniz?`)) return;
+  state.qurbanShares = state.qurbanShares.filter(s => s.id !== shareId);
+
+  // Hayvan durumunu güncelle
+  const animal = (state.qurbanAnimals || []).find(a => a.id === sh.qurbanId);
+  if (animal) {
+    const soldCount = state.qurbanShares.filter(s => s.qurbanId === animal.id).length;
+    const totalShares = parseInt(animal.shareCount) || 7;
+    animal.status = soldCount >= totalShares ? 'SOLD_OUT' : soldCount > 0 ? 'PARTIALLY_RESERVED' : 'AVAILABLE';
+  }
+
+  logAudit('HİSSEDAR SİLİNDİ', `${sh.shareholderName} ${sh.shareIndex}. hisse silindi`);
+  saveState();
+  renderQurbanPage();
+  showToastNotification(`${sh.shareholderName} hissedar kaydı silindi.`);
+}
+
+// ── Makbuz & Yazdırma ──────────────────────────────────────────────────────
+
+function openQurbanReceiptModal(animalId) {
+  const animal = (state.qurbanAnimals || []).find(a => a.id === animalId);
+  if (!animal) return;
+
+  const animalShares = (state.qurbanShares || [])
+    .filter(s => s.qurbanId === animalId)
+    .sort((a, b) => a.shareIndex - b.shareIndex);
+
+  const farmName = state.farm?.name || 'Özate Çiftliği';
+  const today    = new Date().toLocaleDateString('tr-TR');
+  const methodLabel = { CASH: 'Nakit', TRANSFER: 'Havale', CARD: 'Kart', CHECK: 'Çek' };
+  const typeIcon = animal.animalType === 'BÜYÜKBAŞ' ? '🐂' : '🐑';
+
+  const shareRows = animalShares.map(sh => {
+    const remaining = (parseFloat(sh.sharePrice) || 0) - (parseFloat(sh.depositAmount) || 0);
+    return `<tr style="border-bottom:1px solid #ddd;">
+      <td style="padding:6px 8px;">${sh.shareIndex}</td>
+      <td style="padding:6px 8px;font-weight:600;">${sh.shareholderName}</td>
+      <td style="padding:6px 8px;">${sh.phone}</td>
+      <td style="padding:6px 8px;text-align:right;">${formatCurrency(parseFloat(sh.sharePrice) || 0)}</td>
+      <td style="padding:6px 8px;text-align:right;color:green;">${formatCurrency(parseFloat(sh.depositAmount) || 0)}</td>
+      <td style="padding:6px 8px;text-align:right;color:${remaining > 0 ? 'red' : 'green'};">${formatCurrency(remaining)}</td>
+      <td style="padding:6px 8px;">${methodLabel[sh.paymentMethod] || '—'}</td>
+      <td style="padding:6px 8px;text-align:center;">${sh.proxyGiven ? '✅' : '❌'}</td>
+      <td style="padding:6px 8px;text-align:center;">${sh.isDelivered ? '✅ Teslim' : '⏳'}</td>
+    </tr>`;
+  }).join('');
+
+  const totalPrice   = animalShares.reduce((s, sh) => s + (parseFloat(sh.sharePrice) || 0), 0);
+  const totalDeposit = animalShares.reduce((s, sh) => s + (parseFloat(sh.depositAmount) || 0), 0);
+  const totalRemain  = totalPrice - totalDeposit;
+
+  document.getElementById('qurbanReceiptPrintArea').innerHTML = `
+    <div style="text-align:center;margin-bottom:1.5rem;border-bottom:2px solid #333;padding-bottom:1rem;">
+      <div style="font-size:1.4rem;font-weight:900;letter-spacing:0.05em;">${farmName}</div>
+      <div style="font-size:0.85rem;color:#666;">Kurban Hisse & Kesim Sıra Belgesi · ${today}</div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:1rem;padding:0.75rem;background:#f5f5f5;border-radius:6px;">
+      <div><strong>Kurban No:</strong> ${typeIcon} ${animal.qurbanNo}</div>
+      <div><strong>Tür:</strong> ${animal.animalType}</div>
+      <div><strong>Irk:</strong> ${animal.breed || '—'}</div>
+      <div><strong>Canlı Ağ.:</strong> ${animal.liveWeight} kg</div>
+      <div><strong>Toplam Bedel:</strong> ${formatCurrency(parseFloat(animal.totalPrice) || 0)}</div>
+    </div>
+    <div style="margin-bottom:0.5rem;font-weight:700;font-size:0.85rem;">
+      ⏱️ Kesim: Bayramın ${animal.slaughterDay}. Günü · ${animal.slaughterTime || ''} · ${animal.slaughterOrder ? animal.slaughterOrder + '. Sıra' : ''}
+    </div>
+    <table style="width:100%;border-collapse:collapse;font-size:0.82rem;margin-bottom:1rem;">
+      <thead>
+        <tr style="background:#333;color:#fff;">
+          <th style="padding:6px 8px;">No</th>
+          <th style="padding:6px 8px;">Hissedar</th>
+          <th style="padding:6px 8px;">Telefon</th>
+          <th style="padding:6px 8px;text-align:right;">Bedel</th>
+          <th style="padding:6px 8px;text-align:right;">Kapora</th>
+          <th style="padding:6px 8px;text-align:right;">Kalan</th>
+          <th style="padding:6px 8px;">Ödeme</th>
+          <th style="padding:6px 8px;text-align:center;">Vekalet</th>
+          <th style="padding:6px 8px;text-align:center;">Teslimat</th>
+        </tr>
+      </thead>
+      <tbody>${shareRows}</tbody>
+      <tfoot>
+        <tr style="background:#f0f0f0;font-weight:800;">
+          <td colspan="3" style="padding:6px 8px;">TOPLAM (${animalShares.length} Hisse)</td>
+          <td style="padding:6px 8px;text-align:right;">${formatCurrency(totalPrice)}</td>
+          <td style="padding:6px 8px;text-align:right;color:green;">${formatCurrency(totalDeposit)}</td>
+          <td style="padding:6px 8px;text-align:right;color:${totalRemain > 0 ? 'red' : 'green'};">${formatCurrency(totalRemain)}</td>
+          <td colspan="3"></td>
+        </tr>
+      </tfoot>
+    </table>
+    ${animal.notes ? `<div style="font-size:0.8rem;color:#666;font-style:italic;border-top:1px dashed #ccc;padding-top:0.5rem;">📝 ${animal.notes}</div>` : ''}
+    <div style="margin-top:1.5rem;font-size:0.7rem;color:#999;text-align:center;">Belge ${today} tarihinde oluşturulmuştur.</div>
+  `;
+  openModal('modalQurbanReceipt');
+}
+
+function printQurbanSlaughterSchedule() {
+  window.print();
+}
+
+function printReceiptElement(elementId) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  const win = window.open('', '_blank', 'width=800,height=600');
+  win.document.write(`<!DOCTYPE html><html><head><title>Kurban Belgesi</title>
+    <style>body{font-family:system-ui,sans-serif;margin:0;padding:1rem;} @media print{body{margin:0;}}</style>
+    </head><body>${el.innerHTML}</body></html>`);
+  win.document.close();
+  win.focus();
+  setTimeout(() => { win.print(); win.close(); }, 300);
+}
+
+// =============================================================================
 // 8. BÜYÜKBAŞ SÜRÜ SAYFASI
+
 // =============================================================================
 
 function renderAnimalsTable() {
   const tbody = document.getElementById('animalsTbody');
   if (!tbody) return;
 
-  const padFilter = document.getElementById('filterAnimalPaddock').value;
-  const catFilter = document.getElementById('filterAnimalCategory').value;
-  const breedFilter = document.getElementById('filterAnimalBreed').value;
+  const padFilter = document.getElementById('filterAnimalPaddock')?.value || 'ALL';
+  const catFilter = document.getElementById('filterAnimalCategory')?.value || 'ALL';
+  const breedFilter = document.getElementById('filterAnimalBreed')?.value || 'ALL';
+  const statusFilter = document.getElementById('filterAnimalStatus')?.value || 'ACTIVE';
 
   tbody.innerHTML = '';
 
@@ -1040,6 +2458,11 @@ function renderAnimalsTable() {
     if (padFilter !== 'ALL' && a.paddock !== padFilter) return false;
     if (catFilter !== 'ALL' && a.category !== catFilter) return false;
     if (breedFilter !== 'ALL' && a.breed !== breedFilter) return false;
+    if (statusFilter === 'ACTIVE') {
+      if (a.status === 'Satıldı' || a.status === 'Kesildi' || a.status === 'Zayiat' || a.status === 'Öldü') return false;
+    } else if (statusFilter !== 'ALL') {
+      if (a.status !== statusFilter) return false;
+    }
     return true;
   });
 
@@ -1220,6 +2643,7 @@ function renderSheepTable() {
 
   const sheepList = state.sheep || [];
   const filtered = sheepList.filter(s => {
+    if (s.status === 'Satıldı' || s.status === 'Kesildi' || s.status === 'Zayiat' || s.status === 'Öldü') return false;
     if (barnFilter !== 'ALL' && s.barn !== barnFilter) return false;
     if (catFilter !== 'ALL' && s.category !== catFilter) return false;
     if (breedFilter !== 'ALL' && !s.breed.toLowerCase().includes(breedFilter.toLowerCase())) return false;
@@ -1455,16 +2879,48 @@ function deleteSheepPrompt() {
   const sheep = (state.sheep || []).find(s => s.id === currentDossierSheepId);
   if (!sheep) return;
 
-  const reason = prompt(`${sheep.earTag} sürüden çıkarılıyor. Nedenini girin (Örn: Satış, Kesim, Zayiat):`, 'Kasaplık Satış');
+  const reason = prompt(`${sheep.earTag} (${sheep.name || sheep.breed}) sürüden çıkarılıyor.\nNedenini girin (Satıldı / Kesildi / Zayiat):`, 'Satıldı');
   if (!reason) return;
 
-  state.sheep = state.sheep.filter(s => s.id !== sheep.id);
+  const priceStr = prompt(`Varsa satış bedelini giriniz (₺) (Örn: 12500, yoksa 0):`, '12500');
+  const price = parseFloat(priceStr) || 0;
+
+  if (price > 0 && !reason.toLowerCase().includes('ölüm') && !reason.toLowerCase().includes('zayiat')) {
+    const cust = (state.contacts || []).find(c => c.type === 'CUSTOMER') || state.contacts[0];
+    const acc = (state.accounts || [])[0];
+    state.transactions.unshift({
+      id: 'tx-' + Date.now(),
+      date: new Date().toISOString().split('T')[0],
+      type: 'INCOME',
+      category: 'Besi Hayvanı Satışı',
+      amount: price,
+      paidAmount: price,
+      status: 'PAID',
+      contactId: cust ? cust.id : 'ct-2',
+      accountId: acc ? acc.id : 'acc-1',
+      desc: `${sheep.earTag} - ${sheep.category} (${sheep.breed}) Küçükbaş Çıkış / Satış: ${reason}`
+    });
+    if (acc) acc.balance = (acc.balance || 0) + price;
+  }
+
+  // PRD 5.6: Kalıcı silmek yerine arşivle
+  sheep.status = reason;
+  sheep.exitDate = new Date().toISOString().split('T')[0];
+  sheep.exitPrice = price;
+
+  // Supabase senkronizasyonu
+  if (typeof dbService !== 'undefined' && dbService.upsertSheep) {
+    dbService.upsertSheep(sheep);
+  }
+
   saveState();
-  logAudit('KÜÇÜKBAŞ ÇIKIŞ', `${sheep.earTag} sürüden çıkarıldı. Neden: ${reason}`);
+  logAudit('KÜÇÜKBAŞ ÇIKIŞ', `${sheep.earTag} (${sheep.name || sheep.breed}) sürüden çıkarıldı. Neden: ${reason}${price > 0 ? `, Bedel: ₺${price.toLocaleString('tr-TR')}` : ''}`);
   closeModal('modalSheepDetail');
   renderSheepPage();
   renderDashboard();
-  alert(`${sheep.earTag} sürüden çıkarıldı.`);
+  renderTransactionsTable();
+  renderAccountsPage();
+  alert(`${sheep.earTag} sürüden çıkarıldı ve arşivlendi. (Durum: ${reason})`);
 }
 
 // ----------------- KOÇ KATIMI (AŞIM) İŞLEMLERİ -----------------
@@ -2251,23 +3707,41 @@ function generateAutoTaskReminders() {
 // 11. RAPORLAR SAYFASI
 // =============================================================================
 
+let currentReportTab = 'finance';
+
 function renderReportsPage() {
+  // KPI özet hesaplaması
   let income = 0;
   let expense = 0;
-  state.transactions.forEach(t => {
-    if (t.type === 'INCOME') income += t.amount;
-    if (t.type === 'EXPENSE') expense += t.amount;
+  (state.transactions || []).forEach(t => {
+    if (t.status !== 'CANCELLED') {
+      if (t.type === 'INCOME') income += t.amount;
+      if (t.type === 'EXPENSE') expense += t.amount;
+    }
   });
 
   const net = income - expense;
-  const perAnimal = state.animals.length > 0 ? (net / state.animals.length) : 0;
+  const animalCount = (state.animals || []).length;
+  const perAnimal = animalCount > 0 ? (net / animalCount) : 0;
 
-  document.getElementById('repTotalIncome').textContent = formatCurrency(income);
-  document.getElementById('repTotalExpense').textContent = formatCurrency(expense);
-  document.getElementById('repNetResult').textContent = formatCurrency(net);
-  document.getElementById('repPerAnimalProfit').textContent = formatCurrency(perAnimal) + ' / Baş';
+  const elInc = document.getElementById('repTotalIncome');
+  const elExp = document.getElementById('repTotalExpense');
+  const elNet = document.getElementById('repNetResult');
+  const elPer = document.getElementById('repPerAnimalProfit');
+
+  if (elInc) elInc.textContent = formatCurrency(income);
+  if (elExp) elExp.textContent = formatCurrency(expense);
+  if (elNet) elNet.textContent = formatCurrency(net);
+  if (elPer) elPer.textContent = formatCurrency(perAnimal) + ' / Baş';
 
   // Maliyet Dağılım Çubukları
+  renderReportCostBreakdown();
+
+  // Aktif sekme içeriğini render et
+  renderActiveReportContent();
+}
+
+function renderReportCostBreakdown() {
   const breakdownContainer = document.getElementById('reportCostBreakdown');
   if (!breakdownContainer) return;
 
@@ -2294,6 +3768,527 @@ function renderReportsPage() {
   });
 
   breakdownContainer.innerHTML = html;
+}
+
+function switchReportTab(tab) {
+  currentReportTab = tab;
+  document.querySelectorAll('#reportNavTabs [data-report-tab]').forEach(btn => {
+    const isAct = btn.getAttribute('data-report-tab') === tab;
+    btn.className = `btn btn-sm ${isAct ? 'btn-secondary active' : 'btn-ghost'}`;
+  });
+
+  // Finans harici sekmelerde maliyet grafiğini gizle/göster
+  const costPanel = document.getElementById('reportCostBreakdownPanel');
+  if (costPanel) {
+    costPanel.style.display = (tab === 'finance') ? 'block' : 'none';
+  }
+
+  renderActiveReportContent();
+}
+
+function applyReportQuickRange(range) {
+  const startInput = document.getElementById('repFilterStartDate');
+  const endInput = document.getElementById('repFilterEndDate');
+  if (!startInput || !endInput) return;
+
+  const now = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  const todayStr = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
+
+  if (range === 'ALL') {
+    startInput.value = '';
+    endInput.value = '';
+  } else if (range === 'THIS_MONTH') {
+    startInput.value = `${now.getFullYear()}-${pad(now.getMonth()+1)}-01`;
+    endInput.value = todayStr;
+  } else if (range === 'LAST_MONTH') {
+    const prevMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    const lastDayPrevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+    startInput.value = `${prevMonthDate.getFullYear()}-${pad(prevMonthDate.getMonth()+1)}-01`;
+    endInput.value = `${lastDayPrevMonth.getFullYear()}-${pad(lastDayPrevMonth.getMonth()+1)}-${pad(lastDayPrevMonth.getDate())}`;
+  } else if (range === 'THIS_YEAR') {
+    startInput.value = `${now.getFullYear()}-01-01`;
+    endInput.value = todayStr;
+  }
+
+  renderActiveReportContent();
+}
+
+function getReportDateFilteredData(list, dateField = 'date') {
+  if (!Array.isArray(list)) return [];
+  const start = document.getElementById('repFilterStartDate')?.value;
+  const end = document.getElementById('repFilterEndDate')?.value;
+
+  return list.filter(item => {
+    const itemDate = item[dateField];
+    if (!itemDate) return true;
+    if (start && itemDate < start) return false;
+    if (end && itemDate > end) return false;
+    return true;
+  });
+}
+
+function renderActiveReportContent() {
+  const thead = document.getElementById('reportDynamicThead');
+  const tbody = document.getElementById('reportDynamicTbody');
+  const tfoot = document.getElementById('reportDynamicTfoot');
+  const title = document.getElementById('reportTitleHeader');
+  const sub = document.getElementById('reportSubtitleHeader');
+  const badge = document.getElementById('repRecordCountBadge');
+
+  if (!tbody || !thead) return;
+  thead.innerHTML = '';
+  tbody.innerHTML = '';
+  if (tfoot) tfoot.innerHTML = '';
+
+  if (currentReportTab === 'finance') {
+    if (title) title.textContent = '💰 Finansal Kâr / Zarar & Nakit Akış Tablosu';
+    if (sub) sub.textContent = 'Gelirler, giderler, cari hesap bağlantıları ve tahsilat durumları';
+
+    const txs = getReportDateFilteredData(state.transactions || [], 'date');
+    if (badge) badge.textContent = `${txs.length} İşlem`;
+
+    thead.innerHTML = `
+      <tr>
+        <th>Tarih</th>
+        <th>Tür</th>
+        <th>Kategori</th>
+        <th>Açıklama</th>
+        <th>Cari Hesap</th>
+        <th>Kasa / Banka</th>
+        <th style="text-align: right;">Tutar</th>
+        <th>Ödeme Durumu</th>
+      </tr>
+    `;
+
+    if (txs.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:2rem; color:var(--text-muted);">Seçili tarih aralığında finans kaydı bulunamadı.</td></tr>`;
+      return;
+    }
+
+    let totInc = 0, totExp = 0;
+    [...txs].reverse().forEach(t => {
+      if (t.type === 'INCOME') totInc += t.amount;
+      if (t.type === 'EXPENSE') totExp += t.amount;
+      const c = (state.contacts || []).find(con => con.id === t.contactId);
+      const a = (state.accounts || []).find(acc => acc.id === t.accountId);
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${formatDate(t.date)}</td>
+        <td><span class="tag-badge ${t.type === 'INCOME' ? 'tag-income' : 'tag-expense'}">${t.type === 'INCOME' ? 'Gelir' : 'Gider'}</span></td>
+        <td><strong>${escapeHtml(t.category)}</strong></td>
+        <td>${escapeHtml(t.desc || '-')}</td>
+        <td>${c ? escapeHtml(c.name) : '-'}</td>
+        <td>${a ? escapeHtml(a.name) : '-'}</td>
+        <td style="text-align: right; font-weight:700; color:${t.type === 'INCOME' ? 'var(--accent-success)' : 'var(--accent-danger)'}">${formatCurrency(t.amount)}</td>
+        <td><span class="tag-badge ${t.status === 'PAID' ? 'tag-paid' : 'tag-pending'}">${t.status === 'PAID' ? 'Tamamlandı' : 'Bekliyor'}</span></td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    if (tfoot) {
+      tfoot.innerHTML = `
+        <tr style="font-weight:700; background:var(--bg-surface-hover);">
+          <td colspan="6">DÖNEM TOPLAMLARI (Gelir: ${formatCurrency(totInc)} | Gider: ${formatCurrency(totExp)})</td>
+          <td style="text-align:right; color:${totInc >= totExp ? 'var(--accent-success)' : 'var(--accent-danger)'}">Net: ${formatCurrency(totInc - totExp)}</td>
+          <td></td>
+        </tr>
+      `;
+    }
+  } else if (currentReportTab === 'cattle') {
+    if (title) title.textContent = '🐄 Büyükbaş Sürü Envanteri & Verim Raporu';
+    if (sub) sub.textContent = 'Küpe numaraları, padok yerleşimi, canlı ağırlık ve süt verim performansı';
+
+    const animals = state.animals || [];
+    if (badge) badge.textContent = `${animals.length} Büyükbaş`;
+
+    thead.innerHTML = `
+      <tr>
+        <th>Küpe No</th>
+        <th>Hayvan Adı</th>
+        <th>Irk</th>
+        <th>Kategori</th>
+        <th>Cinsiyet</th>
+        <th>Bulunduğu Padok</th>
+        <th style="text-align: right;">Canlı Ağırlık (kg)</th>
+        <th>Verim Durumu</th>
+        <th>Sağlık</th>
+      </tr>
+    `;
+
+    if (animals.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:2rem; color:var(--text-muted);">Kayıtlı büyükbaş hayvan bulunamadı.</td></tr>`;
+      return;
+    }
+
+    let totWeight = 0;
+    animals.forEach(a => {
+      totWeight += (Number(a.weight) || 0);
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="font-weight:700; font-family:monospace; color:var(--ozate-burgundy);">${escapeHtml(a.earTag)}</td>
+        <td>${escapeHtml(a.name || '-')}</td>
+        <td>${escapeHtml(a.breed)}</td>
+        <td><span class="tag-badge" style="background: rgba(30,77,43,0.15); color: var(--ozate-green-accent);">${escapeHtml(a.category)}</span></td>
+        <td>${escapeHtml(a.gender)}</td>
+        <td><strong>${escapeHtml(a.paddock)}</strong></td>
+        <td style="text-align: right; font-weight:700;">${a.weight || 0} kg</td>
+        <td>${escapeHtml(a.yield || '-')}</td>
+        <td>${escapeHtml(a.health || 'Sağlıklı')}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    if (tfoot) {
+      const avg = animals.length > 0 ? (totWeight / animals.length).toFixed(1) : 0;
+      tfoot.innerHTML = `
+        <tr style="font-weight:700; background:var(--bg-surface-hover);">
+          <td colspan="6">TOPLAM SÜRÜ: ${animals.length} BAŞ</td>
+          <td style="text-align:right;">Ort: ${avg} kg (Toplam: ${totWeight.toLocaleString('tr-TR')} kg)</td>
+          <td colspan="2"></td>
+        </tr>
+      `;
+    }
+  } else if (currentReportTab === 'sheep') {
+    if (title) title.textContent = '🐑 Küçükbaş Sürü & Üreme Durum Raporu';
+    if (sub) sub.textContent = 'Koyun, koç, kuzu varlığı, ağıl dağılımı, gebelik ve laktasyon durumu';
+
+    const sheep = state.sheep || [];
+    if (badge) badge.textContent = `${sheep.length} Küçükbaş`;
+
+    thead.innerHTML = `
+      <tr>
+        <th>Küpe No</th>
+        <th>Ad / Tanım</th>
+        <th>Irk</th>
+        <th>Kategori</th>
+        <th>Cinsiyet</th>
+        <th>Ağıl / Mera</th>
+        <th style="text-align: right;">Ağırlık (kg)</th>
+        <th>Üreme Durumu</th>
+        <th>Sağlık Notu</th>
+      </tr>
+    `;
+
+    if (sheep.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:2rem; color:var(--text-muted);">Kayıtlı küçükbaş hayvan bulunamadı.</td></tr>`;
+      return;
+    }
+
+    let totWeight = 0;
+    sheep.forEach(s => {
+      totWeight += (Number(s.weight) || 0);
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="font-weight:700; font-family:monospace; color:var(--ozate-green);">${escapeHtml(s.earTag)}</td>
+        <td>${escapeHtml(s.name || '-')}</td>
+        <td>${escapeHtml(s.breed)}</td>
+        <td><span class="tag-badge" style="background: rgba(43,114,186,0.15); color: #2563EB;">${escapeHtml(s.category)}</span></td>
+        <td>${escapeHtml(s.gender)}</td>
+        <td><strong>${escapeHtml(s.barn || '-')}</strong></td>
+        <td style="text-align: right; font-weight:700;">${s.weight || 0} kg</td>
+        <td><span class="badge ${s.reproStatus === 'Gebe' ? 'positive' : 'neutral'}">${escapeHtml(s.reproStatus || '-')}</span></td>
+        <td>${escapeHtml(s.health || 'Rutin Takip')}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    if (tfoot) {
+      const avg = sheep.length > 0 ? (totWeight / sheep.length).toFixed(1) : 0;
+      tfoot.innerHTML = `
+        <tr style="font-weight:700; background:var(--bg-surface-hover);">
+          <td colspan="6">KÜÇÜKBAŞ TOPLAM: ${sheep.length} BAŞ</td>
+          <td style="text-align:right;">Ort: ${avg} kg (Toplam: ${totWeight.toLocaleString('tr-TR')} kg)</td>
+          <td colspan="2"></td>
+        </tr>
+      `;
+    }
+  } else if (currentReportTab === 'milk') {
+    if (title) title.textContent = '🥛 Günlük Süt Üretim & Tank Raporu';
+    if (sub) sub.textContent = 'Sağım seansları, tank transferleri, yağ oranları ve günlük toplam üretim';
+
+    const milks = getReportDateFilteredData(state.milkProductions || [], 'date');
+    if (badge) badge.textContent = `${milks.length} Sağım Kaydı`;
+
+    thead.innerHTML = `
+      <tr>
+        <th>Tarih</th>
+        <th>Sağım Seansı</th>
+        <th style="text-align: right;">Üretim (Litre)</th>
+        <th>Yağ Oranı (%)</th>
+        <th>Depolanan Tank</th>
+        <th>Notlar / Açıklama</th>
+      </tr>
+    `;
+
+    if (milks.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:2rem; color:var(--text-muted);">Seçili tarih aralığında süt üretim kaydı bulunamadı.</td></tr>`;
+      return;
+    }
+
+    let totLiters = 0;
+    [...milks].reverse().forEach(m => {
+      totLiters += (Number(m.liters) || 0);
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${formatDate(m.date)}</td>
+        <td><span class="tag-badge" style="background: rgba(37,99,235,0.15); color: var(--accent-blue);">${escapeHtml(m.session)} Sağımı</span></td>
+        <td style="text-align: right; font-weight:700; font-size:1rem; color:var(--text-main);">${(Number(m.liters) || 0).toLocaleString('tr-TR')} L</td>
+        <td>%${m.fat ? Number(m.fat).toFixed(2) : '-'}</td>
+        <td><strong>${escapeHtml(m.tank || '-')}</strong></td>
+        <td>${escapeHtml(m.notes || '-')}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    if (tfoot) {
+      tfoot.innerHTML = `
+        <tr style="font-weight:700; background:var(--bg-surface-hover);">
+          <td colspan="2">DÖNEM TOPLAM SÜT ÜRETİMİ</td>
+          <td style="text-align:right; color:var(--accent-blue); font-size:1.05rem;">${totLiters.toLocaleString('tr-TR')} Litre</td>
+          <td colspan="3"></td>
+        </tr>
+      `;
+    }
+  } else if (currentReportTab === 'inventory') {
+    if (title) title.textContent = '🌾 Yem & Depo Stok Maliyet Raporu';
+    if (sub) sub.textContent = 'Kaba yem, konsantre yem ve ilaçların stok miktarları, birim maliyetleri ve depo toplam değeri';
+
+    const items = state.inventory || [];
+    if (badge) badge.textContent = `${items.length} Kalem Stok`;
+
+    thead.innerHTML = `
+      <tr>
+        <th>Malzeme / Yem Adı</th>
+        <th>Kategori</th>
+        <th style="text-align: right;">Mevcut Miktar</th>
+        <th>Birim</th>
+        <th style="text-align: right;">Birim Maliyet</th>
+        <th style="text-align: right;">Toplam Değer</th>
+        <th>Kritik Eşik Uyarısı</th>
+      </tr>
+    `;
+
+    if (items.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:2rem; color:var(--text-muted);">Depoda kayıtlı stok kalemi bulunamadı.</td></tr>`;
+      return;
+    }
+
+    let totInvValue = 0;
+    items.forEach(it => {
+      const q = Number(it.quantity) || 0;
+      const c = Number(it.unitCost) || 0;
+      const totalVal = q * c;
+      totInvValue += totalVal;
+      const isCritical = q <= (Number(it.minAlert) || 0);
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="font-weight:700;">${escapeHtml(it.name)}</td>
+        <td><span class="tag-badge">${escapeHtml(it.category)}</span></td>
+        <td style="text-align: right; font-weight:700; color:${isCritical ? 'var(--accent-danger)' : 'var(--text-main)'};">${q.toLocaleString('tr-TR')}</td>
+        <td>${escapeHtml(it.unit)}</td>
+        <td style="text-align: right;">${formatCurrency(c)}</td>
+        <td style="text-align: right; font-weight:700; color:var(--accent-green);">${formatCurrency(totalVal)}</td>
+        <td>${isCritical ? '<span class="badge danger">⚠️ Kritik Seviye Altında</span>' : '<span class="badge positive">Normal</span>'}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    if (tfoot) {
+      tfoot.innerHTML = `
+        <tr style="font-weight:700; background:var(--bg-surface-hover);">
+          <td colspan="5">TOPLAM DEPO VARLIK DEĞERİ</td>
+          <td style="text-align:right; color:var(--accent-green); font-size:1.05rem;">${formatCurrency(totInvValue)}</td>
+          <td></td>
+        </tr>
+      `;
+    }
+  } else if (currentReportTab === 'qurban') {
+    if (title) title.textContent = '🕌 Kurban Satış, Hisse & Kesimhane Raporu';
+    if (sub) sub.textContent = 'Kurbanlıklar, hisse doluluk oranları, tahsilat, kapora ve kesimhane sırası dökümü';
+
+    const qAnimals = state.qurbanAnimals || [];
+    const qShares = state.qurbanShares || [];
+    if (badge) badge.textContent = `${qAnimals.length} Kurbanlık / ${qShares.length} Hisse`;
+
+    thead.innerHTML = `
+      <tr>
+        <th>Kurban No</th>
+        <th>Tür</th>
+        <th>Küpe No / Irk</th>
+        <th style="text-align: right;">Canlı Ağırlık</th>
+        <th style="text-align: right;">Toplam Tutar</th>
+        <th>Hisse Sayısı</th>
+        <th>Satılan Hisse</th>
+        <th>Kesim Günü & Sıra</th>
+        <th>Durum</th>
+      </tr>
+    `;
+
+    if (qAnimals.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:2rem; color:var(--text-muted);">Kayıtlı kurbanlık bulunamadı.</td></tr>`;
+      return;
+    }
+
+    let totQurbanVal = 0;
+    qAnimals.forEach(qa => {
+      const animalShares = qShares.filter(s => s.qurbanId === qa.id);
+      const totalShares = parseInt(qa.shareCount) || 7;
+      totQurbanVal += (Number(qa.totalPrice) || 0);
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="font-weight:700; color:var(--brand-primary); font-family:monospace;">${escapeHtml(qa.qurbanNo)}</td>
+        <td>${qa.animalType === 'BÜYÜKBAŞ' ? '🐂 Büyükbaş' : '🐑 Küçükbaş'}</td>
+        <td>${escapeHtml(qa.earTag || '-')} (${escapeHtml(qa.breed || '-')})</td>
+        <td style="text-align: right; font-weight:600;">${qa.liveWeight || 0} kg</td>
+        <td style="text-align: right; font-weight:700; color:var(--accent-success);">${formatCurrency(qa.totalPrice || 0)}</td>
+        <td>${totalShares} Hisse</td>
+        <td><strong>${animalShares.length} / ${totalShares}</strong> (%${Math.round((animalShares.length/totalShares)*100)})</td>
+        <td>${qa.slaughterDay ? `${qa.slaughterDay}. Gün` : '-'} ${qa.slaughterOrder ? `(Sıra: ${qa.slaughterOrder})` : ''}</td>
+        <td><span class="tag-badge ${qa.status === 'SOLD_OUT' ? 'tag-paid' : 'tag-partial'}">${escapeHtml(qa.status || 'AVAILABLE')}</span></td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    if (tfoot) {
+      tfoot.innerHTML = `
+        <tr style="font-weight:700; background:var(--bg-surface-hover);">
+          <td colspan="4">TOPLAM KURBANLIK SATIŞ DEĞERİ</td>
+          <td style="text-align:right; color:var(--accent-success);">${formatCurrency(totQurbanVal)}</td>
+          <td colspan="4">Satılan: ${qShares.length} Hisse</td>
+        </tr>
+      `;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Rapor Dışa Aktarma: EXCEL / CSV İNDİRME
+// -----------------------------------------------------------------------------
+function exportCurrentReportExcel() {
+  const table = document.getElementById('reportDynamicTable');
+  if (!table) return;
+
+  const titleHeader = document.getElementById('reportTitleHeader')?.textContent || 'ciftlik_raporu';
+  const cleanTitle = titleHeader.replace(/[^a-zA-Z0-9ığüşöçİĞÜŞÖÇ_ -]/g, '').trim().replace(/\s+/g, '_').toLowerCase();
+  const dateStr = new Date().toISOString().split('T')[0];
+  const filename = `ozate_${cleanTitle}_${dateStr}.csv`;
+
+  const rows = [];
+  // Başlıklar
+  const theadRows = table.querySelectorAll('thead tr');
+  theadRows.forEach(tr => {
+    const row = [];
+    tr.querySelectorAll('th').forEach(th => {
+      row.push(th.textContent.trim());
+    });
+    if (row.length) rows.push(row);
+  });
+
+  // Veri satırları
+  const tbodyRows = table.querySelectorAll('tbody tr');
+  tbodyRows.forEach(tr => {
+    const row = [];
+    tr.querySelectorAll('td').forEach(td => {
+      row.push(td.textContent.trim().replace(/\s+/g, ' '));
+    });
+    if (row.length) rows.push(row);
+  });
+
+  // Toplam satırları
+  const tfootRows = table.querySelectorAll('tfoot tr');
+  tfootRows.forEach(tr => {
+    const row = [];
+    tr.querySelectorAll('td').forEach(td => {
+      row.push(td.textContent.trim().replace(/\s+/g, ' '));
+    });
+    if (row.length) rows.push(row);
+  });
+
+  if (rows.length === 0) {
+    alert('Dışa aktarılacak rapor satırı bulunamadı.');
+    return;
+  }
+
+  exportToCsv(filename, rows);
+  showToastNotification(`"${filename}" Excel/CSV dosyası başarıyla indirildi.`);
+}
+
+// -----------------------------------------------------------------------------
+// Rapor Dışa Aktarma: PDF / YAZDIRMA
+// -----------------------------------------------------------------------------
+function printCurrentReportPdf() {
+  const printArea = document.getElementById('reportPrintableArea');
+  if (!printArea) {
+    window.print();
+    return;
+  }
+
+  const farmName = (state.farm && state.farm.name) ? state.farm.name : 'Özate Çiftliği';
+  const titleText = document.getElementById('reportTitleHeader')?.textContent || 'Çiftlik Raporu';
+  const subtitleText = document.getElementById('reportSubtitleHeader')?.textContent || '';
+  const dateStr = new Date().toLocaleDateString('tr-TR', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+  const win = window.open('', '_blank');
+  if (!win) {
+    window.print();
+    return;
+  }
+
+  const tableHtml = printArea.querySelector('.table-responsive')?.innerHTML || '';
+
+  win.document.write(`
+    <!DOCTYPE html>
+    <html lang="tr">
+    <head>
+      <meta charset="UTF-8">
+      <title>${farmName} - ${titleText}</title>
+      <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1e293b; padding: 25px; margin: 0; }
+        .print-header { border-bottom: 2px solid #1E4D2B; padding-bottom: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
+        .print-title { font-size: 1.4rem; font-weight: 800; color: #1E4D2B; margin: 0; }
+        .print-sub { font-size: 0.85rem; color: #64748b; margin-top: 4px; }
+        .print-date { font-size: 0.8rem; color: #64748b; text-align: right; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-top: 10px; }
+        th, td { border: 1px solid #cbd5e1; padding: 8px 10px; text-align: left; }
+        th { background: #f8fafc; font-weight: 700; color: #0f172a; }
+        tfoot tr td { background: #f1f5f9; font-weight: 700; }
+        .print-footer { margin-top: 30px; font-size: 0.75rem; color: #94a3b8; text-align: center; border-top: 1px solid #e2e8f0; padding-top: 10px; }
+        @media print {
+          body { padding: 0; }
+          button { display: none; }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="print-header">
+        <div>
+          <h1 class="print-title">${farmName}</h1>
+          <div class="print-sub"><strong>${titleText}</strong> - ${subtitleText}</div>
+        </div>
+        <div class="print-date">
+          <div>Rapor Tarihi: ${dateStr}</div>
+          <div>Sistem: Özate Çiftlik Yönetimi</div>
+        </div>
+      </div>
+      <div>
+        ${tableHtml}
+      </div>
+      <div class="print-footer">
+        Bu rapor Özate Çiftlik Yönetim Sistemi tarafından otomatik oluşturulmuştur.
+      </div>
+      <script>
+        window.onload = function() {
+          window.print();
+          setTimeout(function() { window.close(); }, 500);
+        };
+      <\/script>
+    </body>
+    </html>
+  `);
+  win.document.close();
 }
 
 // =============================================================================
@@ -2808,6 +4803,7 @@ function openAnimalDetailModal(animalId) {
   const animal = state.animals.find(a => a.id === animalId);
   if (!animal) return;
   currentDossierAnimalId = animal.id;
+  populateExitDropdowns();
 
   // Başlık & Hero Alanı
   document.getElementById('dossierModalTitle').textContent = `Hayvan Künyesi (${animal.earTag})`;
@@ -2958,6 +4954,31 @@ function handleAddHealthSubmit(e) {
   openAnimalDetailModal(animal.id);
 }
 
+function populateExitDropdowns() {
+  const contactSelect = document.getElementById('exitContactId');
+  const accountSelect = document.getElementById('exitAccountId');
+  if (contactSelect) {
+    const customers = (state.contacts || []).filter(c => c.type === 'CUSTOMER');
+    const list = customers.length > 0 ? customers : (state.contacts || []);
+    contactSelect.innerHTML = list.map(c => `<option value="${c.id}">${c.name} (${c.phone || 'Tel yok'})</option>`).join('');
+  }
+  if (accountSelect) {
+    accountSelect.innerHTML = (state.accounts || []).map(a => `<option value="${a.id}">${a.name} (Bakiye: ₺${(a.balance || 0).toLocaleString('tr-TR')})</option>`).join('');
+  }
+}
+
+function toggleExitFinanceFields() {
+  const reason = document.getElementById('exitReason')?.value;
+  const financeRow = document.getElementById('exitFinanceRow');
+  const priceInput = document.getElementById('exitPrice');
+  if (financeRow) {
+    financeRow.style.display = (reason === 'DECEASED') ? 'none' : 'flex';
+  }
+  if (priceInput && reason === 'DECEASED') {
+    priceInput.value = '0';
+  }
+}
+
 function handleAnimalExitSubmit(e) {
   e.preventDefault();
   if (!currentDossierAnimalId) return;
@@ -2966,6 +4987,8 @@ function handleAnimalExitSubmit(e) {
 
   const reason = document.getElementById('exitReason').value;
   const price = parseFloat(document.getElementById('exitPrice').value) || 0;
+  const contactId = document.getElementById('exitContactId')?.value || 'ct-2';
+  const accountId = document.getElementById('exitAccountId')?.value || 'acc-1';
 
   const reasonMap = {
     SOLD: 'Canlı Hayvan Satışı',
@@ -2983,19 +5006,35 @@ function handleAnimalExitSubmit(e) {
       id: 'tx-' + Date.now(),
       date: new Date().toISOString().split('T')[0],
       type: 'INCOME',
-      category: 'Besi Hayvanı Satışı',
+      category: reason === 'SLAUGHTERED' ? 'Kesimhane / Karkas Satışı' : 'Besi Hayvanı Satışı',
       amount: price,
       paidAmount: price,
       status: 'PAID',
-      contactId: 'ct-2',
-      accountId: 'acc-1',
+      contactId: contactId,
+      accountId: accountId,
       desc: `${animal.earTag} - ${animal.name || ''} (${animal.breed}) ${reasonText}`
     });
-    const acc = state.accounts.find(a => a.id === 'acc-1');
+    const acc = state.accounts.find(a => a.id === accountId);
     if (acc) acc.balance += price;
+
+    // Cari alacak / bakiye
+    const ct = state.contacts.find(c => c.id === contactId);
+    if (ct) {
+      ct.balance = (ct.balance || 0) + price;
+    }
   }
 
-  state.animals = state.animals.filter(a => a.id !== currentDossierAnimalId);
+  // PRD 5.6: Kalıcı silme yerine arşivle (Geçmiş ve soyağacı korunur)
+  animal.status = reason === 'SOLD' ? 'Satıldı' : (reason === 'SLAUGHTERED' ? 'Kesildi' : 'Zayiat');
+  animal.exitDate = new Date().toISOString().split('T')[0];
+  animal.exitReason = reasonText;
+  animal.exitPrice = price;
+
+  // Supabase senkronizasyonu
+  if (typeof dbService !== 'undefined' && dbService.upsertCattle) {
+    dbService.upsertCattle(animal);
+  }
+
   saveState();
   logAudit('SÜRÜDEN ÇIKIŞ', `${animal.earTag} (${animal.name || animal.breed}) sürüden çıkarıldı. Neden: ${reasonText}${price > 0 ? `, Bedel: ₺${price.toLocaleString('tr-TR')}` : ''}`);
   closeModal('modalAnimalDetail');
@@ -3003,7 +5042,7 @@ function handleAnimalExitSubmit(e) {
   renderDashboard();
   renderTransactionsTable();
   renderAccountsPage();
-  alert(`${animal.earTag} sürüden başarıyla çıkarıldı.`);
+  alert(`${animal.earTag} çıkış işlemi tamamlandı. Durum: ${animal.status} olarak arşivlendi.`);
 }
 
 
@@ -3415,6 +5454,16 @@ function renderSettingsPage() {
     if (em) em.value = state.farm.email || '';
   }
 
+  // Supabase Ayarları Arayüzü
+  if (typeof initSupabaseSettingsUI === 'function') {
+    initSupabaseSettingsUI();
+  }
+
+  // Menü ve Modül Görünürlüğü Arayüzü
+  renderMenuVisibilityPanel();
+}
+
+function renderSecurityPage() {
   // Canlı sayaçlar
   const statAnimals = document.getElementById('settingsStatAnimals');
   if (statAnimals) statAnimals.textContent = `${state.animals ? state.animals.length : 0} Baş`;
@@ -3430,11 +5479,6 @@ function renderSettingsPage() {
 
   // Sistem Denetim & Güvenlik Günlüğünü Listele
   renderAuditLogs();
-
-  // Supabase Ayarları Arayüzü
-  if (typeof initSupabaseSettingsUI === 'function') {
-    initSupabaseSettingsUI();
-  }
 }
 
 function logAudit(type, details, user = null) {
@@ -3594,6 +5638,20 @@ async function handleFetchFromSupabase() {
     showToastNotification('✅ Tüm çiftlik verileri Supabase bulut veritabanından güncellendi.');
   } else {
     alert('Bulut verileri çekilemedi. Bağlantı ayarlarınızı veya internetinizi kontrol ediniz.');
+  }
+}
+
+async function handlePushToSupabase() {
+  if (!confirm('Mevcut tüm çiftlik verileriniz (hayvanlar, süt verileri, stoklar, cariler vb.) Supabase bulut veritabanına aktarılacak.\n\nDevam etmek istiyor musunuz?')) {
+    return;
+  }
+  showToastNotification('🚀 Veriler buluta aktarılıyor...');
+  try {
+    const res = await pushCompleteFarmToSupabase(state);
+    showToastNotification('✅ ' + res.message);
+    alert('✅ TEBRİKLER!\n' + res.message);
+  } catch (err) {
+    alert('❌ Senkronizasyon Hatası:\n' + err.message);
   }
 }
 
@@ -3829,25 +5887,43 @@ function applyRolePermissions() {
 
   const txNav = document.querySelector('.nav-link[data-page="transactions"]');
   const accNav = document.querySelector('.nav-link[data-page="accounts"]');
+  const checksNav = document.querySelector('.nav-link[data-page="checks"]');
   const repNav = document.querySelector('.nav-link[data-page="reports"]');
-  const settingsBtn = document.getElementById('openSettingsBtn') || document.getElementById('nav-settings');
+  const usersNav = document.querySelector('.nav-link[data-page="users"]');
+  const defsNav = document.querySelector('.nav-link[data-page="definitions"]');
+  const settingsNav = document.getElementById('nav-settings');
+  const securityNav = document.querySelector('.nav-link[data-page="security"]');
+  const openSettingsBtn = document.getElementById('openSettingsBtn');
+
+  // Önce tüm kısıtlamaları sıfırla (ADMIN varsayılan)
+  const allNavs = [txNav, accNav, checksNav, repNav, usersNav, defsNav, settingsNav, securityNav];
+  allNavs.forEach(el => {
+    if (el) { el.style.opacity = '1'; el.style.display = 'flex'; }
+  });
+  if (openSettingsBtn) openSettingsBtn.style.display = '';
 
   if (currentRole === 'WORKER') {
     if (txNav) txNav.style.opacity = '0.45';
     if (accNav) accNav.style.opacity = '0.45';
+    if (checksNav) checksNav.style.display = 'none';
     if (repNav) repNav.style.display = 'none';
-    if (settingsBtn) settingsBtn.style.display = 'none';
+    if (usersNav) usersNav.style.display = 'none';
+    if (defsNav) defsNav.style.display = 'none';
+    if (settingsNav) settingsNav.style.display = 'none';
+    if (securityNav) securityNav.style.display = 'none';
+    if (openSettingsBtn) openSettingsBtn.style.display = 'none';
   } else if (currentRole === 'VET') {
     if (txNav) txNav.style.opacity = '0.7';
     if (accNav) accNav.style.display = 'none';
+    if (checksNav) checksNav.style.display = 'none';
     if (repNav) repNav.style.display = 'none';
-    if (settingsBtn) settingsBtn.style.display = 'none';
-  } else {
-    if (txNav) { txNav.style.opacity = '1'; txNav.style.display = ''; }
-    if (accNav) { accNav.style.opacity = '1'; accNav.style.display = ''; }
-    if (repNav) { repNav.style.display = ''; }
-    if (settingsBtn) { settingsBtn.style.display = ''; }
+    if (usersNav) usersNav.style.display = 'none';
+    if (defsNav) defsNav.style.display = 'none';
+    if (settingsNav) settingsNav.style.display = 'none';
+    if (securityNav) securityNav.style.display = 'none';
+    if (openSettingsBtn) openSettingsBtn.style.display = 'none';
   }
+  // ADMIN: tüm menüler zaten sıfırlandı, hepsi görünür
 }
 
 // -----------------------------------------------------------------------------
@@ -5349,12 +7425,563 @@ function exportCostAnalysisCsv() {
 }
 
 // =============================================================================
+// 14b. ACİL ÖNCELİK 1: SUNİ TOHUMLAMA, CSV İÇE AKTARMA & PARAMETRE MODÜLLERİ
+// =============================================================================
+
+// 1. Suni Tohumlama & Biyolojik Gebelik Takvimi Modalı
+function openInseminationModal() {
+  const select = document.getElementById('insemAnimal');
+  if (select) {
+    select.innerHTML = '';
+    const femaleCattle = state.animals.filter(a => a.gender === 'Dişi' || a.category === 'Süt İneği' || a.category === 'Gebe Düve');
+    if (femaleCattle.length === 0) {
+      select.innerHTML = '<option value="">Tohumlanabilecek dişi hayvan bulunamadı</option>';
+    } else {
+      femaleCattle.forEach(a => {
+        const opt = document.createElement('option');
+        opt.value = a.id;
+        opt.textContent = `${a.earTag} - ${a.name || a.category} (${a.breed} / ${a.paddock}) [Durum: ${a.status || 'Aktif'}]`;
+        select.appendChild(opt);
+      });
+    }
+  }
+
+  const dateInput = document.getElementById('insemDate');
+  if (dateInput) {
+    dateInput.value = new Date().toISOString().split('T')[0];
+  }
+
+  calculateCalvingEstimate();
+  openModal('modalInsemination');
+}
+
+function calculateCalvingEstimate() {
+  const dateVal = document.getElementById('insemDate')?.value;
+  if (!dateVal) return;
+
+  const insemDate = new Date(dateVal);
+  if (isNaN(insemDate.getTime())) return;
+
+  const addDays = (base, days) => {
+    const d = new Date(base);
+    d.setDate(d.getDate() + days);
+    return d.toISOString().split('T')[0];
+  };
+
+  const heatDate = addDays(insemDate, 21);
+  const ultraDate = addDays(insemDate, 60);
+  const dryDate = addDays(insemDate, 220);
+  const calvingDate = addDays(insemDate, 280);
+
+  const elHeat = document.getElementById('calcReturnHeatDate');
+  const elUltra = document.getElementById('calcUltrasoundDate');
+  const elDry = document.getElementById('calcDryOffDate');
+  const elCalving = document.getElementById('calcCalvingDate');
+
+  if (elHeat) elHeat.textContent = `${formatDate(heatDate)} (Tekrar Kızgınlık Kontrolü)`;
+  if (elUltra) elUltra.textContent = `${formatDate(ultraDate)} (Gebelik Testi / Ultrason)`;
+  if (elDry) elDry.textContent = `${formatDate(dryDate)} (Süt Sağımını Kes & Kuruya Al)`;
+  if (elCalving) elCalving.textContent = `🎯 ${formatDate(calvingDate)} (Beklenen Buzağılama)`;
+}
+
+function handleInseminationSubmit(e) {
+  e.preventDefault();
+  const animalId = document.getElementById('insemAnimal')?.value;
+  const insemDate = document.getElementById('insemDate')?.value;
+  const method = document.getElementById('insemMethod')?.value || 'Suni Tohumlama';
+  const sire = document.getElementById('insemSire')?.value || '';
+  const vet = document.getElementById('insemVet')?.value || 'Dr. Nilüfer Çetin';
+  const notes = document.getElementById('insemNotes')?.value || '';
+
+  if (!animalId || !insemDate || !sire) {
+    alert('Lütfen hayvan, tohumlama tarihi ve boğa/sperm kodunu eksiksiz doldurunuz.');
+    return;
+  }
+
+  const animal = state.animals.find(a => a.id === animalId);
+  if (!animal) {
+    alert('Seçilen hayvan sistemde bulunamadı.');
+    return;
+  }
+
+  const addDays = (base, days) => {
+    const d = new Date(base);
+    d.setDate(d.getDate() + days);
+    return d.toISOString().split('T')[0];
+  };
+
+  const heatDate = addDays(insemDate, 21);
+  const ultraDate = addDays(insemDate, 60);
+  const dryDate = addDays(insemDate, 220);
+  const calvingDate = addDays(insemDate, 280);
+
+  animal.status = 'Tohumlandı (Gebe Adayı)';
+  animal.sire = sire;
+  if (!animal.healthLogs) animal.healthLogs = [];
+  animal.healthLogs.push({
+    date: insemDate,
+    procedure: `Suni Tohumlama: ${sire} (${method})${notes ? ' - ' + notes : ''}`,
+    staff: vet,
+    result: 'Uygulandı'
+  });
+
+  if (!state.tasks) state.tasks = [];
+  const tag = animal.earTag;
+
+  state.tasks.unshift({
+    id: 'tsk-' + Date.now() + '-1',
+    title: `${tag} - 21. Gün Kızgınlık Tekrarı Kontrolü`,
+    sub: `${animal.name || animal.breed} tohumlandı (${sire}). Kızgınlık belirtisi var mı gözlemle.`,
+    category: 'BREEDING',
+    priority: 'HIGH',
+    dueDate: heatDate,
+    assignee: vet,
+    relatedAnimal: tag,
+    done: false
+  });
+
+  state.tasks.unshift({
+    id: 'tsk-' + Date.now() + '-2',
+    title: `${tag} - Ultrason Gebelik Muayenesi (60. Gün)`,
+    sub: `Rektal muayene / ultrason ile kesin gebelik tespiti yapılacak.`,
+    category: 'HEALTH',
+    priority: 'HIGH',
+    dueDate: ultraDate,
+    assignee: vet,
+    relatedAnimal: tag,
+    done: false
+  });
+
+  state.tasks.unshift({
+    id: 'tsk-' + Date.now() + '-3',
+    title: `${tag} - Kuruya Alma & Sağımı Kesme (220. Gün)`,
+    sub: `Doğuma 60 gün kala sağım kesilecek ve kuru dönem rasyonuna geçirilecek.`,
+    category: 'HEALTH',
+    priority: 'MEDIUM',
+    dueDate: dryDate,
+    assignee: 'Mehmet Bakıcı',
+    relatedAnimal: tag,
+    done: false
+  });
+
+  state.tasks.unshift({
+    id: 'tsk-' + Date.now() + '-4',
+    title: `🎉 ${tag} - Tahmini Buzağılama & Doğum (280. Gün)`,
+    sub: `Doğum padoğuna sevk edilecek. Baba: ${sire}.`,
+    category: 'BREEDING',
+    priority: 'HIGH',
+    dueDate: calvingDate,
+    assignee: vet,
+    relatedAnimal: tag,
+    done: false
+  });
+
+  saveState();
+  logAudit('SUNİ TOHUMLAMA', `${tag} (${animal.name || animal.breed}) tohumlandı. Boğa: ${sire}, Yöntem: ${method}, Tahmini Doğum: ${calvingDate}`);
+
+  closeModal('modalInsemination');
+  renderAnimalsTable();
+  renderTasksTable();
+  renderDashboard();
+  showToastNotification(`✅ ${tag} için suni tohumlama kaydı ve 4 gebelik takvim görevi başarıyla oluşturuldu.`);
+}
+
+// 2. CSV / Excel Toplu İçe Aktarma Modülü
+let currentImportType = 'animals';
+let parsedImportData = [];
+
+function openImportModal(type = 'animals') {
+  currentImportType = type;
+  parsedImportData = [];
+  switchImportType(type);
+
+  const previewArea = document.getElementById('importPreviewArea');
+  if (previewArea) previewArea.style.display = 'none';
+
+  const confirmBtn = document.getElementById('btnConfirmImport');
+  if (confirmBtn) confirmBtn.disabled = true;
+
+  const fileInput = document.getElementById('csvFileInput');
+  if (fileInput) fileInput.value = '';
+
+  openModal('modalImport');
+}
+
+function switchImportType(type) {
+  currentImportType = type;
+  const btnAnimals = document.getElementById('btnImportTabAnimals');
+  const btnContacts = document.getElementById('btnImportTabContacts');
+  const descEl = document.getElementById('importTemplateDesc');
+
+  if (btnAnimals && btnContacts) {
+    if (type === 'animals') {
+      btnAnimals.className = 'btn btn-sm btn-secondary';
+      btnContacts.className = 'btn btn-sm btn-ghost';
+      if (descEl) descEl.textContent = 'Hayvan küpe no, ad, ırk, kategori, cinsiyet, padok ve ağırlık sütunlarını içerir.';
+    } else {
+      btnAnimals.className = 'btn btn-sm btn-ghost';
+      btnContacts.className = 'btn btn-sm btn-secondary';
+      if (descEl) descEl.textContent = 'Cari ünvan, cari türü (CUSTOMER/SUPPLIER), telefon ve bakiye sütunlarını içerir.';
+    }
+  }
+
+  const previewArea = document.getElementById('importPreviewArea');
+  if (previewArea) previewArea.style.display = 'none';
+  const confirmBtn = document.getElementById('btnConfirmImport');
+  if (confirmBtn) confirmBtn.disabled = true;
+  parsedImportData = [];
+}
+
+function downloadImportSampleCsv() {
+  let filename = '';
+  let csvContent = '\uFEFF';
+
+  if (currentImportType === 'animals') {
+    filename = 'ozate_hayvan_yukleme_sablonu.csv';
+    csvContent += 'Küpe No;Hayvan Adı;Irk;Kategori;Cinsiyet;Padok;Canlı Ağırlık (kg);Durum\r\n';
+    csvContent += 'TR16-000101;Sarıkız;Holstein;Süt İneği;Dişi;Sağmal 1;640;Sağmal (Aktif)\r\n';
+    csvContent += 'TR16-000102;Tosun Paşa;Simental;Besi Danası;Erkek;Besi Bölme A;520;Besi (Aktif)\r\n';
+    csvContent += 'TR16-000103;Nazlı;Montofon;Gebe Düve;Dişi;Kuru Dönem;480;Gebe Düve\r\n';
+  } else {
+    filename = 'ozate_cari_yukleme_sablonu.csv';
+    csvContent += 'Cari Adı / Ünvanı;Tür;Telefon;Başlangıç Bakiyesi (TL)\r\n';
+    csvContent += 'Bursa Süt Üreticileri Birliği;CUSTOMER;0224 220 00 00;15000\r\n';
+    csvContent += 'Marmara Yem Sanayi A.Ş.;SUPPLIER;0224 440 11 22;-8500\r\n';
+  }
+
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  link.style.display = 'none';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+function handleCsvFileSelected(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const text = e.target.result;
+    parseAndPreviewCsv(text);
+  };
+  reader.readAsText(file, 'UTF-8');
+}
+
+function parseAndPreviewCsv(text) {
+  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
+  if (lines.length < 2) {
+    alert('Hata: CSV dosyasında en az bir başlık ve bir veri satırı bulunmalıdır.');
+    return;
+  }
+
+  const delimiter = lines[0].includes(';') ? ';' : ',';
+  const headers = lines[0].split(delimiter).map(h => h.replace(/^["']|["']$/g, '').trim());
+
+  parsedImportData = [];
+  for (let i = 1; i < lines.length; i++) {
+    const cols = lines[i].split(delimiter).map(c => c.replace(/^["']|["']$/g, '').trim());
+    if (cols.length >= 2 && cols.some(c => c !== '')) {
+      parsedImportData.push(cols);
+    }
+  }
+
+  if (parsedImportData.length === 0) {
+    alert('Hata: CSV dosyasında geçerli veri satırı bulunamadı.');
+    return;
+  }
+
+  const thead = document.getElementById('importPreviewThead');
+  const tbody = document.getElementById('importPreviewTbody');
+  const countEl = document.getElementById('importPreviewCount');
+  const previewArea = document.getElementById('importPreviewArea');
+  const confirmBtn = document.getElementById('btnConfirmImport');
+
+  if (thead) {
+    thead.innerHTML = '<tr>' + headers.map(h => `<th>${escapeHtml(h)}</th>`).join('') + '</tr>';
+  }
+  if (tbody) {
+    tbody.innerHTML = '';
+    parsedImportData.slice(0, 8).forEach(row => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = row.map(c => `<td>${escapeHtml(c)}</td>`).join('');
+      tbody.appendChild(tr);
+    });
+    if (parsedImportData.length > 8) {
+      const moreTr = document.createElement('tr');
+      moreTr.innerHTML = `<td colspan="${headers.length}" style="text-align:center; color:var(--text-muted); font-style:italic;">... ve ${parsedImportData.length - 8} satır daha</td>`;
+      tbody.appendChild(moreTr);
+    }
+  }
+
+  if (countEl) countEl.textContent = `${parsedImportData.length} Satır Okundu`;
+  if (previewArea) previewArea.style.display = 'block';
+  if (confirmBtn) confirmBtn.disabled = false;
+}
+
+function confirmExecuteImport() {
+  if (parsedImportData.length === 0) {
+    alert('İçe aktarılacak veri bulunamadı.');
+    return;
+  }
+
+  let importedCount = 0;
+
+  if (currentImportType === 'animals') {
+    parsedImportData.forEach((row, idx) => {
+      const earTag = row[0] || `TR16-IMP-${Date.now().toString().slice(-4)}${idx}`;
+      if (state.animals.some(a => a.earTag === earTag)) return;
+
+      const newAnimal = {
+        id: 'an-' + Date.now() + '-' + idx,
+        earTag: earTag,
+        name: row[1] || '',
+        breed: row[2] || 'Holstein',
+        category: row[3] || 'Süt İneği',
+        gender: row[4] || 'Dişi',
+        paddock: row[5] || 'Sağmal 1',
+        weight: parseFloat(row[6]) || 500,
+        yield: '28 L/gün',
+        status: row[7] || 'Sağmal (Aktif)',
+        health: 'İyi',
+        dam: '-',
+        sire: '-',
+        weights: [{ date: new Date().toISOString().split('T')[0], weight: parseFloat(row[6]) || 500, adg: '+0.8 kg/gün', paddock: row[5] || 'Sağmal 1' }],
+        healthLogs: [{ date: new Date().toISOString().split('T')[0], procedure: 'İşletmeye Toplu Giriş (CSV)', staff: 'Sistem', result: 'Kabul Edildi' }]
+      };
+      state.animals.push(newAnimal);
+      importedCount++;
+    });
+
+    saveState();
+    logAudit('CSV İÇE AKTARMA', `${importedCount} adet büyükbaş hayvan CSV dosyasından sisteme aktarıldı.`);
+    renderAnimalsTable();
+    renderDashboard();
+    closeModal('modalImport');
+    showToastNotification(`🎉 ${importedCount} adet hayvan başarıyla çiftlik sürüsüne eklendi!`);
+  } else {
+    parsedImportData.forEach((row, idx) => {
+      const name = row[0];
+      if (!name) return;
+      if (state.contacts.some(c => c.name.toLowerCase() === name.toLowerCase())) return;
+
+      const newContact = {
+        id: 'ct-' + Date.now() + '-' + idx,
+        name: name,
+        type: (row[1] && row[1].toUpperCase().includes('SUP')) ? 'SUPPLIER' : 'CUSTOMER',
+        phone: row[2] || '',
+        balance: parseFloat(row[3]) || 0
+      };
+      state.contacts.push(newContact);
+      importedCount++;
+    });
+
+    saveState();
+    logAudit('CSV İÇE AKTARMA', `${importedCount} adet cari hesap CSV dosyasından aktarıldı.`);
+    renderContactsTable();
+    populateAccountDropdowns();
+    closeModal('modalImport');
+    showToastNotification(`🎉 ${importedCount} adet cari hesap başarıyla rehbere eklendi!`);
+  }
+}
+
+// 3. Parametre Ekleme Formu
+function handleParamAdd(e) {
+  e.preventDefault();
+  const input = document.getElementById('paramNewInput');
+  const val = input ? input.value.trim() : '';
+  if (!val) return;
+
+  const catKey = (typeof currentParamCategory !== 'undefined' && currentParamCategory) 
+    ? currentParamCategory 
+    : ((typeof currentDefTab !== 'undefined' && PARAM_TAB_CONFIG[currentDefTab]) ? PARAM_TAB_CONFIG[currentDefTab].key : 'incomeCategories');
+
+  if (!state.parameters) state.parameters = {};
+  if (!state.parameters[catKey]) state.parameters[catKey] = [];
+
+  if (state.parameters[catKey].includes(val)) {
+    alert('Bu tanım zaten listede mevcut.');
+    return;
+  }
+
+  state.parameters[catKey].push(val);
+  saveState();
+  logAudit('TANIM EKLEME', `[${catKey}] kategorisine yeni tanım eklendi: "${val}"`);
+
+  if (input) input.value = '';
+  
+  if (typeof renderParametersModalItems === 'function') renderParametersModalItems(catKey);
+  if (typeof renderDefinitionsPage === 'function') renderDefinitionsPage();
+  if (typeof syncAllDropdowns === 'function') syncAllDropdowns();
+
+  showToastNotification(`✅ "${val}" başarıyla tanımlara eklendi.`);
+}
+
+// =============================================================================
+// 14c. MENÜ VE MODÜL GÖRÜNÜRLÜĞÜ YÖNETİMİ (SADELEŞTİRME & ÖZELLEŞTİRME)
+// =============================================================================
+
+const MENU_VISIBILITY_KEY = 'ozate_menu_visibility';
+
+const APP_MENU_MODULES = [
+  { id: 'dashboard', name: 'Gösterge Paneli', icon: '📊', desc: 'Genel özet, KPI ve günlük çiftlik durumu', core: true },
+  { id: 'transactions', name: 'Gelir & Gider', icon: '💰', desc: 'Günlük finans defteri ve kasa hareketleri' },
+  { id: 'accounts', name: 'Kasa & Bankalar', icon: '🏦', desc: 'Ziraat bankası, nakit kasası ve virmanlar' },
+  { id: 'contacts', name: 'Cari & Müşteriler', icon: '👥', desc: 'Sütaş, toplayıcı ve yem tedarikçi carileri' },
+  { id: 'checks', name: 'Çek Takip & Portföy', icon: '🧾', desc: 'Çek portföyü, vade takibi ve ciro işlemleri' },
+  { id: 'animals', name: 'Büyükbaş Sürü', icon: '🐄', desc: 'İnek, düve, dana ve buzağı kartları' },
+  { id: 'sheep', name: 'Küçükbaş Sürü', icon: '🐑', desc: 'Koyun, keçi, koç katımı ve kırkım takibi' },
+  { id: 'qurban', name: 'Kurban Satış & Kesim', icon: '⭐', desc: 'Kurban sipariş, tahsilat ve kesim takibi' },
+  { id: 'milk', name: 'Süt Üretimi', icon: '🥛', desc: 'Sabah/akşam sağımı ve soğutma tankları' },
+  { id: 'inventory', name: 'Yem & Stok Deposu', icon: '📦', desc: 'Silaj, yonca, yem ve aşı kritik stokları' },
+  { id: 'tasks', name: 'Görevler & Takvim', icon: '📅', desc: 'Aşı, tohumlama ve operasyonel iş listesi' },
+  { id: 'reports', name: 'Raporlar & Analiz', icon: '📈', desc: 'Dönemsel kâr-zarar ve maliyet analitiği' },
+  { id: 'users', name: 'Kullanıcı Yönetimi', icon: '👤', desc: 'Çiftlik personeli, PIN ve yetkilendirme' },
+  { id: 'definitions', name: 'Çiftlik Tanımları', icon: '🏷️', desc: 'Padok, ırk ve kategori parametreleri' },
+  { id: 'settings', name: 'Çiftlik Ayarları', icon: '⚙️', desc: 'Çiftlik profili ve bulut ayarları', core: true },
+  { id: 'security', name: 'Sistem Güvenliği', icon: '🛡️', desc: 'Veri yedeği (JSON) ve denetim logları' }
+];
+
+function getMenuVisibilityConfig() {
+  const saved = localStorage.getItem(MENU_VISIBILITY_KEY);
+  if (saved) {
+    try {
+      return JSON.parse(saved);
+    } catch(e) {}
+  }
+  // Varsayılan: Sol menüdeki TÜM başlıklar tamamen görünür
+  const def = {};
+  APP_MENU_MODULES.forEach(m => {
+    def[m.id] = true;
+  });
+  return def;
+}
+
+function setMenuVisibility(menuId, isVisible) {
+  const cfg = getMenuVisibilityConfig();
+  cfg[menuId] = isVisible;
+  localStorage.setItem(MENU_VISIBILITY_KEY, JSON.stringify(cfg));
+  applyMenuVisibility();
+  renderMenuVisibilityPanel();
+  showToastNotification(`Menü görünürlüğü güncellendi: ${isVisible ? 'Görünür' : 'Gizlendi'}`);
+}
+
+function resetDefaultMenuVisibility() {
+  localStorage.removeItem(MENU_VISIBILITY_KEY);
+  applyMenuVisibility();
+  renderMenuVisibilityPanel();
+  showToastNotification('Menü ayarları varsayılana sıfırlandı.');
+}
+
+function applyMenuVisibility() {
+  const cfg = getMenuVisibilityConfig();
+
+  // Önce tüm bilinen nav-link'leri göster (temiz başlangıç)
+  document.querySelectorAll('.nav-link[data-page]').forEach(link => {
+    // Sadece applyRolePermissions tarafından yönetilmeyenler için reset
+    link.style.display = 'flex';
+  });
+
+  APP_MENU_MODULES.forEach(m => {
+    const isVisible = cfg[m.id] !== false;
+    
+    // Sidebar linki
+    const navLink = document.getElementById('nav-' + m.id);
+    if (navLink) {
+      navLink.style.display = isVisible ? 'flex' : 'none';
+    }
+
+    // Mobil alt bardaki buton (varsa)
+    const mobileBtn = document.querySelector(`.mobile-nav-item[data-page="${m.id}"]`);
+    if (mobileBtn) {
+      mobileBtn.style.display = isVisible ? 'flex' : 'none';
+    }
+  });
+
+  // Rol kısıtlamalarını yeniden uygula (menü görünürlüğü sonrası)
+  applyRolePermissions();
+
+  // Eğer şu an aktif olan sayfa gizlendiyse dashboard'a yönlendir
+  const currentHash = window.location.hash.replace('#', '') || 'dashboard';
+  if (cfg[currentHash] === false) {
+    navigateToPage('dashboard');
+  }
+}
+
+function openMenuCustomizeModal() {
+  renderMenuCheckboxesInContainer('modalMenuCheckboxesContainer');
+  openModal('modalMenuCustomize');
+}
+
+function toggleAllMenus(showAll = true) {
+  const cfg = {};
+  APP_MENU_MODULES.forEach(m => {
+    cfg[m.id] = showAll;
+  });
+  localStorage.setItem(MENU_VISIBILITY_KEY, JSON.stringify(cfg));
+  applyMenuVisibility();
+  renderMenuVisibilityPanel();
+  renderMenuCheckboxesInContainer('modalMenuCheckboxesContainer');
+  showToastNotification(showAll ? 'Tüm menü başlıkları görünür yapıldı.' : 'Seçilenler güncellendi.');
+}
+
+function renderMenuCheckboxesInContainer(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '';
+
+  const cfg = getMenuVisibilityConfig();
+
+  APP_MENU_MODULES.forEach(m => {
+    const isChecked = cfg[m.id] !== false;
+    const isCore = !!m.core;
+
+    const row = document.createElement('label');
+    row.style.cssText = `
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: var(--radius-md);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      cursor: ${isCore ? 'default' : 'pointer'};
+      user-select: none;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    `;
+
+    row.innerHTML = `
+      <input type="checkbox" id="chk_${containerId}_${m.id}" ${isChecked ? 'checked' : ''} ${isCore ? 'disabled' : ''} 
+        onchange="setMenuVisibility('${m.id}', this.checked)" 
+        style="width: 17px; height: 17px; accent-color: var(--brand-primary); cursor: ${isCore ? 'default' : 'pointer'};">
+      <span style="font-size: 1.15rem; line-height: 1;">${m.icon}</span>
+      <div style="flex: 1; min-width: 0;">
+        <div style="font-weight: 600; font-size: 0.8rem; color: var(--text-main); display: flex; align-items: center; gap: 5px;">
+          <span>${m.name}</span>
+          ${isCore ? '<span class="tag-badge" style="font-size: 0.58rem; padding: 1px 4px; opacity: 0.8;">Zorunlu</span>' : ''}
+        </div>
+        <div style="font-size: 0.67rem; color: var(--text-muted);">${m.desc}</div>
+      </div>
+    `;
+
+    container.appendChild(row);
+  });
+}
+
+function renderMenuVisibilityPanel() {
+  renderMenuCheckboxesInContainer('menuVisibilityOptionsContainer');
+}
+
+// =============================================================================
 // 15. EVENT LISTENERS VE BAŞLANGIÇ
 
 
 document.addEventListener('DOMContentLoaded', () => {
   loadState();
-  applyRolePermissions();
+  applyMenuVisibility(); // applyRolePermissions'ı da içeride çağırır
   checkUserSession();
   renderAnimalFilterPaddocks();
   populateAccountDropdowns();
@@ -5364,7 +7991,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initSupabaseClient();
     if (typeof fetchCompleteFarmFromSupabase === 'function' && typeof getSupabaseConfig === 'function' && getSupabaseConfig().enabled) {
       fetchCompleteFarmFromSupabase().then(cloudState => {
-        if (cloudState) {
+        if (cloudState && Array.isArray(cloudState.animals) && cloudState.animals.length > 0) {
           state = cloudState;
           saveState();
           const cur = window.location.hash.replace('#', '') || 'dashboard';

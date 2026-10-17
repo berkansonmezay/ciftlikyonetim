@@ -18,7 +18,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   
-  <link rel="stylesheet" href="styles.css?v=3.9">
+  <link rel="stylesheet" href="styles.css?v=4.0">
   <script>
     // Tarayıcı önbelleği ve Service Worker anında yenileme kontrolü
     if ('serviceWorker' in navigator) {
@@ -63,6 +63,11 @@
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           <span>Cari & Müşteriler</span>
         </a>
+        <a href="#checks" class="nav-link" data-page="checks" id="nav-checks">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="7" y1="15" x2="12" y2="15"/></svg>
+          <span>Çek Takip & Portföy</span>
+          <span class="badge" id="sidebarCheckBadge" style="background: rgba(43, 114, 186, 0.25); color: #60a5fa;">3</span>
+        </a>
         <a href="#animals" class="nav-link" data-page="animals" id="nav-animals">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
           <span>Büyükbaş Sürü</span>
@@ -72,6 +77,11 @@
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="7"/><path d="M5 8c-1.5-1-3 0-3 2 0 1.5 1 3 2.5 3"/><path d="M19 8c1.5-1 3 0 3 2 0 1.5-1 3-2.5 3"/><path d="M9 10h.01M15 10h.01M10 14a2 2 0 0 0 4 0"/><path d="M8 19v2M16 19v2"/></svg>
           <span>Küçükbaş Sürü</span>
           <span class="badge" id="sidebarSheepCountBadge" style="background: rgba(30, 77, 43, 0.2); color: var(--ozate-green-accent);">85</span>
+        </a>
+        <a href="#qurban" class="nav-link" data-page="qurban" id="nav-qurban">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 4.8 5.3.8-3.8 3.7.9 5.3-4.8-2.5-4.8 2.5.9-5.3-3.8-3.7 5.3-.8z"/></svg>
+          <span>Kurban Satış & Kesim</span>
+          <span class="badge" id="sidebarQurbanBadge" style="background: rgba(234, 179, 8, 0.2); color: #facc15;">7/14</span>
         </a>
         <a href="#milk" class="nav-link" data-page="milk" id="nav-milk">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 2v4M14 2v4M6 6h12l-1.5 14H7.5L6 6zM8 10h8"/></svg>
@@ -422,7 +432,7 @@
           <div class="filter-bar">
             <div class="filter-group">
               <label>Tür:</label>
-              <select id="filterTxType" class="form-select">
+              <select id="filterTxType" class="form-select" onchange="renderTransactionsTable()">
                 <option value="ALL">Tümü (Gelir & Gider)</option>
                 <option value="INCOME">Yalnızca Gelirler</option>
                 <option value="EXPENSE">Yalnızca Giderler</option>
@@ -430,7 +440,7 @@
             </div>
             <div class="filter-group">
               <label>Ödeme Durumu:</label>
-              <select id="filterTxStatus" class="form-select">
+              <select id="filterTxStatus" class="form-select" onchange="renderTransactionsTable()">
                 <option value="ALL">Tümü</option>
                 <option value="PAID">Tahsil Edildi / Ödendi</option>
                 <option value="PARTIAL">Kısmi Ödendi</option>
@@ -439,7 +449,7 @@
             </div>
             <div class="filter-group">
               <label>Kategori:</label>
-              <select id="filterTxCategory" class="form-select">
+              <select id="filterTxCategory" class="form-select" onchange="renderTransactionsTable()">
                 <option value="ALL">Tüm Kategoriler</option>
                 <option value="Süt Satışı">Süt Satışı</option>
                 <option value="Besi Hayvanı Satışı">Besi Hayvanı Satışı</option>
@@ -642,6 +652,128 @@
         </section>
 
 
+        <!-- 4.1 ÇEK TAKİP VE PORTFÖY SAYFASI -->
+        <section class="page-view" id="view-checks">
+          <div class="view-header">
+            <div class="view-header-title">
+              <h2>Çek Takip & Portföy Yönetimi</h2>
+              <p>Müşteri çekleri, verilen borç çekleri, vadesi yaklaşanlar, banka tahsilatı ve ciro işlemleri</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-secondary" onclick="printCheckBordro()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                <span>Çek Bordrosu Yazdır</span>
+              </button>
+              <button class="btn btn-primary" onclick="openNewCheckModal('INCOMING')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Yeni Çek Girişi</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Çek Metrik Kartları -->
+          <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 1.25rem;">
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Portföydeki Çekler (Alınan)</span>
+                <span class="kpi-icon" style="background: rgba(30, 77, 43, 0.15); color: var(--accent-success);">📥</span>
+              </div>
+              <div class="kpi-value" id="kpiPortfolioChecksTotal">₺0,00</div>
+              <div class="kpi-meta"><span id="kpiPortfolioChecksCount">0</span> adet kasada bekleyen müşteri çeki</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Ödenecek Çekler (Verilen)</span>
+                <span class="kpi-icon" style="background: rgba(123, 30, 38, 0.15); color: var(--accent-red);">📤</span>
+              </div>
+              <div class="kpi-value" id="kpiOutgoingChecksTotal">₺0,00</div>
+              <div class="kpi-meta"><span id="kpiOutgoingChecksCount">0</span> adet tedarikçiye verilen borç çeki</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Vadesi Yaklaşanlar (15 Gün)</span>
+                <span class="kpi-icon" style="background: rgba(234, 179, 8, 0.15); color: #eab308;">⏰</span>
+              </div>
+              <div class="kpi-value" id="kpiUpcomingChecksTotal">₺0,00</div>
+              <div class="kpi-meta"><span id="kpiUpcomingChecksCount">0</span> adet acil işlem bekleyen çek</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Tahsil Edilen / Ödenen</span>
+                <span class="kpi-icon" style="background: rgba(43, 114, 186, 0.15); color: #3b82f6;">✅</span>
+              </div>
+              <div class="kpi-value" id="kpiSettledChecksTotal">₺0,00</div>
+              <div class="kpi-meta">Hesaba geçen ve kapanan toplam işlem</div>
+            </div>
+          </div>
+
+          <!-- Sekmeler ve Filtreler -->
+          <div class="def-tabs-bar" style="margin-bottom: 1rem;">
+            <button class="def-tab-btn active" data-check-tab="ALL" onclick="switchCheckTab('ALL')">
+              Tüm Çekler <span class="def-tab-badge" id="tabCheckBadgeAll">0</span>
+            </button>
+            <button class="def-tab-btn" data-check-tab="INCOMING" onclick="switchCheckTab('INCOMING')">
+              Alınan Çekler (Müşteri) <span class="def-tab-badge" id="tabCheckBadgeIncoming">0</span>
+            </button>
+            <button class="def-tab-btn" data-check-tab="OUTGOING" onclick="switchCheckTab('OUTGOING')">
+              Verilen Çekler (Borç) <span class="def-tab-badge" id="tabCheckBadgeOutgoing">0</span>
+            </button>
+            <button class="def-tab-btn" data-check-tab="UPCOMING" onclick="switchCheckTab('UPCOMING')">
+              Vadesi Yaklaşanlar <span class="def-tab-badge" id="tabCheckBadgeUpcoming">0</span>
+            </button>
+            <button class="def-tab-btn" data-check-tab="SETTLED" onclick="switchCheckTab('SETTLED')">
+              Tahsil Edildi / Ödendi <span class="def-tab-badge" id="tabCheckBadgeSettled">0</span>
+            </button>
+          </div>
+
+          <div class="filter-bar">
+            <div class="filter-group">
+              <label>Durum Filtresi:</label>
+              <select id="filterCheckStatus" class="form-select" onchange="renderChecksTable()">
+                <option value="ALL">Tüm Durumlar</option>
+                <option value="PORTFOLIO">Portföyde / Bekliyor</option>
+                <option value="COLLECTED">Tahsil Edildi (Hesaba Geçti)</option>
+                <option value="ENDORSED">Ciro Edildi (Tedarikçiye Devir)</option>
+                <option value="PAID">Ödendi (Banka Ödemesi)</option>
+                <option value="BOUNCED">Karşılıksız / Protestolu</option>
+                <option value="CANCELLED">İptal / İade</option>
+              </select>
+            </div>
+            <div class="filter-group" style="flex: 1; max-width: 320px;">
+              <label>Arama:</label>
+              <input type="text" id="filterCheckSearch" class="form-control" placeholder="Çek no, keşideci, banka, cari..." oninput="renderChecksTable()">
+            </div>
+          </div>
+
+          <!-- Çek Listesi Tablosu -->
+          <div class="dashboard-panel">
+            <div class="table-responsive">
+              <table class="data-table" id="checksTable">
+                <thead>
+                  <tr>
+                    <th>Tür</th>
+                    <th>Çek No</th>
+                    <th>Keşideci & Cari</th>
+                    <th>Banka & Şube</th>
+                    <th>Keşide Tarihi</th>
+                    <th>Vade Tarihi</th>
+                    <th>Tutar</th>
+                    <th>Durum</th>
+                    <th style="text-align: right;">Aksiyonlar</th>
+                  </tr>
+                </thead>
+                <tbody id="checksTbody">
+                  <!-- JS ile doldurulur -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+
         <!-- 5. BÜYÜKBAŞ SÜRÜ SAYFASI -->
         <section class="page-view" id="view-animals">
           <div class="view-header">
@@ -681,7 +813,7 @@
           <div class="filter-bar">
             <div class="filter-group">
               <label>Padok / Grup:</label>
-              <select id="filterAnimalPaddock" class="form-select">
+              <select id="filterAnimalPaddock" class="form-select" onchange="renderAnimalsTable()">
                 <option value="ALL">Tüm Padoklar</option>
                 <option value="Sağmal 1">Sağmal 1 Padoğu</option>
                 <option value="Sağmal 2">Sağmal 2 Padoğu</option>
@@ -693,7 +825,7 @@
             </div>
             <div class="filter-group">
               <label>Kategori:</label>
-              <select id="filterAnimalCategory" class="form-select">
+              <select id="filterAnimalCategory" class="form-select" onchange="renderAnimalsTable()">
                 <option value="ALL">Tümü</option>
                 <option value="Süt İneği">Süt İneği</option>
                 <option value="Besi Danası">Besi Danası</option>
@@ -703,12 +835,22 @@
             </div>
             <div class="filter-group">
               <label>Irk:</label>
-              <select id="filterAnimalBreed" class="form-select">
+              <select id="filterAnimalBreed" class="form-select" onchange="renderAnimalsTable()">
                 <option value="ALL">Tüm Irklar</option>
                 <option value="Holstein">Holstein</option>
                 <option value="Simental">Simental</option>
                 <option value="Montofon">Montofon (Brown Swiss)</option>
                 <option value="Angus">Angus</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Durum:</label>
+              <select id="filterAnimalStatus" class="form-select" onchange="renderAnimalsTable()">
+                <option value="ACTIVE">Aktif Sürü</option>
+                <option value="ALL">Tümü (Arşiv Dahil)</option>
+                <option value="Satıldı">Satılanlar</option>
+                <option value="Kesildi">Kesilenler</option>
+                <option value="Zayiat">Zayiat / Ölüm</option>
               </select>
             </div>
           </div>
@@ -871,6 +1013,133 @@
                   </tr>
                 </thead>
                 <tbody id="sheepTbody">
+                  <!-- JS ile doldurulur -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- 5.2 KURBAN SATIŞ VE KESİMHANE YÖNETİMİ SAYFASI -->
+        <section class="page-view" id="view-qurban">
+          <div class="view-header">
+            <div class="view-header-title">
+              <h2>Kurban Satış & Kesimhane Yönetimi</h2>
+              <p>Büyükbaş 1-7 hisse organizasyonu, küçükbaş kurbanlıklar, kesimhane randevu sırası ve pay teslimatı</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-secondary" onclick="printQurbanSlaughterSchedule()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                <span>Kesim Sıra & Randevu Listesi</span>
+              </button>
+              <button class="btn btn-primary" onclick="openNewQurbanAnimalModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Yeni Kurbanlık Tanımla</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Kurban Metrik Kartları -->
+          <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 1.25rem;">
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Toplam Kurbanlık</span>
+                <span class="kpi-icon" style="background: rgba(234, 179, 8, 0.15); color: #eab308;">🐑</span>
+              </div>
+              <div class="kpi-value" id="kpiQurbanAnimalCount">0</div>
+              <div class="kpi-meta"><span id="kpiQurbanTypeBreakdown">0 Büyükbaş, 0 Küçükbaş</span></div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Hisse Doluluk Oranı</span>
+                <span class="kpi-icon" style="background: rgba(30, 77, 43, 0.15); color: var(--accent-success);">📊</span>
+              </div>
+              <div class="kpi-value" id="kpiQurbanOccupancyRate">%0</div>
+              <div class="kpi-meta"><span id="kpiQurbanSoldSharesCount">0</span> / <span id="kpiQurbanTotalSharesCount">0</span> Hisse Satıldı</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Toplam Kurban Cirosu</span>
+                <span class="kpi-icon" style="background: rgba(43, 114, 186, 0.15); color: #3b82f6;">💰</span>
+              </div>
+              <div class="kpi-value" id="kpiQurbanRevenueTotal">₺0,00</div>
+              <div class="kpi-meta">Rezervasyon yapılan toplam kurban bedeli</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Kalan Alacak / Bakiye</span>
+                <span class="kpi-icon" style="background: rgba(123, 30, 38, 0.15); color: var(--accent-red);">⏳</span>
+              </div>
+              <div class="kpi-value" id="kpiQurbanRemainingBalance">₺0,00</div>
+              <div class="kpi-meta"><span id="kpiQurbanCollectedDeposit">₺0</span> kapora tahsil edildi</div>
+            </div>
+          </div>
+
+          <!-- Sekmeler ve Görünüm Seçici -->
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem;">
+            <div class="def-tabs-bar" style="margin-bottom: 0;">
+              <button class="def-tab-btn active" data-qurban-view="CARDS" onclick="switchQurbanView('CARDS')">
+                📋 Kurbanlık & Hisse Kartları
+              </button>
+              <button class="def-tab-btn" data-qurban-view="SCHEDULE" onclick="switchQurbanView('SCHEDULE')">
+                ⏱️ Kesimhane Sıra & Randevu Panosu
+              </button>
+              <button class="def-tab-btn" data-qurban-view="SHARES_TABLE" onclick="switchQurbanView('SHARES_TABLE')">
+                👥 Tüm Hissedarlar Listesi
+              </button>
+            </div>
+
+            <div class="filter-bar" style="margin-bottom: 0; padding: 0.25rem 0.5rem; background: none; border: none; flex-wrap: wrap; gap: 0.5rem;">
+              <select id="filterQurbanType" class="form-select" onchange="renderQurbanPage()" style="min-width: 130px;">
+                <option value="ALL">Tüm Türler</option>
+                <option value="BÜYÜKBAŞ">Büyükbaş</option>
+                <option value="KÜÇÜKBAŞ">Küçükbaş</option>
+              </select>
+              <select id="filterQurbanDay" class="form-select" onchange="renderQurbanPage()" style="min-width: 130px;">
+                <option value="ALL">Tüm Günler</option>
+                <option value="1">1. Gün Kesimi</option>
+                <option value="2">2. Gün Kesimi</option>
+                <option value="3">3. Gün Kesimi</option>
+              </select>
+              <input type="text" id="filterQurbanSearch" class="form-control" placeholder="Kurban no, küpe no, hissedar..." oninput="renderQurbanPage()" style="min-width: 180px;">
+            </div>
+          </div>
+
+          <!-- Görünüm 1: Kurbanlık Kartları & Hisse Dağılımı -->
+          <div id="qurbanCardsContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+            <!-- JS ile doldurulur -->
+          </div>
+
+          <!-- Görünüm 2: Kesimhane Sıra & Randevu Panosu -->
+          <div id="qurbanScheduleContainer" style="display: none; margin-bottom: 1.5rem;">
+            <!-- JS ile doldurulur -->
+          </div>
+
+          <!-- Görünüm 3: Tüm Hissedarlar Tablosu -->
+          <div id="qurbanSharesTableContainer" class="dashboard-panel" style="display: none; margin-bottom: 1.5rem;">
+            <div class="table-responsive">
+              <table class="data-table" id="qurbanAllSharesTable">
+                <thead>
+                  <tr>
+                    <th>Kurban No</th>
+                    <th>Hisse No</th>
+                    <th>Hissedar Adı Soyadı</th>
+                    <th>Telefon</th>
+                    <th>Hisse Tutarı</th>
+                    <th>Ödenen Kapora</th>
+                    <th>Kalan Bakiye</th>
+                    <th>Ödeme Şekli</th>
+                    <th>Vekalet</th>
+                    <th>Et Payı (kg)</th>
+                    <th>Teslimat</th>
+                    <th style="text-align: right;">Aksiyon</th>
+                  </tr>
+                </thead>
+                <tbody id="qurbanAllSharesTbody">
                   <!-- JS ile doldurulur -->
                 </tbody>
               </table>
@@ -1140,43 +1409,102 @@
         <section class="page-view" id="view-reports">
           <div class="view-header">
             <div class="view-header-title">
-              <h2>Çiftlik Raporları ve Yönetim Analitiği</h2>
-              <p>Dönemsel kâr-zarar, nakit akışı tablosu ve hayvan başı yem verimliliği</p>
+              <h2>📊 Çiftlik Raporları ve Yönetim Analitiği</h2>
+              <p>Mali tablolar, sürü demografisi, süt üretimi, stok maliyetleri ve kurbanlık performans analitiği</p>
             </div>
-            <div class="view-header-actions">
-              <button class="btn btn-secondary" onclick="openCostAnalysisModal()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-                <span>Maliyet Analizi</span>
+            <div class="view-header-actions" style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="btn btn-secondary btn-sm" onclick="exportCurrentReportExcel()" title="Seçili rapor tablosunu Excel formatında indir">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Excel (.xlsx / .csv)</span>
               </button>
-              <button class="btn btn-primary" onclick="window.print()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-                <span>Raporu Yazdır / PDF</span>
+              <button class="btn btn-primary btn-sm" onclick="printCurrentReportPdf()" title="Yazdır veya PDF olarak kaydet">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                <span>PDF İndir / Yazdır</span>
               </button>
             </div>
           </div>
 
-          <!-- Rapor Kartları -->
+          <!-- Rapor Kartları (Özet KPI) -->
           <div class="report-summary-boxes">
             <div class="report-box">
               <span class="box-label">Dönem Toplam Gelirleri</span>
-              <span class="box-val text-green" id="repTotalIncome">₺348.500,00</span>
+              <span class="box-val text-green" id="repTotalIncome">₺0,00</span>
             </div>
             <div class="report-box">
               <span class="box-label">Dönem Toplam Giderleri</span>
-              <span class="box-val text-burgundy" id="repTotalExpense">₺220.050,00</span>
+              <span class="box-val text-burgundy" id="repTotalExpense">₺0,00</span>
             </div>
             <div class="report-box">
               <span class="box-label">Dönem Net Kâr / Sonuç</span>
-              <span class="box-val text-brand" id="repNetResult">₺128.450,00</span>
+              <span class="box-val text-brand" id="repNetResult">₺0,00</span>
             </div>
             <div class="report-box">
               <span class="box-label">Tahmini Hayvan Başı Net Kâr</span>
-              <span class="box-val" id="repPerAnimalProfit">₺867,90 / Baş</span>
+              <span class="box-val" id="repPerAnimalProfit">₺0,00 / Baş</span>
             </div>
           </div>
 
-          <!-- Gider Dağılım Kırılımı -->
-          <div class="dashboard-panel" style="margin-top: 1.5rem;">
+          <!-- Rapor Seçim Sekmeleri (Rapor Çeşitleri) -->
+          <div style="margin: 1.25rem 0 0.85rem; display: flex; gap: 8px; flex-wrap: wrap; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.5rem;" id="reportNavTabs">
+            <button class="btn btn-sm btn-secondary active" data-report-tab="finance" onclick="switchReportTab('finance')">💰 Finansal Kâr-Zarar</button>
+            <button class="btn btn-sm btn-ghost" data-report-tab="cattle" onclick="switchReportTab('cattle')">🐄 Büyükbaş Sürü Envanteri</button>
+            <button class="btn btn-sm btn-ghost" data-report-tab="sheep" onclick="switchReportTab('sheep')">🐑 Küçükbaş Sürü Raporu</button>
+            <button class="btn btn-sm btn-ghost" data-report-tab="milk" onclick="switchReportTab('milk')">🥛 Süt Üretim & Verimlilik</button>
+            <button class="btn btn-sm btn-ghost" data-report-tab="inventory" onclick="switchReportTab('inventory')">🌾 Yem & Depo Maliyetleri</button>
+            <button class="btn btn-sm btn-ghost" data-report-tab="qurban" onclick="switchReportTab('qurban')">🕌 Kurban Satış & Hissedarlar</button>
+          </div>
+
+          <!-- Rapor Filtre Çubuğu -->
+          <div class="filter-bar" style="margin-bottom: 1rem;">
+            <div class="filter-group">
+              <label>Başlangıç Tarihi:</label>
+              <input type="date" id="repFilterStartDate" class="form-control" onchange="renderActiveReportContent()">
+            </div>
+            <div class="filter-group">
+              <label>Bitiş Tarihi:</label>
+              <input type="date" id="repFilterEndDate" class="form-control" onchange="renderActiveReportContent()">
+            </div>
+            <div class="filter-group">
+              <label>Hızlı Aralık:</label>
+              <select id="repFilterQuickRange" class="form-select" onchange="applyReportQuickRange(this.value)">
+                <option value="ALL">Tüm Zamanlar</option>
+                <option value="THIS_MONTH">Bu Ay</option>
+                <option value="LAST_MONTH">Geçen Ay</option>
+                <option value="THIS_YEAR">Bu Yıl</option>
+              </select>
+            </div>
+            <div style="margin-left: auto; display: flex; align-items: flex-end;">
+              <span id="repRecordCountBadge" class="badge neutral" style="font-size: 0.75rem; padding: 6px 12px;">0 Kayıt</span>
+            </div>
+          </div>
+
+          <!-- Rapor Veri Tablosu Paneli -->
+          <div class="dashboard-panel" id="reportPrintableArea">
+            <div class="panel-header" style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.75rem;">
+              <div class="panel-title-group">
+                <h3 class="panel-title" id="reportTitleHeader">Finansal Kâr / Zarar & Nakit Akış Tablosu</h3>
+                <span class="panel-subtitle" id="reportSubtitleHeader">Dönem içi tüm gelir ve gider kalemlerinin dökümü</span>
+              </div>
+            </div>
+
+            <!-- Dinamik Rapor Tablosu -->
+            <div class="table-responsive" style="margin-top: 0.75rem; max-height: 480px; overflow-y: auto;">
+              <table class="data-table" id="reportDynamicTable">
+                <thead id="reportDynamicThead">
+                  <!-- JS ile doldurulur -->
+                </thead>
+                <tbody id="reportDynamicTbody">
+                  <!-- JS ile doldurulur -->
+                </tbody>
+                <tfoot id="reportDynamicTfoot">
+                  <!-- JS ile toplamlar -->
+                </tfoot>
+              </table>
+            </div>
+          </div>
+
+          <!-- Gider Dağılım Kırılımı (Finans sekmesinde ek grafik) -->
+          <div class="dashboard-panel" id="reportCostBreakdownPanel" style="margin-top: 1.25rem;">
             <div class="panel-header">
               <div class="panel-title-group">
                 <h3 class="panel-title">Gider Kalemleri Ağırlık Analizi</h3>
@@ -1293,7 +1621,7 @@
             </div>
           </div>
 
-          <!-- Sekme Başlıkları -->
+          <!-- Sekme Başlıkları: Wrap Edilmiş Kompakt Pill Bar -->
           <div class="definitions-nav-tabs">
             <button class="def-tab-btn active" data-tab="income" onclick="setDefinitionTab('income')">
               <span>💰 Gelir Kategorileri</span>
@@ -1304,35 +1632,35 @@
               <span class="def-tab-badge" id="defBadge-expense">0</span>
             </button>
             <button class="def-tab-btn" data-tab="contacts" onclick="setDefinitionTab('contacts')">
-              <span>👥 Müşteri & Cari Grupları</span>
+              <span>👥 Müşteri &amp; Cari</span>
               <span class="def-tab-badge" id="defBadge-contacts">0</span>
             </button>
             <button class="def-tab-btn" data-tab="paddocks" onclick="setDefinitionTab('paddocks')">
-              <span>🏡 Padoklar & Bölmeler</span>
+              <span>🏡 Padoklar &amp; Bölmeler</span>
               <span class="def-tab-badge" id="defBadge-paddocks">0</span>
             </button>
             <button class="def-tab-btn" data-tab="breeds" onclick="setDefinitionTab('breeds')">
-              <span>🐄 Hayvan Irkları</span>
+              <span>🐄 Büyükbaş Irklar</span>
               <span class="def-tab-badge" id="defBadge-breeds">0</span>
             </button>
             <button class="def-tab-btn" data-tab="animalCats" onclick="setDefinitionTab('animalCats')">
-              <span>🏷️ Sürü Hayvan Türleri</span>
+              <span>🏷️ Hayvan Türleri</span>
               <span class="def-tab-badge" id="defBadge-animalCats">0</span>
             </button>
             <button class="def-tab-btn" data-tab="stockCats" onclick="setDefinitionTab('stockCats')">
-              <span>🌾 Stok & Yem Türleri</span>
+              <span>🌾 Stok &amp; Yem</span>
               <span class="def-tab-badge" id="defBadge-stockCats">0</span>
             </button>
             <button class="def-tab-btn" data-tab="accountTypes" onclick="setDefinitionTab('accountTypes')">
-              <span>💳 Kasa & Banka Hesapları</span>
+              <span>💳 Kasa &amp; Bankalar</span>
               <span class="def-tab-badge" id="defBadge-accountTypes">0</span>
             </button>
             <button class="def-tab-btn" data-tab="sheepBarns" onclick="setDefinitionTab('sheepBarns')">
-              <span>🐑 Küçükbaş Ağılları</span>
+              <span>🐑 Küçükbaş Ağıllar</span>
               <span class="def-tab-badge" id="defBadge-sheepBarns">0</span>
             </button>
             <button class="def-tab-btn" data-tab="sheepBreeds" onclick="setDefinitionTab('sheepBreeds')">
-              <span>🏷️ Küçükbaş Irkları</span>
+              <span>🏷️ Küçükbaş Irklar</span>
               <span class="def-tab-badge" id="defBadge-sheepBreeds">0</span>
             </button>
           </div>
@@ -1519,9 +1847,12 @@
                 </div>
 
                 <div style="display:flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-subtle); padding-top: 1rem; flex-wrap: wrap; gap: 8px;">
-                  <div style="display: flex; gap: 8px;">
+                  <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                     <button type="button" class="btn btn-secondary btn-sm" onclick="handleTestSupabaseConnection()">
                       🔌 Bağlantıyı Test Et
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="handlePushToSupabase()" style="background: var(--brand-emerald); color: white;">
+                      ⬆️ Verileri Buluta Yedekle
                     </button>
                     <button type="button" class="btn btn-outline btn-sm" onclick="handleFetchFromSupabase()">
                       ⬇️ Buluttan Verileri Yenile
@@ -1533,6 +1864,32 @@
                 </div>
               </form>
             </div>
+
+            <!-- Menü & Modül Görünürlüğü Özelleştirme Paneli -->
+            <div class="dashboard-panel" style="margin-top: 1.25rem;">
+              <div class="panel-header" style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.75rem;">
+                <div class="panel-title-group">
+                  <h3 class="panel-title">🧭 Menü ve Modül Görünürlüğü (Sadeleştirme)</h3>
+                  <span class="panel-subtitle">Kullanmadığınız menü başlıklarını sol çubuktan ve mobil bardan gizleyerek arayüzü sadeleştirin</span>
+                </div>
+                <div>
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="resetDefaultMenuVisibility()">
+                    Varsayılana Dön
+                  </button>
+                </div>
+              </div>
+
+              <div style="padding-top: 1rem;">
+                <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 1rem;">
+                  Aşağıdaki listeden çiftliğinizde aktif olarak kullanmak istediğiniz modülleri işaretleyiniz. İşareti kaldırılan başlıklar menüden anında gizlenir, hiçbir veriniz kaybolmaz.
+                </p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px;" id="menuVisibilityOptionsContainer">
+                  <!-- JS ile dinamik render edilir -->
+                </div>
+              </div>
+            </div>
+
           </div>
         </section>
 
@@ -2176,7 +2533,7 @@
           <div class="form-row">
             <div class="form-group">
               <label>Çıkış Türü *</label>
-              <select id="exitReason" class="form-select" required>
+              <select id="exitReason" class="form-select" required onchange="toggleExitFinanceFields()">
                 <option value="SOLD">Canlı Hayvan Satışı (Pazar / Müşteri)</option>
                 <option value="SLAUGHTERED">Kesimhane / Karkas Satışı</option>
                 <option value="DECEASED">Zayiat / Ölüm</option>
@@ -2187,7 +2544,17 @@
               <input type="number" id="exitPrice" class="form-control" placeholder="Örn. 75.000">
             </div>
           </div>
-          <button type="submit" class="btn btn-burgundy btn-sm" style="width: 100%;">Çıkış İşlemini Onayla</button>
+          <div class="form-row" id="exitFinanceRow" style="margin-top: 0.5rem;">
+            <div class="form-group">
+              <label>Alıcı Cari (Müşteri)</label>
+              <select id="exitContactId" class="form-select"></select>
+            </div>
+            <div class="form-group">
+              <label>Tahsilat Hesabı</label>
+              <select id="exitAccountId" class="form-select"></select>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-burgundy btn-sm" style="width: 100%; margin-top: 0.75rem;">Çıkış İşlemini Onayla</button>
         </form>
       </div>
 
@@ -3342,11 +3709,415 @@
     </div>
   </dialog>
 
+  <!-- 25. MENÜ BAŞLIKLARI GÖRÜNÜRLÜĞÜ & KUTUCUKLARI MODALI -->
+  <dialog id="modalMenuCustomize" class="app-dialog" style="max-width: 600px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>🧭 Sol Menü Başlıklarını Özelleştir</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalMenuCustomize')">&times;</button>
+      </div>
+      <div style="padding: 0.5rem 0;">
+        <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.85rem; line-height: 1.5;">
+          Sol menüde görünmesini istemediğiniz başlıkların <strong>önündeki kutucuktan tiki kaldırınız</strong>. Tiki kaldırılan başlıklar sol çubuktan anında gizlenir, hiçbir veriniz silinmez.
+        </p>
+
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 0.75rem;">
+          <button type="button" class="btn btn-xs btn-secondary" onclick="toggleAllMenus(true)">✓ Tümünü Göster (Tümünü Seç)</button>
+          <button type="button" class="btn btn-xs btn-ghost" onclick="resetDefaultMenuVisibility()">Varsayılana Dön</button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-height: 360px; overflow-y: auto; padding: 4px;" id="modalMenuCheckboxesContainer">
+          <!-- JS ile doldurulur -->
+        </div>
+      </div>
+
+      <div class="dialog-actions" style="margin-top: 1rem;">
+        <button type="button" class="btn btn-primary" onclick="closeModal('modalMenuCustomize')">Tamam / Kapat</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ÇEK EKLEME / DÜZENLEME MODALI -->
+  <dialog id="modalCheck" class="app-dialog" style="max-width: 620px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3 id="modalCheckTitle">Yeni Çek Girişi</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalCheck')">&times;</button>
+      </div>
+      <form id="checkForm" onsubmit="handleCheckSubmit(event)">
+        <input type="hidden" id="checkEditingId" value="">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="checkType">Çek Türü *</label>
+            <select id="checkType" class="form-select" required onchange="onCheckTypeChanged()">
+              <option value="INCOMING">📥 Alınan Çek (Müşteri / Portföy)</option>
+              <option value="OUTGOING">📤 Verilen Çek (Borç / Kendi Çekimiz)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="checkNumber">Çek Numarası (Seri No) *</label>
+            <input type="text" id="checkNumber" class="form-control" placeholder="Örn: CK-123456" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="checkAmount">Tutar (₺) *</label>
+            <input type="number" id="checkAmount" class="form-control" step="0.01" min="0" placeholder="0,00" required>
+          </div>
+          <div class="form-group">
+            <label for="checkDueDate">Vade Tarihi *</label>
+            <input type="date" id="checkDueDate" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="checkIssueDate">Keşide (Düzenleme) Tarihi *</label>
+            <input type="date" id="checkIssueDate" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="checkDrawer">Keşideci (Düzenleyen) *</label>
+            <input type="text" id="checkDrawer" class="form-control" placeholder="Ad Soyad veya Firma Ünvanı" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="checkBankName">Banka Adı *</label>
+            <input type="text" id="checkBankName" class="form-control" placeholder="Örn: Ziraat Bankası, Vakıfbank..." required>
+          </div>
+          <div class="form-group">
+            <label for="checkBranchName">Şube Adı</label>
+            <input type="text" id="checkBranchName" class="form-control" placeholder="Örn: Bursa Şubesi">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="checkContact">İlgili Cari (Müşteri / Tedarikçi)</label>
+            <select id="checkContact" class="form-select">
+              <!-- JS ile doldurulur -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="checkStatus">Durum</label>
+            <select id="checkStatus" class="form-select">
+              <option value="PORTFOLIO">Portföyde (Bekliyor)</option>
+              <option value="COLLECTED">Tahsil Edildi</option>
+              <option value="ENDORSED">Ciro Edildi</option>
+              <option value="PAID">Ödendi</option>
+              <option value="BOUNCED">Karşılıksız / Protestolu</option>
+              <option value="CANCELLED">İptal / İade</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="checkNotes">Açıklama / Notlar</label>
+          <input type="text" id="checkNotes" class="form-control" placeholder="Örn. 2 baş tosun alımına istinaden keşide edilen çek...">
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modalCheck')">Vazgeç</button>
+          <button type="submit" class="btn btn-primary" id="btnCheckSubmit">Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- ÇEK TAHSİL ETME MODALI -->
+  <dialog id="modalCheckCollect" class="app-dialog" style="max-width: 480px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>Bankada Tahsil Et</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalCheckCollect')">&times;</button>
+      </div>
+      <form id="checkCollectForm" onsubmit="handleCheckCollectSubmit(event)">
+        <input type="hidden" id="collectCheckId" value="">
+        <div style="background: var(--bg-surface-soft); padding: 0.75rem; border-radius: var(--radius-md); margin-bottom: 1rem;">
+          <div style="font-size: 0.82rem; color: var(--text-dim);" id="collectCheckSummary">Çek Bilgisi</div>
+          <div style="font-size: 1.1rem; font-weight: 700; color: var(--accent-success); margin-top: 4px;" id="collectCheckAmount">₺0,00</div>
+        </div>
+        <div class="form-group">
+          <label for="collectAccount">Tahsil Edilecek Banka/Kasa Hesabı *</label>
+          <select id="collectAccount" class="form-select" required>
+            <!-- JS ile doldurulur -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="collectDate">Tahsilat Tarihi *</label>
+          <input type="date" id="collectDate" class="form-control" required>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modalCheckCollect')">Vazgeç</button>
+          <button type="submit" class="btn btn-primary">Tahsil Et ve Hesaba Aktar</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- ÇEK CİRO ETME (TEDARİKÇİYE DEVİR) MODALI -->
+  <dialog id="modalCheckEndorse" class="app-dialog" style="max-width: 480px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>Çeki Ciro Et (Tedarikçiye Devret)</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalCheckEndorse')">&times;</button>
+      </div>
+      <form id="checkEndorseForm" onsubmit="handleCheckEndorseSubmit(event)">
+        <input type="hidden" id="endorseCheckId" value="">
+        <div style="background: var(--bg-surface-soft); padding: 0.75rem; border-radius: var(--radius-md); margin-bottom: 1rem;">
+          <div style="font-size: 0.82rem; color: var(--text-dim);" id="endorseCheckSummary">Çek Bilgisi</div>
+          <div style="font-size: 1.1rem; font-weight: 700; color: #3b82f6; margin-top: 4px;" id="endorseCheckAmount">₺0,00</div>
+        </div>
+        <div class="form-group">
+          <label for="endorseContact">Ciro Edilecek Tedarikçi Cari *</label>
+          <select id="endorseContact" class="form-select" required>
+            <!-- JS ile tedarikçiler doldurulur -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="endorseDate">Ciro Devir Tarihi *</label>
+          <input type="date" id="endorseDate" class="form-control" required>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modalCheckEndorse')">Vazgeç</button>
+          <button type="submit" class="btn btn-primary">Ciro Et ve Borçtan Düş</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- KURBANLIK TANIMLAMA / DÜZENLEME MODALI -->
+  <dialog id="modalQurbanAnimal" class="app-dialog" style="max-width: 620px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3 id="modalQurbanAnimalTitle">Yeni Kurbanlık Tanımla</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalQurbanAnimal')">&times;</button>
+      </div>
+      <form id="qurbanAnimalForm" onsubmit="handleQurbanAnimalSubmit(event)">
+        <input type="hidden" id="qurbanAnimalEditingId" value="">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="qurbanAnimalType">Kurban Türü *</label>
+            <select id="qurbanAnimalType" class="form-select" required onchange="onQurbanTypeChanged()">
+              <option value="BÜYÜKBAŞ">🐂 Büyükbaş (1 - 7 Hisse)</option>
+              <option value="KÜÇÜKBAŞ">🐑 Küçükbaş (Tek Hisse)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="qurbanAnimalNo">Kurban Kod / Sıra No *</label>
+            <input type="text" id="qurbanAnimalNo" class="form-control" placeholder="Örn: KB-03, KK-07" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="qurbanSourceAnimal">Mevcut Çiftlik Hayvanından Seç</label>
+            <select id="qurbanSourceAnimal" class="form-select" onchange="onQurbanSourceAnimalSelected()">
+              <option value="">-- Manuel Olarak Gir --</option>
+              <!-- JS ile hayvanlar doldurulur -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="qurbanEarTag">Küpe Numarası</label>
+            <input type="text" id="qurbanEarTag" class="form-control" placeholder="Örn: TR1600031592">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="qurbanBreed">Irk</label>
+            <input type="text" id="qurbanBreed" class="form-control" placeholder="Örn: Simental, Merinos">
+          </div>
+          <div class="form-group">
+            <label for="qurbanLiveWeight">Canlı Ağırlık (kg) *</label>
+            <input type="number" id="qurbanLiveWeight" class="form-control" step="0.5" min="0" placeholder="Örn: 620" required oninput="calculateQurbanEstimates()">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="qurbanTotalPrice">Toplam Kurban Bedeli (₺) *</label>
+            <input type="number" id="qurbanTotalPrice" class="form-control" step="100" min="0" placeholder="Örn: 168000" required oninput="calculateQurbanEstimates()">
+          </div>
+          <div class="form-group">
+            <label for="qurbanShareCount">Hisse Adedi *</label>
+            <select id="qurbanShareCount" class="form-select" required onchange="calculateQurbanEstimates()">
+              <option value="7">7 Hisse (Standart Büyükbaş)</option>
+              <option value="6">6 Hisse</option>
+              <option value="5">5 Hisse</option>
+              <option value="4">4 Hisse</option>
+              <option value="3">3 Hisse</option>
+              <option value="2">2 Hisse</option>
+              <option value="1">1 Hisse (Tek Alıcı / Küçükbaş)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Otomatik Tahmin Göstergesi -->
+        <div style="background: rgba(43, 114, 186, 0.08); border: 1px dashed rgba(43, 114, 186, 0.3); padding: 0.65rem 0.85rem; border-radius: var(--radius-md); margin-bottom: 1rem; display: flex; justify-content: space-between; font-size: 0.85rem;">
+          <div>Tahmini Karkas: <strong id="qurbanEstCarcass">~0 kg</strong> (%55)</div>
+          <div>Hisse Başı Et: <strong id="qurbanEstShareMeat">~0 kg</strong></div>
+          <div>Hisse Başı Bedel: <strong id="qurbanEstSharePrice">₺0</strong></div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="qurbanSlaughterDay">Kesim Günü *</label>
+            <select id="qurbanSlaughterDay" class="form-select" required>
+              <option value="1">Bayramın 1. Günü</option>
+              <option value="2">Bayramın 2. Günü</option>
+              <option value="3">Bayramın 3. Günü</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="qurbanSlaughterOrder">Kesim Sıra No</label>
+            <input type="number" id="qurbanSlaughterOrder" class="form-control" min="1" placeholder="Örn: 14">
+          </div>
+          <div class="form-group">
+            <label for="qurbanSlaughterTime">Randevu Saati</label>
+            <input type="time" id="qurbanSlaughterTime" class="form-control" value="09:00">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="qurbanNotes">Özel Notlar</label>
+          <input type="text" id="qurbanNotes" class="form-control" placeholder="Örn. Pay poşetleme yapılacak, sakatat bağışlanacak...">
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modalQurbanAnimal')">Vazgeç</button>
+          <button type="submit" class="btn btn-primary">Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- KURBAN HİSSEDAR EKLEME / DÜZENLEME MODALI -->
+  <dialog id="modalQurbanShare" class="app-dialog" style="max-width: 580px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3 id="modalQurbanShareTitle">Hissedar Ekle / Düzenle</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalQurbanShare')">&times;</button>
+      </div>
+      <form id="qurbanShareForm" onsubmit="handleQurbanShareSubmit(event)">
+        <input type="hidden" id="qurbanShareEditingId" value="">
+        <input type="hidden" id="qurbanShareAnimalId" value="">
+
+        <div style="background: var(--bg-surface-soft); padding: 0.75rem; border-radius: var(--radius-md); margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <span style="font-size: 0.78rem; color: var(--text-dim);">Kurban Bilgisi:</span>
+            <div style="font-weight: 700;" id="qurbanShareAnimalHeader">KB-01</div>
+          </div>
+          <div>
+            <span style="font-size: 0.78rem; color: var(--text-dim);">Hisse No:</span>
+            <div style="font-weight: 800; font-size: 1.1rem; color: var(--accent-success);" id="qurbanShareIndexDisplay">1. Hisse</div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="shareholderName">Hissedar Adı Soyadı *</label>
+            <input type="text" id="shareholderName" class="form-control" placeholder="Örn: Ahmet Yılmaz" required>
+          </div>
+          <div class="form-group">
+            <label for="shareholderPhone">İletişim Telefonu *</label>
+            <input type="tel" id="shareholderPhone" class="form-control" placeholder="0532 000 00 00" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="sharePrice">Hisse Bedeli (₺) *</label>
+            <input type="number" id="sharePrice" class="form-control" step="100" min="0" required oninput="calculateShareRemaining()">
+          </div>
+          <div class="form-group">
+            <label for="shareDeposit">Alınan Kapora / Peşinat (₺)</label>
+            <input type="number" id="shareDeposit" class="form-control" step="100" min="0" value="0" oninput="calculateShareRemaining()">
+          </div>
+        </div>
+
+        <div style="background: rgba(123, 30, 38, 0.08); padding: 0.5rem 0.75rem; border-radius: var(--radius-md); margin-bottom: 1rem; display: flex; justify-content: space-between; font-size: 0.88rem;">
+          <span>Kalan Tahsil Edilecek Bakiye:</span>
+          <strong id="shareRemainingDisplay" style="color: var(--accent-red);">₺0,00</strong>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="sharePaymentMethod">Ödeme Şekli</label>
+            <select id="sharePaymentMethod" class="form-select" onchange="onSharePaymentMethodChanged()">
+              <option value="CASH">💵 Nakit</option>
+              <option value="TRANSFER">🏦 Banka Havalesi / EFT</option>
+              <option value="CARD">💳 Kredi Kartı / POS</option>
+              <option value="CHECK">📑 Çek ile Ödeme</option>
+            </select>
+          </div>
+          <div class="form-group" id="shareCheckGroup" style="display: none;">
+            <label for="shareCheckNumber">Çek Numarası & Vadesi</label>
+            <input type="text" id="shareCheckNumber" class="form-control" placeholder="Örn: CK-991204 (15.11.2026)">
+          </div>
+        </div>
+
+        <div class="form-row" style="align-items: center;">
+          <div class="form-group" style="flex: 1;">
+            <label for="shareMeatWeight">Teslim Edilen Et Miktarı (kg)</label>
+            <input type="number" id="shareMeatWeight" class="form-control" step="0.1" min="0" placeholder="Kesim sonrası kg">
+          </div>
+          <div class="form-group" style="margin-top: 1.25rem;">
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+              <input type="checkbox" id="shareProxyGiven" style="width: 18px; height: 18px;">
+              <span>Vekalet Alındı</span>
+            </label>
+          </div>
+          <div class="form-group" style="margin-top: 1.25rem;">
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+              <input type="checkbox" id="shareIsDelivered" style="width: 18px; height: 18px;">
+              <span>Pay Teslim Edildi</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="shareNotes">Hissedar Notları</label>
+          <input type="text" id="shareNotes" class="form-control" placeholder="Örn: 2 kg kıyma çekilsin, kemiksiz ayrılsın...">
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modalQurbanShare')">Vazgeç</button>
+          <button type="submit" class="btn btn-primary">Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- KURBAN HİSSE VE KESİM SIRA BELGESİ (YAZDIRILABİLİR) MODALI -->
+  <dialog id="modalQurbanReceipt" class="app-dialog" style="max-width: 650px;">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>Kurban Hisse & Kesim Sıra Belgesi</h3>
+        <button class="dialog-close-btn" onclick="closeModal('modalQurbanReceipt')">&times;</button>
+      </div>
+      <div id="qurbanReceiptPrintArea" style="background: white; color: #111; padding: 1.5rem; border-radius: var(--radius-md); border: 2px solid #ddd; font-family: system-ui, sans-serif;">
+        <!-- JS ile dinamik doldurulur -->
+      </div>
+      <div class="dialog-actions" style="margin-top: 1rem;">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('modalQurbanReceipt')">Kapat</button>
+        <button type="button" class="btn btn-primary" onclick="printReceiptElement('qurbanReceiptPrintArea')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Yazdır / PDF Olarak Kaydet
+        </button>
+      </div>
+    </div>
+  </dialog>
+
   <!-- Supabase JS CDN & Veri Katmanı -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase-client.js"></script>
+  <script src="supabase-client.js?v=4.0"></script>
 
   <!-- Uygulama Mantığı Scripti -->
-  <script src="app.js?v=3.9"></script>
+  <script src="app.js?v=4.0"></script>
 </body>
 </html>
